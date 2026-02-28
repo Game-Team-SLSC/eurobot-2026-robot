@@ -1,0 +1,37 @@
+name: Build Logic PCB
+
+on:
+  push:
+    paths:
+      - 'hardware/logic-pcb/**'
+      - '.github/workflows/build-logic-pcb.yml'
+  pull_request:
+    paths:
+      - 'hardware/logic-pcb/**'
+      - '.github/workflows/build-logic-pcb.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Generate Manufacturing Files
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run KiBot
+        uses: INTI-CMNB/KiBot@v2_k9
+        with:
+          config: hardware/logic-pcb/config.kibot.yaml
+          dir: hardware/logic-pcb/out
+          schema: hardware/logic-pcb/logic-pcb.kicad_sch
+          board: hardware/logic-pcb/logic-pcb.kicad_pcb
+          install3D: true
+          cache3D: true
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: logic-pcb-manufacturing-files
+          path: hardware/logic-pcb/out

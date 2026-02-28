@@ -1,0 +1,112 @@
+(footprint "Pwr-button_LED"
+	(version 20240108)
+	(generator "pcbnew")
+	(generator_version "8.0")
+	(layer "F.Cu")
+	(property "Reference" "REF**"
+		(at -11 9.25 0)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "6f1c4217-2458-486e-b043-8892558a0b3b")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+		)
+	)
+	(property "Value" "Pwr-button_LED"
+		(at -11 10.75 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "3667fd4b-9014-4000-8e11-9c5be488320f")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Footprint" ""
+		(at -2.5 4 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "211e6c67-af8d-4dad-a80b-4503ad7bf947")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at -2.5 4 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "2bc3afcc-93bf-4a75-8dea-f82d880d4354")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at -2.5 4 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "a6570473-ba13-4793-a03e-0a0a2ffea681")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr through_hole)
+	(fp_circle
+		(center 0 0)
+		(end 10.7 0)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill none)
+		(layer "B.CrtYd")
+		(uuid "39fc8857-4350-4f48-808a-e50d99f260c1")
+	)
+	(fp_circle
+		(center 0 0)
+		(end 10.7 0)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill none)
+		(layer "F.CrtYd")
+		(uuid "20198a92-e8c1-4e37-ba45-7d321a028cba")
+	)
+	(fp_text user "${REFERENCE}"
+		(at -11 12.25 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "633405cd-9583-46d1-9bde-33b0f91f18c6")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(pad "1" thru_hole circle
+		(at 0 0)
+		(size 17 17)
+		(drill 15.8)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "90deb206-5eea-4012-8c37-d1222ff99288")
+	)
+)

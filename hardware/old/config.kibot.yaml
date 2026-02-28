@@ -1,0 +1,65 @@
+kibot:
+  version: 1
+
+preflight:
+  erc: true
+  drc: true
+
+outputs:
+  - name: '3D_Preview'
+    comment: 'Board Preview (PcbDraw)'
+    type: 'pcbdraw'
+    dir: '.'
+    options:
+      format: 'png'
+      output: 'preview.png'
+
+  - name: 'Schematic_PDF'
+    comment: 'Schematic in PDF format'
+    type: 'pdf_sch_print'
+    dir: 'doc'
+
+  - name: 'PCB_PDF'
+    comment: 'PCB in PDF format'
+    type: 'pdf_pcb_print'
+    dir: 'doc'
+    options:
+      output: '%f_pcb.pdf'
+
+  - name: 'Gerbers'
+    comment: 'Gerber files'
+    type: 'gerber'
+    dir: 'fab'
+    options:
+      # Use standard Protel extensions
+      use_protel_extensions: true
+      create_gerber_job_file: true
+      gerber_job_file: '%f.gbrjob'
+
+  - name: 'Drill'
+    comment: 'Drill files'
+    type: 'excellon'
+    dir: 'fab'
+    options:
+      metric_units: true
+      minimal_header: false
+
+  - name: 'BOM'
+    comment: 'Bill of Materials'
+    type: 'bom'
+    dir: 'doc'
+    options:
+      format: 'CSV'
+      columns:
+        - 'Row'
+        - 'Value'
+        - 'Part'
+        - 'Footprint'
+        - 'Description'
+        - 'Vendor'
+      group_fields: ['Value', 'Footprint']
+      normalize_values: true
+      csv:
+        hide_pcb_info: true
+        hide_stats_info: true
+        quote_all: true

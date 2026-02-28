@@ -1,0 +1,152 @@
+(footprint "KCD2"
+	(version 20240108)
+	(generator "pcbnew")
+	(generator_version "8.0")
+	(layer "F.Cu")
+	(property "Reference" "REF**"
+		(at -9.95 3.7 0)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "ca1fe1b4-996b-4ca4-bf1f-ddf8acf4624e")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+		)
+	)
+	(property "Value" "KCD2"
+		(at -9.95 5.2 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "96259224-879c-49ba-a487-a55d8f711209")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Footprint" ""
+		(at -9.95 4.2 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "8f11904c-a6cf-489c-8537-5cfab642ebac")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at -9.95 4.2 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "97114d65-4134-418a-9c89-480e940badac")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at -9.95 4.2 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "3b8f5511-8f1c-4aab-bb8b-ac4dca6c82da")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr through_hole)
+	(fp_rect
+		(start 0 0)
+		(end 22 26)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(fill none)
+		(layer "F.SilkS")
+		(uuid "f61f04a4-ef77-4a82-87ca-1e29a49bba66")
+	)
+	(fp_text user "${REFERENCE}"
+		(at -9.95 6.7 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "d8ab40bd-7249-429e-99ff-75e09ae5c4c6")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(pad "1" thru_hole oval
+		(at 5.6 2.175 288)
+		(size 3 8)
+		(drill oval 2.238 7.238)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "831f5396-d1b3-4586-a827-2357c4d0c07c")
+	)
+	(pad "2" thru_hole oval
+		(at 5.6 10.6 288)
+		(size 3 8)
+		(drill oval 2.238 7.238)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "6dbffbc1-70e7-4001-aa08-c32c66aff97d")
+	)
+	(pad "3" thru_hole oval
+		(at 5.6 23.8 288)
+		(size 3 8)
+		(drill oval 2.238 7.238)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "e616d1e0-561e-4d0e-88ee-081f1974ab7a")
+	)
+	(pad "4" thru_hole oval
+		(at 15.9 2.175 288)
+		(size 3 8)
+		(drill oval 2.238 7.238)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "9e40cc61-6b1f-4013-a857-4c064b275aa2")
+	)
+	(pad "5" thru_hole oval
+		(at 15.9 10.6 288)
+		(size 3 8)
+		(drill oval 2.238 7.238)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "8bfcac3a-c965-4a47-a59c-fe58667e4932")
+	)
+	(pad "6" thru_hole oval
+		(at 15.9 23.8 288)
+		(size 3 8)
+		(drill oval 2.238 7.238)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "02f37849-4c50-4214-b4e0-13a4a49c8096")
+	)
+	(model "${KIPRJMOD}/libs/3dmodels/Rocker Switch 09.step"
+		(offset
+			(xyz 21.5 -0.5 17.5)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 90)
+		)
+	)
+)

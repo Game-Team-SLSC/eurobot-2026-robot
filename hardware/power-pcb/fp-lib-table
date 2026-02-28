@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "footprints")(type "KiCad")(uri "C:/Users/maxca/git/eurobot-2026-robot-pcb/hardware/libs/footprints")(options "")(descr ""))
+)

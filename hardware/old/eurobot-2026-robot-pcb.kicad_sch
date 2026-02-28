@@ -1,0 +1,114 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "b7a41ac4-1d1a-4287-8cea-fdfe5ab5ee00")
+	(paper "A5")
+	(title_block
+		(title "Eurobot 2026 robot PCB")
+		(date "2025-12-22")
+		(rev "1")
+		(company "Game Team SLSC")
+	)
+	(lib_symbols)
+	(text "UTILISER PROFET"
+		(exclude_from_sim no)
+		(at 55.118 36.322 0)
+		(effects
+			(font
+				(size 2.54 2.54)
+			)
+		)
+		(uuid "1ee27ae9-cfb9-4431-b86b-1a67aab89188")
+	)
+	(sheet
+		(at 93.98 19.05)
+		(size 15.24 7.62)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "1a8703d8-5ba0-4c53-bb87-3353758fd726")
+		(property "Sheetname" "Logic"
+			(at 93.98 18.3384 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "sheets/logic.kicad_sch"
+			(at 93.98 27.2546 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "eurobot-2026-robot-pcb"
+				(path "/b7a41ac4-1d1a-4287-8cea-fdfe5ab5ee00"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 13.97 15.24)
+		(size 13.97 3.81)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "215b72f6-c101-4e66-a991-f4c79d08804f")
+		(property "Sheetname" "Power"
+			(at 13.97 14.5284 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "power.kicad_sch"
+			(at 13.97 19.6346 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "eurobot-2026-robot-pcb"
+				(path "/b7a41ac4-1d1a-4287-8cea-fdfe5ab5ee00"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)

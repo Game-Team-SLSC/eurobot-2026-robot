@@ -1,0 +1,37 @@
+name: Build Power PCB
+
+on:
+  push:
+    paths:
+      - 'hardware/power-pcb/**'
+      - '.github/workflows/build-power-pcb.yml'
+  pull_request:
+    paths:
+      - 'hardware/power-pcb/**'
+      - '.github/workflows/build-power-pcb.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Generate Manufacturing Files
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run KiBot
+        uses: INTI-CMNB/KiBot@v2_k9
+        with:
+          config: hardware/power-pcb/config.kibot.yaml
+          dir: hardware/power-pcb/out
+          schema: hardware/power-pcb/power-pcb.kicad_sch
+          board: hardware/power-pcb/power-pcb.kicad_pcb
+          install3D: true
+          cache3D: true
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: power-pcb-manufacturing-files
+          path: hardware/power-pcb/out

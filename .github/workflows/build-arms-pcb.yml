@@ -1,0 +1,37 @@
+name: Build Arms PCB
+
+on:
+  push:
+    paths:
+      - 'hardware/arms-pcb/**'
+      - '.github/workflows/build-arms-pcb.yml'
+  pull_request:
+    paths:
+      - 'hardware/arms-pcb/**'
+      - '.github/workflows/build-arms-pcb.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Generate Manufacturing Files
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run KiBot
+        uses: INTI-CMNB/KiBot@v2_k9
+        with:
+          config: hardware/arms-pcb/config.kibot.yaml
+          dir: hardware/arms-pcb/out
+          schema: hardware/arms-pcb/arms-pcb.kicad_sch
+          board: hardware/arms-pcb/arms-pcb.kicad_pcb
+          install3D: true
+          cache3D: true
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: arms-pcb-manufacturing-files
+          path: hardware/arms-pcb/out

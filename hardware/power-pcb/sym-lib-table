@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "sym")(type "KiCad")(uri "C:/Users/maxca/git/eurobot-2026-robot-pcb/hardware/libs/sym.kicad_sym")(options "")(descr ""))
+)

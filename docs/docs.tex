@@ -1,0 +1,183 @@
+\documentclass{article}
+\usepackage{amsmath}
+\title{Eurobot 2026 Robot PCB Documentation}
+\author{Game Team SLSC}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+This document contains the documentation for the Eurobot 2026 Robot PCB.
+
+We selected 0805 package resistors as minimal case as they represent the minimum comfortable size for hand soldering. \\
+Pulldown/up resistors will not be considered in the power dissipation calculations as their values are greater than $4.7k\Omega$, resulting in negligible power dissipation.
+
+\section{Batt Input}
+\section{Batt Input Analysis}
+
+\subsection{MOSFET (Q2: IRF4905)}
+The IRF4905 acts as a high-side P-channel switch for reverse polarity protection. Its key specifications are:
+\begin{itemize}
+    \item Max continuous drain current: $I_{D} = -74\text{A}$ (at $T_C = 25^\circ\text{C}$)
+    \item Max power dissipation: $P_{D} = 150\text{W}$ (at $T_C = 25^\circ\text{C}$)
+    \item $R_{DS(on)}$ (static): $0.02\Omega$ (at $V_{GS} = -10\text{V}$, $I_{D} = -19\text{A}$)
+    \item Max Gate-Source Voltage: $V_{GS(max)} = \pm 20\text{V}$
+\end{itemize}
+
+The maximum current drawn by the robot is $I_{max} = 15\text{A}$. 
+At $25^\circ\text{C}$ junction temperature, the power dissipation is:
+$$P = R_{DS(on)} \cdot I^2 = 0.02\Omega \cdot (15\text{A})^2 = 4.5\text{W}$$
+
+\textbf{Thermal Correction:} In real-world conditions, $R_{DS(on)}$ increases with temperature. At $T_J = 125^\circ\text{C}$, $R_{DS(on)}$ is approximately $1.6 \times$ its nominal value ($\approx 0.032\Omega$), leading to $P \approx 7.2\text{W}$. 
+With a $R_{\theta JA}$ of $62^\circ\text{C/W}$ for a TO-220 package without a heatsink, the temperature rise would exceed $400^\circ\text{C}$. Therefore, a \textbf{heatsink} or significant copper pouring on the PCB is mandatory.
+
+\subsection{Zener Diode (D2: 1N4744A)}
+The 1N4744A is used to protect the \textbf{Gate-Source junction} of the MOSFET, not the downstream load. 
+\begin{itemize}
+    \item Zener voltage: $V_{Z} = 15\text{V}$ (at $I_{Z} = 18\text{mA}$)
+    \item Max power dissipation: $P_{Z} = 1\text{W}$
+    \item Current limit: $I_{Zmax} = \frac{P_{Z}}{V_{Z}} = \frac{1\text{W}}{15\text{V}} = 66.7\text{mA}$
+\end{itemize}
+
+In this circuit, the current through the Zener is limited by $R2$ ($10\text{k}\Omega$). If the battery voltage is $24\text{V}$:
+$$I_{Z} = \frac{V_{BATT} - V_{Z}}{R2} = \frac{24\text{V} - 15\text{V}}{10,000\Omega} = 0.9\text{mA}$$
+This is well within the $66.7\text{mA}$ limit. The Zener ensures $V_{GS}$ never exceeds $15\text{V}$, staying safely below the $20\text{V}$ limit of the IRF4905.
+
+\subsection{TVS Diode (D3: SMBJ18A)}
+The SMBJ18A provides transient voltage suppression for the \textbf{entire system}.
+\begin{itemize}
+    \item Reverse Standoff Voltage: $V_{RWM} = 18\text{V}$ (The diode does not conduct at normal $12\text{V}$ battery levels).
+    \item Peak Pulse Power: $P_{PP} = 600\text{W}$ (for $10/1000\mu\text{s}$ pulses).
+\end{itemize}
+This component is critical for absorbing inductive spikes from motors or "hot-plugging" the battery, preventing the destruction of downstream regulators.
+
+\subsection{Power Dissipation Summary}
+
+\begin{itemize}
+    \item \textbf{MOSFET (Q2):} Dissipates $\approx 4.5\text{W}$ at $15\text{A}$ ($25^\circ\text{C}$). Due to $R_{DS(on)}$ increase at high temperature, real dissipation can reach $\approx 7.2\text{W}$. \textbf{A heatsink is mandatory.}
+    
+    \item \textbf{Zener Diode (D2):} With $R2 = 10\text{k}\Omega$ and $V_{batt} = 24\text{V}$, the current $I_Z$ is only $0.9\text{mA}$. 
+    $$P_{D2} = 15\text{V} \cdot 0.9\text{mA} = 13.5\text{mW}$$
+    This is far below the $1\text{W}$ rating. Power dissipation is \textbf{negligible}.
+
+    \item \textbf{TVS Diode (D3):} Dissipates \textbf{0W} during normal operation ($V_{batt} < 18\text{V}$). It is rated for $600\text{W}$ peak pulse power to handle millisecond transients.
+\end{itemize}
+
+\section{Balancing check}
+The PCB is intended to monitor the state of each battery cell and ensure they are balanced.
+If a cell voltage exceeds or drops below a certain threshold, a warning will be triggered.
+
+\subsection{Cell 1}
+\subsubsection{Specifications}
+\begin{itemize}
+\item Series voltage: $V_{in} = V_{cell1} = 4.2V (\max) / 3.5V (\min)$
+\item $V_{out} = 2.5V (\max)$
+\item $I = 100\mu A$ (target current through the voltage divider)
+\end{itemize}
+The input impedance of the ESP32 ADC is sufficiently high ($>1M\Omega$) to neglect the loading effect on the voltage divider.
+
+\subsubsection{Divider calculation}
+Using a voltage divider:
+$$V_{out} = V_{in} \cdot \frac{R_2}{R_1 + R_2}$$
+$$R_{total} = R_1 + R_2 = \frac{V_{in}}{I} = \frac{4.2V}{100\mu A} = 42k\Omega$$
+$$R_2 = \frac{V_{out}}{V_{in}} \cdot R_{total} = \frac{2.5V}{4.2V} \cdot 42k\Omega = 25k\Omega$$
+$$R_1 = R_{total} - R_2 = 42k - 25k = 17k\Omega$$
+
+\subsubsection{Standard values (E96 1\%)}
+\begin{itemize}
+\item $R_1 = 16.9k\Omega$
+\item $R_2 = 24.9k\Omega$
+\end{itemize}
+
+\subsubsection{Min/Max check}
+At $V_{in} = 4.2V$:
+$$V_{out} = 4.2V \cdot \frac{24.9k}{16.9k + 24.9k} = 2.50V$$
+At $V_{in} = 3.5V$:
+$$V_{out} = 3.5V \cdot \frac{24.9k}{16.9k + 24.9k} = 2.08V$$
+
+\subsubsection{Tolerance (1\%)}
+At $V_{in} = 4.2V$, worst case scenarios:
+\begin{itemize}
+    \item Max Output: $R_1 (-1\%), R_2 (+1\%) \rightarrow V_{out} = 2.52V$
+    \item Min Output: $R_1 (+1\%), R_2 (-1\%) \rightarrow V_{out} = 2.47V$
+\end{itemize}
+The output remains safely within the ESP32 ADC linear range.
+
+\subsection{Cell 2}
+\subsubsection{Specifications}
+\begin{itemize}
+\item Series voltage: $V_{in} = V_{cell1} + V_{cell2} = 8.4V (\max) / 7.0V (\min)$
+\item $V_{out} = 2.5V (\max)$
+\item $I = 100\mu A$ (target current)
+\end{itemize}
+
+\subsubsection{Divider calculation}
+$$R_{total} = \frac{8.4V}{100\mu A} = 84k\Omega$$
+$$R_2 = \frac{2.5V}{8.4V} \cdot 84k\Omega = 25k\Omega$$
+$$R_1 = 84k - 25k = 59k\Omega$$
+
+\subsubsection{Standard values (E96 1\%)}
+\begin{itemize}
+\item $R_1 = 59.0k\Omega$
+\item $R_2 = 24.9k\Omega$
+\end{itemize}
+
+\subsubsection{Min/Max check}
+At $V_{in} = 8.4V$: $V_{out} = 2.49V$ \\
+At $V_{in} = 7.0V$: $V_{out} = 2.07V$
+
+\subsubsection{Tolerance check}
+Max $V_{out}$ (with $1\%$ tolerance): $2.53V$. Acceptable.
+
+\subsection{Cell 3}
+\subsubsection{Specifications}
+\begin{itemize}
+\item Series voltage: $V_{in} = \sum_{i=1}^{3} V_{celli} = 12.6V (\max) / 10.5V (\min)$
+\item $V_{out} = 2.5V (\max)$
+\end{itemize}
+
+\subsubsection{Divider calculation}
+$$R_{total} = \frac{12.6V}{100\mu A} = 126k\Omega$$
+$$R_2 = \frac{2.5V}{12.6V} \cdot 126k\Omega = 25k\Omega$$
+$$R_1 = 126k - 25k = 101k\Omega$$
+
+\subsubsection{Standard values (E96 1\%)}
+\begin{itemize}
+\item $R_1 = 100k\Omega$
+\item $R_2 = 24.9k\Omega$
+\end{itemize}
+
+\subsubsection{Min/Max check}
+At $V_{in} = 12.6V$: $V_{out} = 2.51V$ \\
+At $V_{in} = 10.5V$: $V_{out} = 2.09V$
+
+\subsubsection{Tolerance check}
+Max $V_{out}$ (with $1\%$ tolerance): $2.55V$. Acceptable.
+
+\subsection{Cell 4}
+\subsubsection{Specifications}
+\begin{itemize}
+\item Series voltage: $V_{in} = \sum_{i=1}^{4} V_{celli} = 16.8V (\max) / 14.0V (\min)$
+\item $V_{out} = 2.5V (\max)$
+\end{itemize}
+
+\subsubsection{Divider calculation}
+$$R_{total} = \frac{16.8V}{100\mu A} = 168k\Omega$$
+$$R_2 = \frac{2.5V}{16.8V} \cdot 168k\Omega = 25k\Omega$$
+$$R_1 = 168k - 25k = 143k\Omega$$
+
+\subsubsection{Standard values (E96 1\%)}
+\begin{itemize}
+\item $R_1 = 143k\Omega$
+\item $R_2 = 24.9k\Omega$
+\end{itemize}
+
+\subsubsection{Min/Max check}
+At $V_{in} = 16.8V$: $V_{out} = 2.49V$ \\
+At $V_{in} = 14.0V$: $V_{out} = 2.08V$
+
+\subsubsection{Tolerance check}
+Max $V_{out}$ (with $1\%$ tolerance): $2.53V$. Acceptable.
+
+\end{document}

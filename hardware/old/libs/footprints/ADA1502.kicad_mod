@@ -1,0 +1,142 @@
+(footprint "ADA1502"
+	(version 20240108)
+	(generator "pcbnew")
+	(generator_version "8.0")
+	(layer "F.Cu")
+	(property "Reference" "REF**"
+		(at 0 2.7 0)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "adaf56d1-da4c-4ed0-820a-1712dd7750c8")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+		)
+	)
+	(property "Value" "ADA1502"
+		(at 0 4.2 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "8f042eaf-7502-4632-8421-3479c7cd7c52")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Footprint" ""
+		(at 0 3.2 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "bedf6702-7b93-4059-9975-422da6d8f17f")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 3.2 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "512a7190-b643-4f8b-8666-664cd310da3d")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 3.2 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "3f774897-fe03-44cd-8ea2-c846bc938d3d")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr through_hole)
+	(fp_circle
+		(center 0 0)
+		(end 7.5 0)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(fill none)
+		(layer "F.SilkS")
+		(uuid "ceeb06f0-edda-4339-9578-6b538fd0ca08")
+	)
+	(fp_circle
+		(center 0 0)
+		(end 10 0)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill none)
+		(layer "B.CrtYd")
+		(uuid "bb511280-1e67-4590-a33d-2bb5f37a1ea7")
+	)
+	(fp_circle
+		(center 0 0)
+		(end 10 0)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill none)
+		(layer "F.CrtYd")
+		(uuid "c89638af-872e-4b67-8822-71a1e2940b0c")
+	)
+	(fp_text user "${REFERENCE}"
+		(at 10.45 6.75 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "b54d1e0f-697c-4d7c-bde5-1e926b0111ce")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(pad "1" thru_hole oval
+		(at -4 0)
+		(size 1.524 3.862)
+		(drill oval 0.762 3.1)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "a53c63b5-ea9a-4b54-b79b-761d3095a26c")
+	)
+	(pad "2" thru_hole oval
+		(at 4 0)
+		(size 1.524 3.862)
+		(drill oval 0.762 3.1)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "174be77b-fd05-4376-bd67-eded20afd8ad")
+	)
+	(model "${KIPRJMOD}/libs/3dmodels/Button.step"
+		(offset
+			(xyz -1.5 3 3)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+)
