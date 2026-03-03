@@ -51,8 +51,67 @@
           "min_clearance": 0.5
         }
       },
-      "diff_pair_dimensions": [],
-      "drc_exclusions": [],
+      "diff_pair_dimensions": [
+        {
+          "gap": 0.0,
+          "via_gap": 0.0,
+          "width": 0.0
+        }
+      ],
+      "drc_exclusions": [
+        [
+          "courtyards_overlap|104495000|70855000|be9c608e-55b6-46ad-8306-6add6db15c55|d2ea8bef-3d0a-4e72-a810-3dd24a7448dc",
+          ""
+        ],
+        [
+          "courtyards_overlap|108093423|70955000|6af6c98f-9a60-4a6c-a78e-54abd49d9ca6|d2ea8bef-3d0a-4e72-a810-3dd24a7448dc",
+          ""
+        ],
+        [
+          "courtyards_overlap|115155000|71055000|be3adc0a-5f09-46ec-b60c-2e9a9933a753|d2ea8bef-3d0a-4e72-a810-3dd24a7448dc",
+          ""
+        ],
+        [
+          "courtyards_overlap|119325000|79125000|b290e7ef-a064-4b78-8ef9-e73449d161be|d2ea8bef-3d0a-4e72-a810-3dd24a7448dc",
+          ""
+        ],
+        [
+          "courtyards_overlap|129655000|71155000|a53f0573-db8f-4ce5-b053-2101d40cdada|c5ccd4ec-38b2-4c6e-b7d0-e75a71ed7d59",
+          ""
+        ],
+        [
+          "courtyards_overlap|133055000|71155000|9789de90-3f1a-4c99-958b-99449df6f5e6|c5ccd4ec-38b2-4c6e-b7d0-e75a71ed7d59",
+          ""
+        ],
+        [
+          "courtyards_overlap|139155000|70955000|9309ffcd-4290-43de-820b-e20a49825293|c5ccd4ec-38b2-4c6e-b7d0-e75a71ed7d59",
+          ""
+        ],
+        [
+          "courtyards_overlap|53995000|71055000|675c5e0b-bb90-42a8-b7f6-11b1f078cdcb|a5b30db4-12b0-4fd8-94c9-fbe0e6d9edc6",
+          ""
+        ],
+        [
+          "courtyards_overlap|57593423|71055000|267c9e0a-c5e1-44fe-875f-6233f57ad3b1|a5b30db4-12b0-4fd8-94c9-fbe0e6d9edc6",
+          ""
+        ],
+        [
+          "courtyards_overlap|64622677|71055000|2aa90af5-a07c-4e06-b740-d66b9ee95aee|a5b30db4-12b0-4fd8-94c9-fbe0e6d9edc6",
+          ""
+        ],
+        [
+          "courtyards_overlap|89855000|71005000|a7a7a854-a2d1-4a92-94bf-40a0b82f156b|c3698a83-3158-44ef-b039-6d2f37faa5b9",
+          ""
+        ],
+        [
+          "courtyards_overlap|93925000|79325000|66d813fc-ce5d-4fc7-9b1e-c614fbc13870|c3698a83-3158-44ef-b039-6d2f37faa5b9",
+          ""
+        ],
+        [
+          "starved_thermal|86430000|62302500|b49a243d-a198-42b7-8369-b701db4012d6|ef85cec0-a413-4a9b-907e-c99f35aa27a9|F.Cu",
+          ""
+        ]
+      ],
       "meta": {
         "version": 2
       },
@@ -180,7 +239,13 @@
           "td_width_to_size_filter_ratio": 0.9
         }
       ],
-      "track_widths": [],
+      "track_widths": [
+        0.0,
+        0.2,
+        0.4,
+        3.0,
+        3.5
+      ],
       "tuning_pattern_settings": {
         "diff_pair_defaults": {
           "corner_radius_percentage": 80,
@@ -207,7 +272,12 @@
           "spacing": 0.6
         }
       },
-      "via_dimensions": [],
+      "via_dimensions": [
+        {
+          "diameter": 0.0,
+          "drill": 0.0
+        }
+      ],
       "zones_allow_external_fillets": false
     },
     "ipc2581": {
@@ -473,13 +543,30 @@
         "via_diameter": 0.6,
         "via_drill": 0.3,
         "wire_width": 6
+      },
+      {
+        "bus_width": 12,
+        "clearance": 0.2,
+        "line_style": 0,
+        "name": "HighIntensity",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 0,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 4.0,
+        "via_diameter": 1.0,
+        "via_drill": 0.5,
+        "wire_width": 15
       }
     ],
     "meta": {
       "version": 4
     },
     "net_colors": null,
-    "netclass_assignments": null,
+    "netclass_assignments": {
+      "+BATT": [
+        "HighIntensity"
+      ]
+    },
     "netclass_patterns": []
   },
   "pcbnew": {
@@ -487,7 +574,7 @@
       "gencad": "",
       "idf": "",
       "netlist": "",
-      "plot": "",
+      "plot": "out/fab/",
       "pos_files": "",
       "specctra_dsn": "",
       "step": "",
@@ -560,12 +647,54 @@
           "label": "Datasheet",
           "name": "Datasheet",
           "show": true
+        },
+        {
+          "group_by": false,
+          "label": "Manufacturer",
+          "name": "Manufacturer",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "Sim.Device",
+          "name": "Sim.Device",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "Sim.Pins",
+          "name": "Sim.Pins",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "Sim.Type",
+          "name": "Sim.Type",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "MPN",
+          "name": "MPN",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "Description",
+          "name": "Description",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "#",
+          "name": "${ITEM_NUMBER}",
+          "show": false
         }
       ],
       "filter_string": "",
       "group_symbols": true,
       "include_excluded_from_bom": true,
-      "name": "Default Editing",
+      "name": "",
       "sort_asc": true,
       "sort_field": "Reference"
     },
@@ -596,9 +725,9 @@
     "meta": {
       "version": 1
     },
-    "net_format_name": "",
+    "net_format_name": "KiCad",
     "page_layout_descr_file": "",
-    "plot_directory": "",
+    "plot_directory": "out/",
     "space_save_all_events": true,
     "spice_current_sheet_as_root": false,
     "spice_external_command": "spice \"%I\"",

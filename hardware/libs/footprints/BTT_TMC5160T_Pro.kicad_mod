@@ -355,7 +355,7 @@
 		(uuid "c1189fe0-42d6-4f3d-9f1f-dd8800305f7a")
 	)
 	(embedded_fonts no)
-	(model "${KIPRJMOD}/libs/3D/TMC5160_Pro V1.1.step"
+	(model "${KIPRJMOD}/../libs/3D/TMC5160_Pro V1.1.step"
 		(offset
 			(xyz 0 0 2.5)
 		)

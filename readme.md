@@ -1,10 +1,10 @@
 # Game Team's Eurobot 2026 Robot
 
-# Hardware
+## Hardware
 
 ![Hardware](res/repartition.png)
 
-## Architecture Diagram
+### Architecture Diagram
 
 ```mermaid
 graph LR
@@ -77,3 +77,7 @@ graph LR
     style Regs fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
     style AB fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
 ```
+
+### Power PCB
+
+![Power PCB](hardware\power-pcb\docs\power-pcb.png)

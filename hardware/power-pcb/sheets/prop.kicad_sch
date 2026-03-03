@@ -1512,28 +1512,10 @@
 		(uuid "66be09e5-e814-46c6-8766-f19dd1dc4883")
 	)
 	(junction
-		(at 63.5 92.71)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "89f81e9b-a927-40e6-b215-b93ddcd67d16")
-	)
-	(junction
 		(at 50.8 52.07)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "90014c42-115c-4996-b133-4e09c4f67dc9")
-	)
-	(junction
-		(at 39.37 57.15)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "9bdb6e4f-4654-44c8-b7f5-5a8162364682")
-	)
-	(junction
-		(at 39.37 52.07)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "af3d2d9b-0b48-4c12-96d7-96482d289dc5")
 	)
 	(junction
 		(at 55.88 41.91)
@@ -1629,16 +1611,6 @@
 	)
 	(wire
 		(pts
-			(xy 39.37 57.15) (xy 50.8 57.15)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "55fa6d3e-624d-487c-bf4e-f9cdd1882815")
-	)
-	(wire
-		(pts
 			(xy 50.8 73.66) (xy 63.5 73.66)
 		)
 		(stroke
@@ -1669,7 +1641,7 @@
 	)
 	(wire
 		(pts
-			(xy 39.37 52.07) (xy 50.8 52.07)
+			(xy 45.72 52.07) (xy 50.8 52.07)
 		)
 		(stroke
 			(width 0)
@@ -1699,7 +1671,7 @@
 	)
 	(wire
 		(pts
-			(xy 34.29 57.15) (xy 39.37 57.15)
+			(xy 46.99 57.15) (xy 50.8 57.15)
 		)
 		(stroke
 			(width 0)
@@ -1746,16 +1718,6 @@
 			(type default)
 		)
 		(uuid "c2217b6e-236e-490c-b714-cf73fb3e3946")
-	)
-	(wire
-		(pts
-			(xy 31.75 52.07) (xy 39.37 52.07)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d1ef3c3b-45a8-4d25-b78d-40664910381a")
 	)
 	(wire
 		(pts
@@ -1816,6 +1778,86 @@
 			(type default)
 		)
 		(uuid "fe7c8f54-bfbd-4f95-a47a-de90a999baef")
+	)
+	(label "MD"
+		(at 97.79 73.66 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "0d2f4531-4acf-4ecb-8e65-14414b53a83c")
+	)
+	(label "MB"
+		(at 114.3 68.58 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "1c9ba55d-d259-49ad-8a27-38e8b1fceedd")
+	)
+	(label "MC"
+		(at 114.3 66.04 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "2af7b4ba-a5cc-48fa-a820-f504cafbbe1d")
+	)
+	(label "MD"
+		(at 114.3 71.12 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "30ecc535-df0c-4756-a4af-c4f9420bc50f")
+	)
+	(label "MA"
+		(at 97.79 66.04 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "58cf7fbb-6aef-44e0-a86c-61e1be2e6c7f")
+	)
+	(label "MC"
+		(at 97.79 71.12 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "635457f0-5083-4881-a44b-e0f75df1be14")
+	)
+	(label "MA"
+		(at 114.3 73.66 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "a04194b1-9b50-4f5b-a5e6-ddb3201b4cbb")
+	)
+	(label "MB"
+		(at 97.79 68.58 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "a1a0c3e7-9410-424b-97bc-f1f548cfad3b")
 	)
 	(hierarchical_label "MOSI"
 		(shape input)
@@ -1918,7 +1960,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 31.75 52.07 270)
+		(at 45.72 52.07 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1926,8 +1968,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "0a956ebd-1f42-426d-99eb-206cb475bab3")
-		(property "Reference" "#PWR038"
-			(at 25.4 52.07 0)
+		(property "Reference" "#PWR027"
+			(at 39.37 52.07 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1936,7 +1978,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 27.94 52.0699 90)
+			(at 41.91 52.0699 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1945,7 +1987,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 31.75 52.07 0)
+			(at 45.72 52.07 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1954,7 +1996,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 31.75 52.07 0)
+			(at 45.72 52.07 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1963,7 +2005,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 31.75 52.07 0)
+			(at 45.72 52.07 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1977,19 +2019,19 @@
 		(instances
 			(project "eurobot-2026-robot-pcb"
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/4e90b18c-b0f7-4f5c-916c-5e629142b1e8"
-					(reference "#PWR038")
+					(reference "#PWR035")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/becefb4a-e573-4ea9-a889-4d87c3f6029b"
-					(reference "#PWR038")
+					(reference "#PWR043")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/cb976dcc-9293-45e0-8c37-9341a8a408bc"
-					(reference "#PWR038")
+					(reference "#PWR027")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/ed4fc265-0747-46c1-ba83-bb82a792f24d"
-					(reference "#PWR038")
+					(reference "#PWR051")
 					(unit 1)
 				)
 			)
@@ -2015,7 +2057,7 @@
 	)
 	(symbol
 		(lib_id "power:+3.3V")
-		(at 34.29 57.15 90)
+		(at 46.99 57.15 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2023,8 +2065,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "112913f8-91e0-419e-84ab-b0c78ae95d90")
-		(property "Reference" "#PWR037"
-			(at 38.1 57.15 0)
+		(property "Reference" "#PWR028"
+			(at 50.8 57.15 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2033,7 +2075,7 @@
 			)
 		)
 		(property "Value" "+3.3V"
-			(at 30.48 57.1499 90)
+			(at 43.18 57.1499 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2042,7 +2084,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 34.29 57.15 0)
+			(at 46.99 57.15 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2051,7 +2093,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 34.29 57.15 0)
+			(at 46.99 57.15 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2060,7 +2102,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 34.29 57.15 0)
+			(at 46.99 57.15 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2074,19 +2116,19 @@
 		(instances
 			(project "eurobot-2026-robot-pcb"
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/4e90b18c-b0f7-4f5c-916c-5e629142b1e8"
-					(reference "#PWR037")
+					(reference "#PWR036")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/becefb4a-e573-4ea9-a889-4d87c3f6029b"
-					(reference "#PWR037")
+					(reference "#PWR044")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/cb976dcc-9293-45e0-8c37-9341a8a408bc"
-					(reference "#PWR037")
+					(reference "#PWR028")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/ed4fc265-0747-46c1-ba83-bb82a792f24d"
-					(reference "#PWR037")
+					(reference "#PWR052")
 					(unit 1)
 				)
 			)
@@ -2120,7 +2162,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "1face884-890c-4ea1-b8df-a066abd91a35")
-		(property "Reference" "R15"
+		(property "Reference" "R13"
 			(at 53.34 68.5799 0)
 			(effects
 				(font
@@ -2174,19 +2216,19 @@
 		(instances
 			(project "eurobot-2026-robot-pcb"
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/4e90b18c-b0f7-4f5c-916c-5e629142b1e8"
-					(reference "R15")
+					(reference "R17")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/becefb4a-e573-4ea9-a889-4d87c3f6029b"
-					(reference "R15")
+					(reference "R21")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/cb976dcc-9293-45e0-8c37-9341a8a408bc"
-					(reference "R15")
+					(reference "R13")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/ed4fc265-0747-46c1-ba83-bb82a792f24d"
-					(reference "R15")
+					(reference "R25")
 					(unit 1)
 				)
 			)
@@ -2211,202 +2253,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:+3.3V")
-		(at 63.5 100.33 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "22076d8c-6dd9-4c5b-9435-24d816fa5183")
-		(property "Reference" "#PWR043"
-			(at 63.5 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+3.3V"
-			(at 63.5 105.41 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 63.5 100.33 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 63.5 100.33 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 63.5 100.33 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "7a6cc551-21ca-4372-bb5e-5dd3a8441ac0")
-		)
-		(instances
-			(project "eurobot-2026-robot-pcb"
-				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/4e90b18c-b0f7-4f5c-916c-5e629142b1e8"
-					(reference "#PWR043")
-					(unit 1)
-				)
-				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/becefb4a-e573-4ea9-a889-4d87c3f6029b"
-					(reference "#PWR043")
-					(unit 1)
-				)
-				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/cb976dcc-9293-45e0-8c37-9341a8a408bc"
-					(reference "#PWR043")
-					(unit 1)
-				)
-				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/ed4fc265-0747-46c1-ba83-bb82a792f24d"
-					(reference "#PWR043")
-					(unit 1)
-				)
-			)
-			(project "eurobot-2026-robot-pcb"
-				(path "/b7a41ac4-1d1a-4287-8cea-fdfe5ab5ee00/1a8703d8-5ba0-4c53-bb87-3353758fd726/2d3eda0e-5f7a-4d55-b4aa-645fd47dc899"
-					(reference "#PWR043")
-					(unit 1)
-				)
-				(path "/b7a41ac4-1d1a-4287-8cea-fdfe5ab5ee00/1a8703d8-5ba0-4c53-bb87-3353758fd726/643017f0-f26b-4b5a-a33b-fc1a99ef8d08"
-					(reference "#PWR0143")
-					(unit 1)
-				)
-				(path "/b7a41ac4-1d1a-4287-8cea-fdfe5ab5ee00/1a8703d8-5ba0-4c53-bb87-3353758fd726/683f7048-02be-4a56-bf88-b0b07ec401aa"
-					(reference "#PWR0159")
-					(unit 1)
-				)
-				(path "/b7a41ac4-1d1a-4287-8cea-fdfe5ab5ee00/1a8703d8-5ba0-4c53-bb87-3353758fd726/7031de1d-e161-4af6-b221-f84d5c8a02bd"
-					(reference "#PWR0151")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:C_Small")
-		(at 39.37 54.61 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "4e86680b-e153-4c3a-8536-7a681cf437cd")
-		(property "Reference" "C13"
-			(at 41.91 53.3462 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "10u"
-			(at 41.91 55.8862 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm"
-			(at 39.37 54.61 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 39.37 54.61 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Unpolarized capacitor, small symbol"
-			(at 39.37 54.61 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "dde927ac-04e5-4caf-b57b-de21a44e15a9")
-		)
-		(pin "1"
-			(uuid "52cc1491-6baf-4753-9663-7b2b86a97310")
-		)
-		(instances
-			(project "eurobot-2026-robot-pcb"
-				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/4e90b18c-b0f7-4f5c-916c-5e629142b1e8"
-					(reference "C13")
-					(unit 1)
-				)
-				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/becefb4a-e573-4ea9-a889-4d87c3f6029b"
-					(reference "C13")
-					(unit 1)
-				)
-				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/cb976dcc-9293-45e0-8c37-9341a8a408bc"
-					(reference "C13")
-					(unit 1)
-				)
-				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/ed4fc265-0747-46c1-ba83-bb82a792f24d"
-					(reference "C13")
-					(unit 1)
-				)
-			)
-			(project "eurobot-2026-robot-pcb"
-				(path "/b7a41ac4-1d1a-4287-8cea-fdfe5ab5ee00/1a8703d8-5ba0-4c53-bb87-3353758fd726/2d3eda0e-5f7a-4d55-b4aa-645fd47dc899"
-					(reference "C13")
-					(unit 1)
-				)
-				(path "/b7a41ac4-1d1a-4287-8cea-fdfe5ab5ee00/1a8703d8-5ba0-4c53-bb87-3353758fd726/643017f0-f26b-4b5a-a33b-fc1a99ef8d08"
-					(reference "C60")
-					(unit 1)
-				)
-				(path "/b7a41ac4-1d1a-4287-8cea-fdfe5ab5ee00/1a8703d8-5ba0-4c53-bb87-3353758fd726/683f7048-02be-4a56-bf88-b0b07ec401aa"
-					(reference "C68")
-					(unit 1)
-				)
-				(path "/b7a41ac4-1d1a-4287-8cea-fdfe5ab5ee00/1a8703d8-5ba0-4c53-bb87-3353758fd726/7031de1d-e161-4af6-b221-f84d5c8a02bd"
-					(reference "C64")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Project:BTT_TMC5160T_Pro")
 		(at 68.58 95.25 0)
 		(unit 1)
@@ -2416,7 +2262,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "5d89f437-b4f5-465a-9bdc-aee439ec3e9a")
-		(property "Reference" "U5"
+		(property "Reference" "U4"
 			(at 80.645 39.37 0)
 			(effects
 				(font
@@ -2520,15 +2366,15 @@
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/becefb4a-e573-4ea9-a889-4d87c3f6029b"
-					(reference "U5")
+					(reference "U6")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/cb976dcc-9293-45e0-8c37-9341a8a408bc"
-					(reference "U5")
+					(reference "U4")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/ed4fc265-0747-46c1-ba83-bb82a792f24d"
-					(reference "U5")
+					(reference "U7")
 					(unit 1)
 				)
 			)
@@ -2562,7 +2408,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "6808be08-6cbd-4b0e-958f-8bea275c8f7f")
-		(property "Reference" "R16"
+		(property "Reference" "R14"
 			(at 54.61 80.0099 0)
 			(effects
 				(font
@@ -2616,19 +2462,19 @@
 		(instances
 			(project "eurobot-2026-robot-pcb"
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/4e90b18c-b0f7-4f5c-916c-5e629142b1e8"
-					(reference "R16")
+					(reference "R18")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/becefb4a-e573-4ea9-a889-4d87c3f6029b"
-					(reference "R16")
+					(reference "R22")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/cb976dcc-9293-45e0-8c37-9341a8a408bc"
-					(reference "R16")
+					(reference "R14")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/ed4fc265-0747-46c1-ba83-bb82a792f24d"
-					(reference "R16")
+					(reference "R26")
 					(unit 1)
 				)
 			)
@@ -2662,7 +2508,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "6f75096c-cf04-4bf8-88b1-aa947307b684")
-		(property "Reference" "C12"
+		(property "Reference" "C6"
 			(at 58.42 45.7135 0)
 			(effects
 				(font
@@ -2716,7 +2562,7 @@
 		(instances
 			(project "eurobot-2026-robot-pcb"
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/4e90b18c-b0f7-4f5c-916c-5e629142b1e8"
-					(reference "C12")
+					(reference "C9")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/becefb4a-e573-4ea9-a889-4d87c3f6029b"
@@ -2724,11 +2570,11 @@
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/cb976dcc-9293-45e0-8c37-9341a8a408bc"
-					(reference "C12")
+					(reference "C6")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/ed4fc265-0747-46c1-ba83-bb82a792f24d"
-					(reference "C12")
+					(reference "C15")
 					(unit 1)
 				)
 			)
@@ -2762,7 +2608,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "927f231d-2465-4338-bb9b-c6c25c446c82")
-		(property "Reference" "C14"
+		(property "Reference" "C7"
 			(at 53.34 53.3335 0)
 			(effects
 				(font
@@ -2816,19 +2662,19 @@
 		(instances
 			(project "eurobot-2026-robot-pcb"
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/4e90b18c-b0f7-4f5c-916c-5e629142b1e8"
-					(reference "C14")
+					(reference "C10")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/becefb4a-e573-4ea9-a889-4d87c3f6029b"
-					(reference "C14")
+					(reference "C13")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/cb976dcc-9293-45e0-8c37-9341a8a408bc"
-					(reference "C14")
+					(reference "C7")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/ed4fc265-0747-46c1-ba83-bb82a792f24d"
-					(reference "C14")
+					(reference "C16")
 					(unit 1)
 				)
 			)
@@ -2862,7 +2708,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "9cc007f0-405d-4fa6-879d-5e94983cf9f8")
-		(property "Reference" "#PWR041"
+		(property "Reference" "#PWR030"
 			(at 45.72 77.47 0)
 			(effects
 				(font
@@ -2913,19 +2759,19 @@
 		(instances
 			(project "eurobot-2026-robot-pcb"
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/4e90b18c-b0f7-4f5c-916c-5e629142b1e8"
-					(reference "#PWR041")
+					(reference "#PWR038")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/becefb4a-e573-4ea9-a889-4d87c3f6029b"
-					(reference "#PWR041")
+					(reference "#PWR046")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/cb976dcc-9293-45e0-8c37-9341a8a408bc"
-					(reference "#PWR041")
+					(reference "#PWR030")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/ed4fc265-0747-46c1-ba83-bb82a792f24d"
-					(reference "#PWR041")
+					(reference "#PWR054")
 					(unit 1)
 				)
 			)
@@ -2951,7 +2797,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_01x04")
-		(at 102.87 68.58 0)
+		(at 119.38 68.58 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2959,8 +2805,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "b1457e59-63ab-41bc-8600-b5bcb67c4036")
-		(property "Reference" "J6"
-			(at 105.41 68.5799 0)
+		(property "Reference" "J9"
+			(at 121.92 68.5799 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2969,7 +2815,7 @@
 			)
 		)
 		(property "Value" "Molex_MicroFit-3.0_4x1"
-			(at 105.41 71.1199 0)
+			(at 121.92 71.1199 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2978,7 +2824,7 @@
 			)
 		)
 		(property "Footprint" "Project:Molex_Micro-Fit_3.0_43045-0412_2x02_P3.00mm_Vertical"
-			(at 102.87 68.58 0)
+			(at 119.38 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2987,7 +2833,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 102.87 68.58 0)
+			(at 119.38 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2996,7 +2842,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 102.87 68.58 0)
+			(at 119.38 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3019,19 +2865,19 @@
 		(instances
 			(project "eurobot-2026-robot-pcb"
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/4e90b18c-b0f7-4f5c-916c-5e629142b1e8"
-					(reference "J6")
+					(reference "J10")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/becefb4a-e573-4ea9-a889-4d87c3f6029b"
-					(reference "J6")
+					(reference "J11")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/cb976dcc-9293-45e0-8c37-9341a8a408bc"
-					(reference "J6")
+					(reference "J9")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/ed4fc265-0747-46c1-ba83-bb82a792f24d"
-					(reference "J6")
+					(reference "J12")
 					(unit 1)
 				)
 			)
@@ -3065,7 +2911,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "b2469fad-b088-4235-b9f6-ae7c6d547e21")
-		(property "Reference" "#PWR042"
+		(property "Reference" "#PWR031"
 			(at 43.18 95.25 0)
 			(effects
 				(font
@@ -3116,19 +2962,19 @@
 		(instances
 			(project "eurobot-2026-robot-pcb"
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/4e90b18c-b0f7-4f5c-916c-5e629142b1e8"
-					(reference "#PWR042")
+					(reference "#PWR039")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/becefb4a-e573-4ea9-a889-4d87c3f6029b"
-					(reference "#PWR042")
+					(reference "#PWR047")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/cb976dcc-9293-45e0-8c37-9341a8a408bc"
-					(reference "#PWR042")
+					(reference "#PWR031")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/ed4fc265-0747-46c1-ba83-bb82a792f24d"
-					(reference "#PWR042")
+					(reference "#PWR055")
 					(unit 1)
 				)
 			)
@@ -3161,7 +3007,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "b7feefda-d2c2-4b2b-a10b-b5440c7b1d95")
-		(property "Reference" "C18"
+		(property "Reference" "C5"
 			(at 46.228 44.958 0)
 			(effects
 				(font
@@ -3169,7 +3015,7 @@
 				)
 			)
 		)
-		(property "Value" "470u_LowZ"
+		(property "Value" "330u_LowZ"
 			(at 46.228 47.498 0)
 			(effects
 				(font
@@ -3177,7 +3023,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_THT:CP_Radial_D8.0mm_P3.50mm"
+		(property "Footprint" "Capacitor_THT:CP_Radial_D10.0mm_P5.00mm"
 			(at 37.1348 41.91 0)
 			(effects
 				(font
@@ -3204,7 +3050,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "EEUFR1C182L"
+		(property "MPN" "EEUFR1V331U"
 			(at 38.1 45.72 0)
 			(effects
 				(font
@@ -3231,19 +3077,19 @@
 		(instances
 			(project ""
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/4e90b18c-b0f7-4f5c-916c-5e629142b1e8"
-					(reference "C18")
+					(reference "C8")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/becefb4a-e573-4ea9-a889-4d87c3f6029b"
-					(reference "C18")
+					(reference "C11")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/cb976dcc-9293-45e0-8c37-9341a8a408bc"
-					(reference "C18")
+					(reference "C5")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/ed4fc265-0747-46c1-ba83-bb82a792f24d"
-					(reference "C18")
+					(reference "C14")
 					(unit 1)
 				)
 			)
@@ -3281,7 +3127,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "daccc9b6-2ad7-4cc1-af3c-9474d2fe24f2")
-		(property "Reference" "#PWR039"
+		(property "Reference" "#PWR026"
 			(at 39.37 49.53 0)
 			(effects
 				(font
@@ -3332,19 +3178,19 @@
 		(instances
 			(project "eurobot-2026-robot-pcb"
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/4e90b18c-b0f7-4f5c-916c-5e629142b1e8"
-					(reference "#PWR039")
+					(reference "#PWR034")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/becefb4a-e573-4ea9-a889-4d87c3f6029b"
-					(reference "#PWR039")
+					(reference "#PWR042")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/cb976dcc-9293-45e0-8c37-9341a8a408bc"
-					(reference "#PWR039")
+					(reference "#PWR026")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/ed4fc265-0747-46c1-ba83-bb82a792f24d"
-					(reference "#PWR039")
+					(reference "#PWR050")
 					(unit 1)
 				)
 			)
@@ -3378,7 +3224,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "e0e35c20-f574-45d2-8ed8-0fdf3d4438b9")
-		(property "Reference" "R17"
+		(property "Reference" "R15"
 			(at 52.07 90.1699 0)
 			(effects
 				(font
@@ -3432,19 +3278,19 @@
 		(instances
 			(project "eurobot-2026-robot-pcb"
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/4e90b18c-b0f7-4f5c-916c-5e629142b1e8"
-					(reference "R17")
+					(reference "R19")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/becefb4a-e573-4ea9-a889-4d87c3f6029b"
-					(reference "R17")
+					(reference "R23")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/cb976dcc-9293-45e0-8c37-9341a8a408bc"
-					(reference "R17")
+					(reference "R15")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/ed4fc265-0747-46c1-ba83-bb82a792f24d"
-					(reference "R17")
+					(reference "R27")
 					(unit 1)
 				)
 			)
@@ -3478,7 +3324,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "ec2cc3c7-856e-448e-91ed-ee03462753eb")
-		(property "Reference" "#PWR036"
+		(property "Reference" "#PWR025"
 			(at 26.67 41.91 0)
 			(effects
 				(font
@@ -3529,19 +3375,19 @@
 		(instances
 			(project "eurobot-2026-robot-pcb"
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/4e90b18c-b0f7-4f5c-916c-5e629142b1e8"
-					(reference "#PWR036")
+					(reference "#PWR033")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/becefb4a-e573-4ea9-a889-4d87c3f6029b"
-					(reference "#PWR036")
+					(reference "#PWR041")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/cb976dcc-9293-45e0-8c37-9341a8a408bc"
-					(reference "#PWR036")
+					(reference "#PWR025")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/ed4fc265-0747-46c1-ba83-bb82a792f24d"
-					(reference "#PWR036")
+					(reference "#PWR049")
 					(unit 1)
 				)
 			)
@@ -3575,7 +3421,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "ed348d3e-1704-4609-9d15-61772380bab0")
-		(property "Reference" "#PWR040"
+		(property "Reference" "#PWR029"
 			(at 50.8 69.85 0)
 			(effects
 				(font
@@ -3625,19 +3471,19 @@
 		(instances
 			(project "eurobot-2026-robot-pcb"
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/4e90b18c-b0f7-4f5c-916c-5e629142b1e8"
-					(reference "#PWR040")
+					(reference "#PWR037")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/becefb4a-e573-4ea9-a889-4d87c3f6029b"
-					(reference "#PWR040")
+					(reference "#PWR045")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/cb976dcc-9293-45e0-8c37-9341a8a408bc"
-					(reference "#PWR040")
+					(reference "#PWR029")
 					(unit 1)
 				)
 				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/ed4fc265-0747-46c1-ba83-bb82a792f24d"
-					(reference "#PWR040")
+					(reference "#PWR053")
 					(unit 1)
 				)
 			)
@@ -3656,106 +3502,6 @@
 				)
 				(path "/b7a41ac4-1d1a-4287-8cea-fdfe5ab5ee00/1a8703d8-5ba0-4c53-bb87-3353758fd726/7031de1d-e161-4af6-b221-f84d5c8a02bd"
 					(reference "#PWR0148")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 63.5 96.52 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "f63676c4-9de4-4140-b6b0-e5eb7d899518")
-		(property "Reference" "R18"
-			(at 66.04 95.2499 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "10k"
-			(at 66.04 97.7899 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
-			(at 65.278 96.52 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 63.5 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 63.5 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "a2131991-c4b8-469a-827e-36df0cb5bb33")
-		)
-		(pin "2"
-			(uuid "4ff96130-7bd3-4399-ad67-a7fab8bcadc8")
-		)
-		(instances
-			(project "eurobot-2026-robot-pcb"
-				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/4e90b18c-b0f7-4f5c-916c-5e629142b1e8"
-					(reference "R18")
-					(unit 1)
-				)
-				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/becefb4a-e573-4ea9-a889-4d87c3f6029b"
-					(reference "R18")
-					(unit 1)
-				)
-				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/cb976dcc-9293-45e0-8c37-9341a8a408bc"
-					(reference "R18")
-					(unit 1)
-				)
-				(path "/52aa7d2f-6f25-4758-95ea-c8ad4c86433a/ed4fc265-0747-46c1-ba83-bb82a792f24d"
-					(reference "R18")
-					(unit 1)
-				)
-			)
-			(project "eurobot-2026-robot-pcb"
-				(path "/b7a41ac4-1d1a-4287-8cea-fdfe5ab5ee00/1a8703d8-5ba0-4c53-bb87-3353758fd726/2d3eda0e-5f7a-4d55-b4aa-645fd47dc899"
-					(reference "R18")
-					(unit 1)
-				)
-				(path "/b7a41ac4-1d1a-4287-8cea-fdfe5ab5ee00/1a8703d8-5ba0-4c53-bb87-3353758fd726/643017f0-f26b-4b5a-a33b-fc1a99ef8d08"
-					(reference "R50")
-					(unit 1)
-				)
-				(path "/b7a41ac4-1d1a-4287-8cea-fdfe5ab5ee00/1a8703d8-5ba0-4c53-bb87-3353758fd726/683f7048-02be-4a56-bf88-b0b07ec401aa"
-					(reference "R58")
-					(unit 1)
-				)
-				(path "/b7a41ac4-1d1a-4287-8cea-fdfe5ab5ee00/1a8703d8-5ba0-4c53-bb87-3353758fd726/7031de1d-e161-4af6-b221-f84d5c8a02bd"
-					(reference "R54")
 					(unit 1)
 				)
 			)
