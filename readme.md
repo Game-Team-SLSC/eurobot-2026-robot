@@ -80,4 +80,4 @@ graph LR
 
 ### Power PCB
 
-![Power PCB](hardware\power-pcb\docs\power-pcb.png)
+![Power PCB](hardware/power-pcb/docs/power-pcb.png)
