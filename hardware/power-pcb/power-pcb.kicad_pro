@@ -577,7 +577,7 @@
       "plot": "out/fab/",
       "pos_files": "",
       "specctra_dsn": "",
-      "step": "",
+      "step": "out/power-pcb.step",
       "svg": "",
       "vrml": ""
     },
