@@ -5,9 +5,9 @@
 	(uuid "f25a1689-a953-4064-9aad-7dcb9064e02d")
 	(paper "A5")
 	(title_block
-		(title "Propulsion motor trigger")
-		(date "2025-12-30")
-		(rev "1")
+		(title "Propulsion motor")
+		(date "2026-03-04")
+		(rev "1.1")
 		(company "Game Team SLSC")
 	)
 	(lib_symbols
@@ -2207,6 +2207,24 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "CRCW080510K0FKEA"
+			(at 50.8 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Vishay"
+			(at 50.8 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "32b5b741-beac-4d0b-bfc1-7c69c961682e")
 		)
@@ -2453,6 +2471,24 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "CRCW080510K0FKEA"
+			(at 52.07 81.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Vishay"
+			(at 52.07 81.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "8e4c1f52-acb9-4a8f-bbef-ad29b8e4ce68")
 		)
@@ -2553,6 +2589,24 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "CL21B104KBCNNND"
+			(at 55.88 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung"
+			(at 55.88 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "5aa29b72-bdbd-494d-85df-55f0ff03ddaa")
 		)
@@ -2645,6 +2699,24 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 50.8 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "CL21B104KBCNNND"
+			(at 50.8 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung"
 			(at 50.8 54.61 0)
 			(effects
 				(font
@@ -2842,6 +2914,24 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 119.38 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "43045-0425"
+			(at 119.38 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Molex"
 			(at 119.38 68.58 0)
 			(effects
 				(font
@@ -3261,6 +3351,24 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 49.53 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "CRCW080510K0FKEA"
+			(at 49.53 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Vishay"
 			(at 49.53 91.44 0)
 			(effects
 				(font

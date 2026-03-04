@@ -5,13 +5,13 @@
       "Application": "Pcbnew",
       "Version": "9.0.7"
     },
-    "CreationDate": "2026-03-04T10:02:01+01:00"
+    "CreationDate": "2026-03-04T11:56:38+01:00"
   },
   "GeneralSpecs": {
     "ProjectId": {
       "Name": "power-pcb",
       "GUID": "706f7765-722d-4706-9362-2e6b69636164",
-      "Revision": "rev?"
+      "Revision": "v1.1"
     },
     "Size": {
       "X": 165.2,
