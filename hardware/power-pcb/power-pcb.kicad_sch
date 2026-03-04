@@ -10786,7 +10786,7 @@
 				)
 			)
 		)
-		(property "Value" "XT60-M-AS"
+		(property "Value" "XT30-M-AS"
 			(at 156.972 149.352 0)
 			(effects
 				(font
@@ -10794,7 +10794,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_AMASS:AMASS_XT60-M_1x02_P7.20mm_Vertical"
+		(property "Footprint" "Project:AMASS_XT30UPB-M_1x02_P5.0mm_Vertical"
 			(at 163.83 143.51 0)
 			(effects
 				(font
