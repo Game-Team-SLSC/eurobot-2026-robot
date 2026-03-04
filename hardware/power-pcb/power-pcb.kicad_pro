@@ -88,6 +88,10 @@
           ""
         ],
         [
+          "courtyards_overlap|142405038|78825000|c5ccd4ec-38b2-4c6e-b7d0-e75a71ed7d59|f21f470e-d901-4307-98ed-6943edca0fb2",
+          ""
+        ],
+        [
           "courtyards_overlap|53995000|71055000|675c5e0b-bb90-42a8-b7f6-11b1f078cdcb|a5b30db4-12b0-4fd8-94c9-fbe0e6d9edc6",
           ""
         ],
@@ -100,15 +104,15 @@
           ""
         ],
         [
+          "courtyards_overlap|69225000|78425000|3f9996fd-ccc7-4b37-81ab-1191f5098a16|a5b30db4-12b0-4fd8-94c9-fbe0e6d9edc6",
+          ""
+        ],
+        [
           "courtyards_overlap|89855000|71005000|a7a7a854-a2d1-4a92-94bf-40a0b82f156b|c3698a83-3158-44ef-b039-6d2f37faa5b9",
           ""
         ],
         [
           "courtyards_overlap|93925000|79325000|66d813fc-ce5d-4fc7-9b1e-c614fbc13870|c3698a83-3158-44ef-b039-6d2f37faa5b9",
-          ""
-        ],
-        [
-          "starved_thermal|86430000|62302500|b49a243d-a198-42b7-8369-b701db4012d6|ef85cec0-a413-4a9b-907e-c99f35aa27a9|F.Cu",
           ""
         ]
       ],
@@ -562,11 +566,7 @@
       "version": 4
     },
     "net_colors": null,
-    "netclass_assignments": {
-      "+BATT": [
-        "HighIntensity"
-      ]
-    },
+    "netclass_assignments": null,
     "netclass_patterns": []
   },
   "pcbnew": {
@@ -575,7 +575,7 @@
       "idf": "",
       "netlist": "",
       "plot": "out/fab/",
-      "pos_files": "",
+      "pos_files": "out/fab/",
       "specctra_dsn": "",
       "step": "out/power-pcb.step",
       "svg": "",
