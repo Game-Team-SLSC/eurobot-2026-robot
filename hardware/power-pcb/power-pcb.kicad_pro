@@ -585,7 +585,7 @@
   },
   "schematic": {
     "annotate_start_num": 0,
-    "bom_export_filename": "${PROJECTNAME}.csv",
+    "bom_export_filename": "out\\fab\\power-pcb-bom.csv",
     "bom_fmt_presets": [],
     "bom_fmt_settings": {
       "field_delimiter": ",",
@@ -760,5 +760,7 @@
       "Motor_FR"
     ]
   ],
-  "text_variables": {}
+  "text_variables": {
+    "REVISION": "1.1.2"
+  }
 }
