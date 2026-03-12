@@ -81,3 +81,7 @@ graph LR
 ### Power PCB
 
 ![Power PCB](hardware/power-pcb/docs/power-pcb.png)
+
+### Kinetic PCB
+
+![Power PCB](hardware/kinetic-pcb/docs/kinetic-pcb.png)
