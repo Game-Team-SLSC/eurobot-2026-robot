@@ -6752,7 +6752,7 @@
 			)
 		)
 		(instances
-			(project "logic-pcb"
+			(project "kinetic-pcb"
 				(path "/27daf012-9196-46de-9851-628d059dd653/7c08b3f2-f8ea-48b3-b1b2-c164f9266479"
 					(page "31")
 				)
@@ -6807,7 +6807,7 @@
 			)
 		)
 		(instances
-			(project "logic-pcb"
+			(project "kinetic-pcb"
 				(path "/27daf012-9196-46de-9851-628d059dd653/7c08b3f2-f8ea-48b3-b1b2-c164f9266479"
 					(page "3")
 				)
@@ -6902,7 +6902,7 @@
 			)
 		)
 		(instances
-			(project "logic-pcb"
+			(project "kinetic-pcb"
 				(path "/27daf012-9196-46de-9851-628d059dd653/7c08b3f2-f8ea-48b3-b1b2-c164f9266479"
 					(page "4")
 				)
@@ -6957,7 +6957,7 @@
 			)
 		)
 		(instances
-			(project "logic-pcb"
+			(project "kinetic-pcb"
 				(path "/27daf012-9196-46de-9851-628d059dd653/7c08b3f2-f8ea-48b3-b1b2-c164f9266479"
 					(page "27")
 				)
@@ -7052,7 +7052,7 @@
 			)
 		)
 		(instances
-			(project "logic-pcb"
+			(project "kinetic-pcb"
 				(path "/27daf012-9196-46de-9851-628d059dd653/7c08b3f2-f8ea-48b3-b1b2-c164f9266479"
 					(page "19")
 				)
@@ -7107,7 +7107,7 @@
 			)
 		)
 		(instances
-			(project "logic-pcb"
+			(project "kinetic-pcb"
 				(path "/27daf012-9196-46de-9851-628d059dd653/7c08b3f2-f8ea-48b3-b1b2-c164f9266479"
 					(page "13")
 				)
@@ -7202,7 +7202,7 @@
 			)
 		)
 		(instances
-			(project "logic-pcb"
+			(project "kinetic-pcb"
 				(path "/27daf012-9196-46de-9851-628d059dd653/7c08b3f2-f8ea-48b3-b1b2-c164f9266479"
 					(page "25")
 				)
@@ -7256,7 +7256,7 @@
 			)
 		)
 		(instances
-			(project "logic-pcb"
+			(project "kinetic-pcb"
 				(path "/27daf012-9196-46de-9851-628d059dd653/7c08b3f2-f8ea-48b3-b1b2-c164f9266479"
 					(page "7")
 				)
@@ -7351,7 +7351,7 @@
 			)
 		)
 		(instances
-			(project "logic-pcb"
+			(project "kinetic-pcb"
 				(path "/27daf012-9196-46de-9851-628d059dd653/7c08b3f2-f8ea-48b3-b1b2-c164f9266479"
 					(page "8")
 				)
@@ -7406,7 +7406,7 @@
 			)
 		)
 		(instances
-			(project "logic-pcb"
+			(project "kinetic-pcb"
 				(path "/27daf012-9196-46de-9851-628d059dd653/7c08b3f2-f8ea-48b3-b1b2-c164f9266479"
 					(page "11")
 				)

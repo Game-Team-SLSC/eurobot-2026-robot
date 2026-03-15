@@ -225,14 +225,14 @@
 		(at -3 3.94 180)
 		(size 1.02 1.02)
 		(drill 1.02)
-		(layers "F&B.Cu" "*.Mask")
+		(layers "*.Cu" "*.Mask")
 		(uuid "cd61bcc8-f830-4dc7-8c8f-18b877f1df71")
 	)
 	(pad "" np_thru_hole circle
 		(at 36 3.94 180)
 		(size 1.02 1.02)
 		(drill 1.02)
-		(layers "F&B.Cu" "*.Mask")
+		(layers "*.Cu" "*.Mask")
 		(uuid "ba99aa7e-24fc-4c48-ad09-017558bdfdfa")
 	)
 	(pad "1" thru_hole rect
@@ -429,7 +429,7 @@
 		(uuid "c0a1860e-952f-40ae-9fb5-23603ed2e272")
 	)
 	(embedded_fonts no)
-	(model "${WE_3DMODEL_DIR}/Connector_THT_Wurth.3dshapes/J_Wurth_WR-MPC3_66202421122.wrl"
+	(model "../libs/3D/J_Wurth_WR-MPC3_66202421122.wrl"
 		(offset
 			(xyz 0 0 0)
 		)

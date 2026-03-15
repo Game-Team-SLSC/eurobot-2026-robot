@@ -402,7 +402,7 @@
 		(uuid "3e1d86a9-e29e-43cb-a9dd-d3f581f2ab78")
 	)
 	(embedded_fonts no)
-	(model "${KIPRJMOD}/libs/3D/RF TransmiterReciever.STEP"
+	(model "../libs/3D/RF TransmiterReciever.STEP"
 		(offset
 			(xyz 20.6 -7.6 3)
 		)

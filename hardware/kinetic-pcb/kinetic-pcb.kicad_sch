@@ -4,6 +4,12 @@
 	(generator_version "9.0")
 	(uuid "27daf012-9196-46de-9851-628d059dd653")
 	(paper "A3")
+	(title_block
+		(title "Kinetic PCB")
+		(date "2026-03-12")
+		(rev "${REVISION}")
+		(company "Game Team SLSC")
+	)
 	(lib_symbols
 		(symbol "Connector:TestPoint"
 			(pin_numbers
@@ -13617,6 +13623,24 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "SS10P4-M3/87A "
+			(at 35.56 31.75 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Vishay"
+			(at 35.56 31.75 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "b95f9c16-3e81-4a3d-bfd7-72c4b12bd1fd")
 		)
@@ -15228,6 +15252,24 @@
 		)
 		(property "Description" "Diode, anode on pins 2 and 3"
 			(at 36.83 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "SS10P4-M3/87A "
+			(at 36.83 54.61 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Vishay"
+			(at 36.83 54.61 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18185,7 +18227,7 @@
 			)
 		)
 		(instances
-			(project "logic-pcb"
+			(project "kinetic-pcb"
 				(path "/27daf012-9196-46de-9851-628d059dd653"
 					(page "32")
 				)
@@ -18246,7 +18288,7 @@
 			)
 		)
 		(instances
-			(project "logic-pcb"
+			(project "kinetic-pcb"
 				(path "/27daf012-9196-46de-9851-628d059dd653"
 					(page "33")
 				)
@@ -18418,7 +18460,7 @@
 			)
 		)
 		(instances
-			(project "logic-pcb"
+			(project "kinetic-pcb"
 				(path "/27daf012-9196-46de-9851-628d059dd653"
 					(page "2")
 				)
@@ -18480,7 +18522,7 @@
 			)
 		)
 		(instances
-			(project "logic-pcb"
+			(project "kinetic-pcb"
 				(path "/27daf012-9196-46de-9851-628d059dd653"
 					(page "34")
 				)
@@ -18542,7 +18584,7 @@
 			)
 		)
 		(instances
-			(project "logic-pcb"
+			(project "kinetic-pcb"
 				(path "/27daf012-9196-46de-9851-628d059dd653"
 					(page "35")
 				)
@@ -18604,7 +18646,7 @@
 			)
 		)
 		(instances
-			(project "logic-pcb"
+			(project "kinetic-pcb"
 				(path "/27daf012-9196-46de-9851-628d059dd653"
 					(page "36")
 				)
@@ -18655,7 +18697,7 @@
 			)
 		)
 		(instances
-			(project "logic-pcb"
+			(project "kinetic-pcb"
 				(path "/27daf012-9196-46de-9851-628d059dd653"
 					(page "23")
 				)
@@ -18827,7 +18869,7 @@
 			)
 		)
 		(instances
-			(project "logic-pcb"
+			(project "kinetic-pcb"
 				(path "/27daf012-9196-46de-9851-628d059dd653"
 					(page "6")
 				)

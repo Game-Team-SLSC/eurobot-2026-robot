@@ -384,7 +384,7 @@
 		(uuid "e4806ec9-285f-4aec-99da-67ca111daa66")
 	)
 	(embedded_fonts no)
-	(model "${KIPRJMOD}/libs/3D/Encoder EC11E Alps.step"
+	(model "../libs/3D/Encoder EC11E Alps.step"
 		(offset
 			(xyz 7.75 -2.5 0)
 		)

@@ -507,7 +507,7 @@
       "plot": "out/fab",
       "pos_files": "",
       "specctra_dsn": "",
-      "step": "",
+      "step": "out/kinetic-pcb.step",
       "svg": "",
       "vrml": ""
     },

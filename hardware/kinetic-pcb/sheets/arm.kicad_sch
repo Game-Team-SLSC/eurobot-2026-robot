@@ -1388,7 +1388,7 @@
 			)
 		)
 		(instances
-			(project "logic-pcb"
+			(project "kinetic-pcb"
 				(path "/27daf012-9196-46de-9851-628d059dd653/7c08b3f2-f8ea-48b3-b1b2-c164f9266479/d9cb5204-aa42-494f-8f48-de772f73f80a"
 					(page "9")
 				)
