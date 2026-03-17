@@ -5,7 +5,7 @@
 	(uuid "3be31583-a0e1-4f54-a7a0-9d0ae024603f")
 	(paper "A4")
 	(lib_symbols
-		(symbol "Connector_Generic:Conn_02x02_Odd_Even"
+		(symbol "Connector_Generic:Conn_02x02_Top_Bottom"
 			(pin_names
 				(offset 1.016)
 				(hide yes)
@@ -21,7 +21,7 @@
 					)
 				)
 			)
-			(property "Value" "Conn_02x02_Odd_Even"
+			(property "Value" "Conn_02x02_Top_Bottom"
 				(at 1.27 -5.08 0)
 				(effects
 					(font
@@ -47,7 +47,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Generic connector, double row, 02x02, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(property "Description" "Generic connector, double row, 02x02, top/bottom pin numbering scheme (row 1: 1...pins_per_row, row2: pins_per_row+1 ... num_pins), script generated (kicad-library-utils/schlib/autogen/connector/)"
 				(at 0 0 0)
 				(effects
 					(font
@@ -74,7 +74,7 @@
 					(hide yes)
 				)
 			)
-			(symbol "Conn_02x02_Odd_Even_1_1"
+			(symbol "Conn_02x02_Top_Bottom_1_1"
 				(rectangle
 					(start -1.27 1.27)
 					(end 3.81 -3.81)
@@ -151,14 +151,14 @@
 				(pin passive line
 					(at -5.08 -2.54 0)
 					(length 3.81)
-					(name "Pin_3"
+					(name "Pin_2"
 						(effects
 							(font
 								(size 1.27 1.27)
 							)
 						)
 					)
-					(number "3"
+					(number "2"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -169,14 +169,14 @@
 				(pin passive line
 					(at 7.62 0 180)
 					(length 3.81)
-					(name "Pin_2"
+					(name "Pin_3"
 						(effects
 							(font
 								(size 1.27 1.27)
 							)
 						)
 					)
-					(number "2"
+					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -195,168 +195,6 @@
 						)
 					)
 					(number "4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
-		(symbol "Device:C_Polarized_Small"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0.254)
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "C"
-				(at 0.254 1.778 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left)
-				)
-			)
-			(property "Value" "C_Polarized_Small"
-				(at 0.254 -2.032 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "~"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "Polarized capacitor, small symbol"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "cap capacitor"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "CP_*"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "C_Polarized_Small_0_1"
-				(rectangle
-					(start -1.524 0.6858)
-					(end 1.524 0.3048)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(rectangle
-					(start -1.524 -0.3048)
-					(end 1.524 -0.6858)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.27 1.524) (xy -0.762 1.524)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.016 1.27) (xy -1.016 1.778)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "C_Polarized_Small_1_1"
-				(pin passive line
-					(at 0 2.54 270)
-					(length 1.8542)
-					(name "~"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 -2.54 90)
-					(length 1.8542)
-					(name "~"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1648,7 +1486,7 @@
 	)
 	(rectangle
 		(start 151.13 89.535)
-		(end 222.885 127.635)
+		(end 245.745 127.635)
 		(stroke
 			(width 0)
 			(type default)
@@ -1749,6 +1587,12 @@
 		(uuid "40c225c7-9745-475b-ae15-0c4f1f51d112")
 	)
 	(junction
+		(at 130.81 21.59)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "565de5e9-c598-4717-b88a-e702491dc82e")
+	)
+	(junction
 		(at 21.59 24.13)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1767,19 +1611,13 @@
 		(uuid "a7efb10f-ef23-4ecf-812f-e1da61c89dc8")
 	)
 	(junction
-		(at 130.81 21.59)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "b1a7ef1e-99f8-4276-8b6c-92617d0c31a1")
-	)
-	(junction
 		(at 21.59 31.75)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "b406f795-ee16-4d0f-a5d2-8e4a2d64431d")
 	)
 	(no_connect
-		(at 199.39 121.92)
+		(at 222.25 121.92)
 		(uuid "591972c3-4332-4bad-aa3c-46f40a866b37")
 	)
 	(no_connect
@@ -1787,11 +1625,11 @@
 		(uuid "666ccfbf-a2e0-4881-9023-597200c8c6e1")
 	)
 	(no_connect
-		(at 160.02 121.92)
+		(at 176.53 121.92)
 		(uuid "c1e0f276-3b6e-46b9-a1ba-c9de6dec8460")
 	)
 	(no_connect
-		(at 243.84 57.15)
+		(at 256.54 57.15)
 		(uuid "d5e2ff19-17f6-4f8e-9354-1125a0f1828c")
 	)
 	(bus_entry
@@ -2352,7 +2190,7 @@
 	)
 	(wire
 		(pts
-			(xy 185.42 119.38) (xy 172.72 119.38)
+			(xy 189.23 119.38) (xy 176.53 119.38)
 		)
 		(stroke
 			(width 0)
@@ -2362,7 +2200,7 @@
 	)
 	(wire
 		(pts
-			(xy 228.6 119.38) (xy 212.09 119.38)
+			(xy 238.76 119.38) (xy 222.25 119.38)
 		)
 		(stroke
 			(width 0)
@@ -2731,12 +2569,12 @@
 		(uuid "17812f5a-8e51-4301-a7e3-24115bb590a2")
 	)
 	(label "TURNER"
-		(at 172.72 121.92 0)
+		(at 163.83 121.92 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify right bottom)
 		)
 		(uuid "23afbc2b-6c2f-4de0-a3dc-bd23ee9359d6")
 	)
@@ -2771,12 +2609,12 @@
 		(uuid "31487df7-e337-40dc-a46b-a29ddef2f76e")
 	)
 	(label "GRB_BACK"
-		(at 256.54 57.15 0)
+		(at 243.84 57.15 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify right bottom)
 		)
 		(uuid "323df3ae-c428-4cac-bc48-fdcbb46df7fd")
 	)
@@ -2951,7 +2789,7 @@
 		(uuid "5a4db810-7fe7-4a9c-aa14-171b10d69e0b")
 	)
 	(label "TRN_PWR"
-		(at 160.02 119.38 180)
+		(at 163.83 119.38 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2981,12 +2819,12 @@
 		(uuid "774598f1-43ea-4c50-9ab2-8f86a3f27204")
 	)
 	(label "TURNER_HOLDER"
-		(at 212.09 121.92 0)
+		(at 209.55 121.92 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify right bottom)
 		)
 		(uuid "7833d4a1-1a2e-4929-88d3-cdd9af1a112e")
 	)
@@ -3171,7 +3009,7 @@
 		(uuid "f15c5789-07b6-44d5-b50c-4ad30f00e810")
 	)
 	(label "TRN_PWR"
-		(at 199.39 119.38 180)
+		(at 209.55 119.38 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3487,7 +3325,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector_Generic:Conn_02x02_Odd_Even")
+		(lib_id "Connector_Generic:Conn_02x02_Top_Bottom")
 		(at 248.92 54.61 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -3529,7 +3367,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Generic connector, double row, 02x02, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)"
+		(property "Description" "Generic connector, double row, 02x02, top/bottom pin numbering scheme (row 1: 1...pins_per_row, row2: pins_per_row+1 ... num_pins), script generated (kicad-library-utils/schlib/autogen/connector/)"
 			(at 248.92 54.61 0)
 			(effects
 				(font
@@ -3862,6 +3700,104 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:C_Small")
+		(at 133.35 21.59 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "4232f8b2-1500-4a33-af4f-41a43138bb2c")
+		(property "Reference" "C15"
+			(at 146.558 20.828 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "10u"
+			(at 146.558 23.368 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder"
+			(at 133.35 21.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 133.35 21.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 133.35 21.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "CL21A106KBYQNNE"
+			(at 133.35 21.59 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung"
+			(at 133.35 21.59 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacter" ""
+			(at 133.35 21.59 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "83fcfe00-c99c-421d-822a-e9971ec0b881")
+		)
+		(pin "2"
+			(uuid "d69f08b3-27a4-40aa-a0c9-a4a8ecf2c4ec")
+		)
+		(instances
+			(project "kinetic-pcb"
+				(path "/27daf012-9196-46de-9851-628d059dd653/7c08b3f2-f8ea-48b3-b1b2-c164f9266479"
+					(reference "C15")
+					(unit 1)
+				)
+				(path "/27daf012-9196-46de-9851-628d059dd653/bbd5f8b3-c046-4163-8596-7b069c562c38"
+					(reference "C21")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 55.88 44.45 0)
 		(unit 1)
@@ -4032,8 +3968,8 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector_Generic:Conn_02x02_Odd_Even")
-		(at 165.1 119.38 0)
+		(lib_id "Connector_Generic:Conn_02x02_Top_Bottom")
+		(at 168.91 119.38 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -4041,7 +3977,7 @@
 		(dnp no)
 		(uuid "4f0d34e9-bb39-4189-a06d-5e0a2b7d3d92")
 		(property "Reference" "J13"
-			(at 173.228 109.22 0)
+			(at 177.038 109.22 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4049,7 +3985,7 @@
 			)
 		)
 		(property "Value" "MicroFit2x2"
-			(at 173.228 111.76 0)
+			(at 177.038 111.76 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4057,7 +3993,7 @@
 			)
 		)
 		(property "Footprint" "Project:J_Wurth_WR-MPC3_66200421122"
-			(at 165.1 119.38 0)
+			(at 168.91 119.38 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4066,7 +4002,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 165.1 119.38 0)
+			(at 168.91 119.38 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4074,8 +4010,8 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Generic connector, double row, 02x02, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 165.1 119.38 0)
+		(property "Description" "Generic connector, double row, 02x02, top/bottom pin numbering scheme (row 1: 1...pins_per_row, row2: pins_per_row+1 ... num_pins), script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 168.91 119.38 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4084,7 +4020,7 @@
 			)
 		)
 		(property "MPN" "66200421122"
-			(at 165.1 119.38 0)
+			(at 168.91 119.38 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4093,7 +4029,7 @@
 			)
 		)
 		(property "Manufacturer" "Wurth"
-			(at 165.1 119.38 0)
+			(at 168.91 119.38 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4102,7 +4038,7 @@
 			)
 		)
 		(property "Manufacter" ""
-			(at 165.1 119.38 0)
+			(at 168.91 119.38 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4205,106 +4141,8 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:C_Polarized_Small")
-		(at 133.35 21.59 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "57badfcb-5b06-44e8-9583-d42b861dd995")
-		(property "Reference" "C15"
-			(at 145.542 19.812 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "10u"
-			(at 145.542 22.352 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder"
-			(at 133.35 21.59 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 133.35 21.59 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Polarized capacitor, small symbol"
-			(at 133.35 21.59 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "CL21A106KBYQNNE"
-			(at 133.35 21.59 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "Samsung"
-			(at 133.35 21.59 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacter" ""
-			(at 133.35 21.59 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "1430943a-0f89-44d8-98a9-10e6ffe8b971")
-		)
-		(pin "2"
-			(uuid "1df7a515-284e-4ed0-9fa8-c178314248b8")
-		)
-		(instances
-			(project "logic-pcb"
-				(path "/27daf012-9196-46de-9851-628d059dd653/7c08b3f2-f8ea-48b3-b1b2-c164f9266479"
-					(reference "C15")
-					(unit 1)
-				)
-				(path "/27daf012-9196-46de-9851-628d059dd653/bbd5f8b3-c046-4163-8596-7b069c562c38"
-					(reference "C21")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
-		(at 228.6 119.38 0)
+		(at 238.76 119.38 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -4313,7 +4151,7 @@
 		(fields_autoplaced yes)
 		(uuid "59720cd6-4a16-40d3-bd87-ed6672317831")
 		(property "Reference" "#PWR071"
-			(at 228.6 125.73 0)
+			(at 238.76 125.73 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4322,7 +4160,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 228.6 124.46 0)
+			(at 238.76 124.46 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4330,7 +4168,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 228.6 119.38 0)
+			(at 238.76 119.38 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4339,7 +4177,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 228.6 119.38 0)
+			(at 238.76 119.38 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4348,7 +4186,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 228.6 119.38 0)
+			(at 238.76 119.38 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5154,7 +4992,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 185.42 119.38 0)
+		(at 189.23 119.38 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -5163,7 +5001,7 @@
 		(fields_autoplaced yes)
 		(uuid "ac416a5a-8eba-4108-9952-21babed5afa6")
 		(property "Reference" "#PWR070"
-			(at 185.42 125.73 0)
+			(at 189.23 125.73 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5172,7 +5010,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 185.42 124.46 0)
+			(at 189.23 124.46 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5180,7 +5018,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 185.42 119.38 0)
+			(at 189.23 119.38 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5189,7 +5027,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 185.42 119.38 0)
+			(at 189.23 119.38 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5198,7 +5036,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 185.42 119.38 0)
+			(at 189.23 119.38 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5324,7 +5162,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector_Generic:Conn_02x02_Odd_Even")
+		(lib_id "Connector_Generic:Conn_02x02_Top_Bottom")
 		(at 209.55 54.61 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -5366,7 +5204,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Generic connector, double row, 02x02, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)"
+		(property "Description" "Generic connector, double row, 02x02, top/bottom pin numbering scheme (row 1: 1...pins_per_row, row2: pins_per_row+1 ... num_pins), script generated (kicad-library-utils/schlib/autogen/connector/)"
 			(at 209.55 54.61 0)
 			(effects
 				(font
@@ -6191,8 +6029,8 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector_Generic:Conn_02x02_Odd_Even")
-		(at 204.47 119.38 0)
+		(lib_id "Connector_Generic:Conn_02x02_Top_Bottom")
+		(at 214.63 119.38 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -6200,7 +6038,7 @@
 		(dnp no)
 		(uuid "ccac2b9c-f6b2-4e9c-a469-10844b2b2023")
 		(property "Reference" "J14"
-			(at 204.724 108.966 0)
+			(at 214.884 108.966 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6208,7 +6046,7 @@
 			)
 		)
 		(property "Value" "MicroFit2x2"
-			(at 204.724 111.506 0)
+			(at 214.884 111.506 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6216,7 +6054,7 @@
 			)
 		)
 		(property "Footprint" "Project:J_Wurth_WR-MPC3_66200421122"
-			(at 204.47 119.38 0)
+			(at 214.63 119.38 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6225,7 +6063,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 204.47 119.38 0)
+			(at 214.63 119.38 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6233,8 +6071,8 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Generic connector, double row, 02x02, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 204.47 119.38 0)
+		(property "Description" "Generic connector, double row, 02x02, top/bottom pin numbering scheme (row 1: 1...pins_per_row, row2: pins_per_row+1 ... num_pins), script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 214.63 119.38 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6243,7 +6081,7 @@
 			)
 		)
 		(property "MPN" "66200421122"
-			(at 204.47 119.38 0)
+			(at 214.63 119.38 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6252,7 +6090,7 @@
 			)
 		)
 		(property "Manufacturer" "Wurth"
-			(at 204.47 119.38 0)
+			(at 214.63 119.38 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6261,7 +6099,7 @@
 			)
 		)
 		(property "Manufacter" ""
-			(at 204.47 119.38 0)
+			(at 214.63 119.38 0)
 			(effects
 				(font
 					(size 1.27 1.27)

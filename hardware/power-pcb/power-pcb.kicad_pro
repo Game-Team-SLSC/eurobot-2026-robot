@@ -160,15 +160,15 @@
           ""
         ],
         [
-          "text_height|52100000|82300000|7fad661a-165c-4e73-8cc2-9b078e056af3|00000000-0000-0000-0000-000000000000",
+          "text_height|52100000|82300000|36d1c912-922f-4711-a222-d947a200fad9|00000000-0000-0000-0000-000000000000",
           ""
         ],
         [
-          "text_height|57400000|83900000|9706950c-b826-4755-8ed3-dd7460e9f96b|00000000-0000-0000-0000-000000000000",
+          "text_height|57400000|83900000|5abda769-bfc1-4f2c-b288-3db58686ac1c|00000000-0000-0000-0000-000000000000",
           ""
         ],
         [
-          "text_height|60500000|84000000|5d2af4de-6d25-4469-b287-a3c597f17fb4|00000000-0000-0000-0000-000000000000",
+          "text_height|60500000|84000000|b2849fb6-4fe2-432a-993c-591598483d73|00000000-0000-0000-0000-000000000000",
           ""
         ],
         [
@@ -649,14 +649,14 @@
   },
   "schematic": {
     "annotate_start_num": 0,
-    "bom_export_filename": "out\\fab\\power-pcb-bom.csv",
+    "bom_export_filename": "out\\power-pcb-bom.csv",
     "bom_fmt_presets": [],
     "bom_fmt_settings": {
       "field_delimiter": ",",
       "keep_line_breaks": false,
       "keep_tabs": false,
-      "name": "CSV",
-      "ref_delimiter": ",",
+      "name": "---",
+      "ref_delimiter": "-",
       "ref_range_delimiter": "",
       "string_delimiter": "\""
     },
@@ -831,6 +831,6 @@
     ]
   ],
   "text_variables": {
-    "REVISION": "2.0.0"
+    "REVISION": "A"
   }
 }

@@ -1,0 +1,50 @@
+### Footprint positions - created on 2026-03-16T22:31:44+0100 ###
+### Printed by KiCad version 9.0.7
+## Unit = mm, Angle = deg.
+## Side : top
+# Ref     Val                    Package                                                             PosX       PosY       Rot  Side
+C3        10u                    C_0805_2012Metric_Pad1.18x1.45mm_HandSolder                     127.0625  -125.8000    0.0000  top
+C4        100n                   C_0805_2012Metric_Pad1.18x1.45mm_HandSolder                     127.1000  -127.8000  180.0000  top
+C5        10u                    C_0805_2012Metric_Pad1.18x1.45mm_HandSolder                     110.8000   -88.6000  -90.0000  top
+C6        100n                   C_0805_2012Metric_Pad1.18x1.45mm_HandSolder                     112.8000   -88.5625   90.0000  top
+C13       10u                    C_0805_2012Metric_Pad1.18x1.45mm_HandSolder                      75.6000  -108.8000   90.0000  top
+D1        0805_Green             LED_0805_2012Metric_Pad1.15x1.40mm_HandSolder                    42.2750   -69.1000  180.0000  top
+D2        SS10P4                 SS10P4M387A                                                      59.8650  -121.6400  -90.0000  top
+D3        Yellow                 LED_0805_2012Metric_Pad1.15x1.40mm_HandSolder                   129.2000  -106.6250   90.0000  top
+D4        Yellow                 LED_0805_2012Metric_Pad1.15x1.40mm_HandSolder                   121.9333  -106.6250   90.0000  top
+D5        Yellow                 LED_0805_2012Metric_Pad1.15x1.40mm_HandSolder                   114.6667  -106.6250   90.0000  top
+D12       Yellow                 LED_0805_2012Metric_Pad1.15x1.40mm_HandSolder                   107.4000  -106.6250   90.0000  top
+F2        2A                     Fuseholder_Cylinder-5x20mm_Schurter_0031_8201_Horizontal_Open    48.6500  -109.8000    0.0000  top
+J1        MicroFit2x2            J_Wurth_WR-MPC3_66200421122                                      77.2000   -66.2400  180.0000  top
+J2        MicroFit2x2            J_Wurth_WR-MPC3_66200421122                                      91.1500   -66.2400  180.0000  top
+J3        MicroFit2x12_Odd_Even  J_Wurth_WR-MPC3_66202421122                                     131.0000   -63.1000    0.0000  top
+J5        MicroFit2x7            J_Wurth_WR-MPC3_66201421122                                     120.1000   -66.2400  180.0000  top
+J6        XT30                   AMASS_XT30UPB-M_1x02_P5.0mm_Vertical                             48.8000  -126.3000   90.0000  top
+J7        MicroFit2x2            J_Wurth_WR-MPC3_66200421122                                      96.7000  -141.9600    0.0000  top
+J8        MicroFit2x2            J_Wurth_WR-MPC3_66200421122                                     163.9000  -142.1200    0.0000  top
+J9        MicroFit2x2            J_Wurth_WR-MPC3_66200421122                                      83.2600  -142.2200    0.0000  top
+J10       MicroFit2x2            J_Wurth_WR-MPC3_66200421122                                     177.3400  -142.1200    0.0000  top
+J11       MicroFit2x2            J_Wurth_WR-MPC3_66200421122                                      69.8200  -142.2200    0.0000  top
+J12       MicroFit2x2            J_Wurth_WR-MPC3_66200421122                                     190.7800  -142.1200    0.0000  top
+J13       MicroFit2x2            J_Wurth_WR-MPC3_66200421122                                     150.4600  -142.1600    0.0000  top
+J14       MicroFit2x2            J_Wurth_WR-MPC3_66200421122                                      56.3800  -142.2200    0.0000  top
+J15       MicroFit2x2            J_Wurth_WR-MPC3_66200421122                                     123.5800  -141.9600    0.0000  top
+J16       MicroFit2x2            J_Wurth_WR-MPC3_66200421122                                     110.1400  -141.9600    0.0000  top
+J17       MicroFit2x2            J_Wurth_WR-MPC3_66200421122                                     137.0200  -141.9600    0.0000  top
+J18       Conn_02x07_Odd_Even    J_Wurth_WR-MPC3_66201421122                                     175.0000   -63.2000    0.0000  top
+QR*****   Github_QR              Github_QR                                                        37.4000   -95.3000    0.0000  top
+R11       33R                    R_0805_2012Metric_Pad1.20x1.40mm_HandSolder                     149.1000   -90.6000  -90.0000  top
+R13       33R                    R_0805_2012Metric_Pad1.20x1.40mm_HandSolder                     151.6000   -90.6000  -90.0000  top
+R14       33R                    R_0805_2012Metric_Pad1.20x1.40mm_HandSolder                     161.8000   -90.6000   90.0000  top
+R16       33R                    R_0805_2012Metric_Pad1.20x1.40mm_HandSolder                     159.3000   -90.6000  -90.0000  top
+R18       33R                    R_0805_2012Metric_Pad1.20x1.40mm_HandSolder                     156.7000   -90.6000  -90.0000  top
+R19       33R                    R_0805_2012Metric_Pad1.20x1.40mm_HandSolder                     154.2000   -90.6000   90.0000  top
+R25       10k                    R_0805_2012Metric_Pad1.20x1.40mm_HandSolder                     120.8000   -80.1000   90.0000  top
+R50       10k                    R_0805_2012Metric_Pad1.20x1.40mm_HandSolder                     122.2000  -126.9000   90.0000  top
+SW1       RotaryEncoder_Switch   RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm                  185.7000   -77.7000    0.0000  top
+U1        NRF24L01_Breakout      nRF24L01+_Breakout                                               53.2125   -99.8145   90.0000  top
+U2        TCA9548APWR            TSSOP-24_4.4x7.8mm_P0.65mm                                      125.1625  -132.9250    0.0000  top
+U3        ESP32-S3-DevKitC       ESP32-S3-DevKitC                                                141.4600  -116.6600   90.0000  top
+U4        TCA9555PWR             TSSOP-24_4.4x7.8mm_P0.65mm                                      117.7000   -86.5000  180.0000  top
+U6        R-78E3.3-1.0           Converter_DCDC_RECOM_R-78E-0.5_THT                               79.9925  -109.8525  -90.0000  top
+## End

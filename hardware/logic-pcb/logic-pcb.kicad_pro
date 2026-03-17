@@ -52,7 +52,80 @@
         }
       },
       "diff_pair_dimensions": [],
-      "drc_exclusions": [],
+      "drc_exclusions": [
+        [
+          "silk_edge_clearance|33611047|84104654|46d27c7b-a713-4461-bdfe-9b0e2e9b35cd|3580b76d-59db-4698-bf8f-00b595e64e48",
+          ""
+        ],
+        [
+          "silk_edge_clearance|44621320|116010000|f63c0860-7999-4d02-b463-d92e2d79d4a7|a9c251ba-01a3-432f-95ff-7c8e57d3cfca",
+          ""
+        ],
+        [
+          "silk_over_copper|121623482|134744198|3f7f6ae0-0387-4f84-ae72-81881cf33273|00000000-0000-0000-0000-000000000000",
+          ""
+        ],
+        [
+          "silk_overlap|100106139|115144634|831e8849-7539-4316-ae67-b7d8ecb466da|e578205f-5419-41c2-94b9-220b9b3cea63",
+          ""
+        ],
+        [
+          "silk_overlap|104114098|134714619|3f7f6ae0-0387-4f84-ae72-81881cf33273|5b948a1d-15f2-463b-b2ad-ba632992027d",
+          ""
+        ],
+        [
+          "silk_overlap|104114098|134714619|5b948a1d-15f2-463b-b2ad-ba632992027d|6f877171-c43a-4c66-a618-1f950ded3924",
+          ""
+        ],
+        [
+          "silk_overlap|112214474|99200000|22b179ea-1076-4a88-aa86-b070a27a375f|26affb61-3b26-490c-96bd-bfa64856dffb",
+          ""
+        ],
+        [
+          "silk_overlap|126200000|70914619|3b96eb7c-a87a-4100-9696-5578a75bfa87|5e617d93-fb4d-4e74-9a51-f23985d92182",
+          ""
+        ],
+        [
+          "silk_overlap|184776984|134714619|a64c5593-9ad6-4e02-b15e-85b33947afe1|f5308381-60d1-40d3-b0f0-a61bb18402d7",
+          ""
+        ],
+        [
+          "silk_overlap|53697785|131214619|a9c251ba-01a3-432f-95ff-7c8e57d3cfca|f18dfe96-2f0f-48f9-b067-3bfcafe987d9",
+          ""
+        ],
+        [
+          "silk_overlap|62132331|135363428|69628798-ba6f-4829-b1bd-d5159b4b7da6|6f877171-c43a-4c66-a618-1f950ded3924",
+          ""
+        ],
+        [
+          "silk_overlap|73212531|121191028|3dc6bb73-5975-4464-80cb-74e1ab973f7b|9236efb5-4830-4d50-8109-c17c98bd4771",
+          ""
+        ],
+        [
+          "silk_overlap|76407309|72400000|20b27460-0545-49fd-b85e-ef52c023567b|998cf8f3-c39f-4f4a-a669-ae31bd2696e6",
+          ""
+        ],
+        [
+          "silk_overlap|84100000|70914619|106be4d3-ac5d-4436-a60b-44828d85135d|84df87fc-ccb0-424a-bd02-1405cbc47d58",
+          ""
+        ],
+        [
+          "silk_overlap|91300000|80014619|3d3f5762-07e6-4554-af77-410bdcde36ae|8fa986b6-1a75-43a9-871c-1eb4bbcd9bf9",
+          ""
+        ],
+        [
+          "silk_overlap|98100000|70914619|36273449-8439-4f17-9ec8-b69a9ce8db4b|9802fb4b-bc45-4f83-aa88-e9cab448d38a",
+          ""
+        ],
+        [
+          "text_thickness|31700000|78800000|ba80bc7b-13bc-4b58-bc96-9d2f01083739|00000000-0000-0000-0000-000000000000",
+          ""
+        ],
+        [
+          "text_thickness|33800000|75600000|020efb36-714f-42d2-a82e-3339b0048304|00000000-0000-0000-0000-000000000000",
+          ""
+        ]
+      ],
       "meta": {
         "version": 2
       },
@@ -133,7 +206,7 @@
         "min_track_width": 0.0,
         "min_via_annular_width": 0.1,
         "min_via_diameter": 0.5,
-        "solder_mask_to_copper_clearance": 0.0,
+        "solder_mask_to_copper_clearance": 0.005,
         "use_height_for_length_calcs": true
       },
       "teardrop_options": [
@@ -487,10 +560,10 @@
       "gencad": "",
       "idf": "",
       "netlist": "",
-      "plot": "",
-      "pos_files": "",
+      "plot": "out/fab",
+      "pos_files": "out/ooga/",
       "specctra_dsn": "",
-      "step": "",
+      "step": "out/logic-pcb.step",
       "svg": "",
       "vrml": ""
     },
@@ -498,14 +571,14 @@
   },
   "schematic": {
     "annotate_start_num": 0,
-    "bom_export_filename": "${PROJECTNAME}.csv",
+    "bom_export_filename": "out/${PROJECTNAME}-bom.csv",
     "bom_fmt_presets": [],
     "bom_fmt_settings": {
       "field_delimiter": ",",
       "keep_line_breaks": false,
       "keep_tabs": false,
-      "name": "CSV",
-      "ref_delimiter": ",",
+      "name": "---",
+      "ref_delimiter": "-",
       "ref_range_delimiter": "",
       "string_delimiter": "\""
     },
@@ -701,5 +774,7 @@
       "opt-i2c2"
     ]
   ],
-  "text_variables": {}
+  "text_variables": {
+    "REVISION": "A"
+  }
 }

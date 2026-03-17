@@ -1049,7 +1049,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "66201421122"
+		(property "MPN" "43045-1412"
 			(at 130.81 69.85 0)
 			(effects
 				(font
@@ -1058,7 +1058,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer" "Wurth"
+		(property "Manufacturer" "Molex"
 			(at 130.81 69.85 0)
 			(effects
 				(font

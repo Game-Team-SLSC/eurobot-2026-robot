@@ -1,14 +1,6 @@
 name: Build Power PCB
 
 on:
-  push:
-    paths:
-      - 'hardware/power-pcb/**'
-      - '.github/workflows/build-power-pcb.yml'
-  pull_request:
-    paths:
-      - 'hardware/power-pcb/**'
-      - '.github/workflows/build-power-pcb.yml'
   workflow_dispatch:
 
 jobs:

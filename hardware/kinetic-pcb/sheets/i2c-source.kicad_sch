@@ -205,168 +205,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Device:C_Polarized_Small"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0.254)
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "C"
-				(at 0.254 1.778 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left)
-				)
-			)
-			(property "Value" "C_Polarized_Small"
-				(at 0.254 -2.032 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "~"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "Polarized capacitor, small symbol"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "cap capacitor"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "CP_*"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "C_Polarized_Small_0_1"
-				(rectangle
-					(start -1.524 0.6858)
-					(end 1.524 0.3048)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(rectangle
-					(start -1.524 -0.3048)
-					(end 1.524 -0.6858)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.27 1.524) (xy -0.762 1.524)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.016 1.27) (xy -1.016 1.778)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "C_Polarized_Small_1_1"
-				(pin passive line
-					(at 0 2.54 270)
-					(length 1.8542)
-					(name "~"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 -2.54 90)
-					(length 1.8542)
-					(name "~"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "Device:C_Small"
 			(pin_numbers
 				(hide yes)
@@ -507,27 +345,26 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Device:R_Small"
+		(symbol "Device:R"
 			(pin_numbers
 				(hide yes)
 			)
 			(pin_names
-				(offset 0.254)
-				(hide yes)
+				(offset 0)
 			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
 			(property "Reference" "R"
-				(at 0 0 90)
+				(at 2.032 0 90)
 				(effects
 					(font
-						(size 1.016 1.016)
+						(size 1.27 1.27)
 					)
 				)
 			)
-			(property "Value" "R_Small"
-				(at 1.778 0 90)
+			(property "Value" "R"
+				(at 0 0 90)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -535,7 +372,7 @@
 				)
 			)
 			(property "Footprint" ""
-				(at 0 0 0)
+				(at -1.778 0 90)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -552,7 +389,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Resistor, small symbol"
+			(property "Description" "Resistor"
 				(at 0 0 0)
 				(effects
 					(font
@@ -561,7 +398,7 @@
 					(hide yes)
 				)
 			)
-			(property "ki_keywords" "R resistor"
+			(property "ki_keywords" "R res resistor"
 				(at 0 0 0)
 				(effects
 					(font
@@ -579,12 +416,12 @@
 					(hide yes)
 				)
 			)
-			(symbol "R_Small_0_1"
+			(symbol "R_0_1"
 				(rectangle
-					(start -0.762 1.778)
-					(end 0.762 -1.778)
+					(start -1.016 -2.54)
+					(end 1.016 2.54)
 					(stroke
-						(width 0.2032)
+						(width 0.254)
 						(type default)
 					)
 					(fill
@@ -592,10 +429,10 @@
 					)
 				)
 			)
-			(symbol "R_Small_1_1"
+			(symbol "R_1_1"
 				(pin passive line
-					(at 0 2.54 270)
-					(length 0.762)
+					(at 0 3.81 270)
+					(length 1.27)
 					(name "~"
 						(effects
 							(font
@@ -612,8 +449,8 @@
 					)
 				)
 				(pin passive line
-					(at 0 -2.54 90)
-					(length 0.762)
+					(at 0 -3.81 90)
+					(length 1.27)
 					(name "~"
 						(effects
 							(font
@@ -1294,18 +1131,6 @@
 		)
 	)
 	(junction
-		(at 176.53 90.17)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "3aef53cb-c0fd-4615-9b36-fb46b28abfee")
-	)
-	(junction
-		(at 158.75 76.2)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "41711f3d-ff1f-4a1c-81fb-7ecc2e607e9b")
-	)
-	(junction
 		(at 127 85.09)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1315,7 +1140,13 @@
 		(at 127 76.2)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "5794c0ef-2e95-4b9d-a2f0-d526af16b16a")
+		(uuid "8bf1ee14-9004-48ad-92cb-bc40549a5f60")
+	)
+	(junction
+		(at 158.75 76.2)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "94c70eec-0009-4cb2-8f7b-ccaffd548257")
 	)
 	(junction
 		(at 176.53 87.63)
@@ -1329,6 +1160,12 @@
 		(color 0 0 0 0)
 		(uuid "d6bdfff7-3c54-40f5-b8d7-3d22eba1b39d")
 	)
+	(junction
+		(at 176.53 90.17)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "f080070c-0359-4eda-b4b0-75d83518e45a")
+	)
 	(wire
 		(pts
 			(xy 100.33 90.17) (xy 132.08 90.17)
@@ -1341,7 +1178,7 @@
 	)
 	(wire
 		(pts
-			(xy 176.53 90.17) (xy 191.77 90.17)
+			(xy 152.4 90.17) (xy 176.53 90.17)
 		)
 		(stroke
 			(width 0)
@@ -1351,13 +1188,13 @@
 	)
 	(wire
 		(pts
-			(xy 152.4 90.17) (xy 176.53 90.17)
+			(xy 176.53 90.17) (xy 191.77 90.17)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "2881bbc0-6c0f-4540-b24b-35b7929e77e0")
+		(uuid "1f8d2003-f888-4179-906d-301fe9c5faad")
 	)
 	(wire
 		(pts
@@ -1367,7 +1204,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "2b781a14-b789-4d75-a165-b9e667dbe5e8")
+		(uuid "3a75121c-97a7-4364-8fc2-cc4588483e99")
 	)
 	(wire
 		(pts
@@ -1381,13 +1218,13 @@
 	)
 	(wire
 		(pts
-			(xy 176.53 80.01) (xy 176.53 81.28)
+			(xy 127 76.2) (xy 127 85.09)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "5452fe96-e527-4901-a470-7f9f8e57b504")
+		(uuid "5cffda0c-2655-4290-8cc5-ac177f5dd460")
 	)
 	(wire
 		(pts
@@ -1397,17 +1234,17 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "7e2d9ba6-0662-460d-87d9-cf61e7a31e2b")
+		(uuid "80dfcdac-7813-4dd0-a695-d2e8144f17ff")
 	)
 	(wire
 		(pts
-			(xy 127 76.2) (xy 127 85.09)
+			(xy 176.53 91.44) (xy 176.53 90.17)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "b3c4896f-5e87-4b86-885e-88f310c16cdc")
+		(uuid "aba69397-e994-4bde-acb2-fff94b7e4bb0")
 	)
 	(wire
 		(pts
@@ -1563,7 +1400,7 @@
 	)
 	(symbol
 		(lib_id "power:+3V3")
-		(at 176.53 100.33 180)
+		(at 176.53 99.06 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1572,7 +1409,7 @@
 		(fields_autoplaced yes)
 		(uuid "055cf460-f441-4593-a259-5fbeb5163ec4")
 		(property "Reference" "#PWR0194"
-			(at 176.53 96.52 0)
+			(at 176.53 95.25 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1581,7 +1418,7 @@
 			)
 		)
 		(property "Value" "+3V3"
-			(at 176.53 105.41 0)
+			(at 176.53 104.14 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1589,7 +1426,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 176.53 100.33 0)
+			(at 176.53 99.06 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1598,7 +1435,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 176.53 100.33 0)
+			(at 176.53 99.06 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1607,7 +1444,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3V3\""
-			(at 176.53 100.33 0)
+			(at 176.53 99.06 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1842,33 +1679,34 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:C_Polarized_Small")
-		(at 161.29 76.2 90)
+		(lib_id "Device:R")
+		(at 176.53 95.25 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "42a07339-75d9-4f49-8041-275005058f2f")
-		(property "Reference" "C60"
-			(at 160.7439 69.85 90)
+		(uuid "4693b257-e71c-4608-8964-f0b54d77e685")
+		(property "Reference" "R49"
+			(at 179.324 93.98 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify right)
 			)
 		)
-		(property "Value" "10u"
-			(at 160.7439 72.39 90)
+		(property "Value" "4.7k"
+			(at 179.324 96.52 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder"
-			(at 161.29 76.2 0)
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
+			(at 178.308 95.25 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1877,7 +1715,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 161.29 76.2 0)
+			(at 176.53 95.25 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1885,8 +1723,106 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Polarized capacitor, small symbol"
-			(at 161.29 76.2 0)
+		(property "Description" "Resistor"
+			(at 176.53 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "CRCW08054K70FKEA"
+			(at 176.53 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Vishay"
+			(at 176.53 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 176.53 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "db6c97df-7046-48bd-ad1c-3cc669809095")
+		)
+		(pin "1"
+			(uuid "f612fc82-c2bf-4f97-b10b-bce8a95e16fa")
+		)
+		(instances
+			(project "kinetic-pcb"
+				(path "/27daf012-9196-46de-9851-628d059dd653/4cbd7a18-e8d4-4967-8812-b0e62bd487de"
+					(reference "R49")
+					(unit 1)
+				)
+				(path "/27daf012-9196-46de-9851-628d059dd653/9109e088-f402-4361-80a0-27e4d8532683"
+					(reference "R56")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C_Small")
+		(at 124.46 76.2 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "46a81cac-057f-4a3e-b5eb-920474b4c3e5")
+		(property "Reference" "C59"
+			(at 124.206 70.866 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "10u"
+			(at 124.206 73.406 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder"
+			(at 124.46 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 124.46 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 124.46 76.2 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1895,7 +1831,7 @@
 			)
 		)
 		(property "MPN" "CL21A106KBYQNNE"
-			(at 161.29 76.2 90)
+			(at 124.46 76.2 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1904,7 +1840,7 @@
 			)
 		)
 		(property "Manufacturer" "Samsung"
-			(at 161.29 76.2 90)
+			(at 124.46 76.2 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1913,7 +1849,7 @@
 			)
 		)
 		(property "Manufacter" ""
-			(at 161.29 76.2 90)
+			(at 124.46 76.2 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1922,19 +1858,19 @@
 			)
 		)
 		(pin "1"
-			(uuid "91a5b15f-be9d-45b8-bcc4-4e2f09ebdcae")
+			(uuid "35808930-ae6a-47ff-8166-e2b601c6ed91")
 		)
 		(pin "2"
-			(uuid "c5642ac1-d4b8-41d9-acbc-3dc449ff08cf")
+			(uuid "8a980ad1-c954-456c-9277-7d8d9a7f1868")
 		)
 		(instances
-			(project "logic-pcb"
+			(project "kinetic-pcb"
 				(path "/27daf012-9196-46de-9851-628d059dd653/4cbd7a18-e8d4-4967-8812-b0e62bd487de"
-					(reference "C60")
+					(reference "C59")
 					(unit 1)
 				)
 				(path "/27daf012-9196-46de-9851-628d059dd653/9109e088-f402-4361-80a0-27e4d8532683"
-					(reference "C64")
+					(reference "C63")
 					(unit 1)
 				)
 			)
@@ -2039,6 +1975,106 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R")
+		(at 176.53 82.55 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "6a74fb4e-b390-44d5-a2c6-d2cf8853d3f6")
+		(property "Reference" "R47"
+			(at 179.324 81.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "4.7k"
+			(at 179.324 83.82 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
+			(at 178.308 82.55 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 176.53 82.55 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 176.53 82.55 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "CRCW08054K70FKEA"
+			(at 176.53 82.55 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Vishay"
+			(at 176.53 82.55 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 176.53 82.55 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "c442275d-ef90-46ef-9fc4-c03467f7456e")
+		)
+		(pin "1"
+			(uuid "4cde3e0a-2028-4d90-9e03-7437ee60671c")
+		)
+		(instances
+			(project "kinetic-pcb"
+				(path "/27daf012-9196-46de-9851-628d059dd653/4cbd7a18-e8d4-4967-8812-b0e62bd487de"
+					(reference "R47")
+					(unit 1)
+				)
+				(path "/27daf012-9196-46de-9851-628d059dd653/9109e088-f402-4361-80a0-27e4d8532683"
+					(reference "R54")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C_Small")
 		(at 124.46 85.09 90)
 		(unit 1)
@@ -2132,106 +2168,6 @@
 				)
 				(path "/27daf012-9196-46de-9851-628d059dd653/9109e088-f402-4361-80a0-27e4d8532683"
 					(reference "C65")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R_Small")
-		(at 176.53 83.82 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "98089b0d-79b8-46c8-b2b1-51fdce978188")
-		(property "Reference" "R48"
-			(at 179.07 82.5499 0)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "1k"
-			(at 179.07 85.0899 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
-			(at 176.53 83.82 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 176.53 83.82 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor, small symbol"
-			(at 176.53 83.82 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "CRCW08051K00FKEA"
-			(at 176.53 83.82 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "Vishay"
-			(at 176.53 83.82 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacter" ""
-			(at 176.53 83.82 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "a227825c-b818-4c16-8b7d-794c9b60db20")
-		)
-		(pin "2"
-			(uuid "da58813f-3eff-4a81-94c0-26aa709a9eae")
-		)
-		(instances
-			(project "logic-pcb"
-				(path "/27daf012-9196-46de-9851-628d059dd653/4cbd7a18-e8d4-4967-8812-b0e62bd487de"
-					(reference "R48")
-					(unit 1)
-				)
-				(path "/27daf012-9196-46de-9851-628d059dd653/9109e088-f402-4361-80a0-27e4d8532683"
-					(reference "R54")
 					(unit 1)
 				)
 			)
@@ -2412,18 +2348,16 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:C_Polarized_Small")
-		(at 124.46 76.2 270)
-		(mirror x)
+		(lib_id "Device:C_Small")
+		(at 161.29 76.2 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "ad767465-08d9-4392-8fa0-3f3a430ec5ce")
-		(property "Reference" "C59"
-			(at 125.0061 69.85 90)
+		(uuid "c2c8c2c3-820a-4ac3-8139-4eeda8d32f76")
+		(property "Reference" "C60"
+			(at 163.068 69.596 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2431,7 +2365,7 @@
 			)
 		)
 		(property "Value" "10u"
-			(at 125.0061 72.39 90)
+			(at 163.068 72.136 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2439,7 +2373,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder"
-			(at 124.46 76.2 0)
+			(at 161.29 76.2 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2448,7 +2382,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 124.46 76.2 0)
+			(at 161.29 76.2 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2456,8 +2390,8 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Polarized capacitor, small symbol"
-			(at 124.46 76.2 0)
+		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 161.29 76.2 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2466,7 +2400,7 @@
 			)
 		)
 		(property "MPN" "CL21A106KBYQNNE"
-			(at 124.46 76.2 90)
+			(at 161.29 76.2 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2475,7 +2409,7 @@
 			)
 		)
 		(property "Manufacturer" "Samsung"
-			(at 124.46 76.2 90)
+			(at 161.29 76.2 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2484,7 +2418,7 @@
 			)
 		)
 		(property "Manufacter" ""
-			(at 124.46 76.2 90)
+			(at 161.29 76.2 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2493,19 +2427,19 @@
 			)
 		)
 		(pin "1"
-			(uuid "4ff63e20-e6cc-4885-b37f-bd0732991d6a")
+			(uuid "611b39f0-b62b-42ab-a312-19babce44aa2")
 		)
 		(pin "2"
-			(uuid "e5a0af05-6f62-488e-91a4-9e0297bf17e6")
+			(uuid "7ba8ca52-3b96-4d63-ac53-ae24d7fcccc9")
 		)
 		(instances
-			(project "logic-pcb"
+			(project "kinetic-pcb"
 				(path "/27daf012-9196-46de-9851-628d059dd653/4cbd7a18-e8d4-4967-8812-b0e62bd487de"
-					(reference "C59")
+					(reference "C60")
 					(unit 1)
 				)
 				(path "/27daf012-9196-46de-9851-628d059dd653/9109e088-f402-4361-80a0-27e4d8532683"
-					(reference "C63")
+					(reference "C64")
 					(unit 1)
 				)
 			)
@@ -2652,208 +2586,8 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R_Small")
-		(at 176.53 77.47 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "d79447e3-60c5-48c9-891d-b0637c75d00d")
-		(property "Reference" "R47"
-			(at 179.07 76.1999 0)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "1k"
-			(at 179.07 78.7399 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
-			(at 176.53 77.47 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 176.53 77.47 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor, small symbol"
-			(at 176.53 77.47 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "CRCW08051K00FKEA"
-			(at 176.53 77.47 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "Vishay"
-			(at 176.53 77.47 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacter" ""
-			(at 176.53 77.47 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "be8690e2-325e-4255-8871-ef96bcf91e5c")
-		)
-		(pin "2"
-			(uuid "efbe5e66-f59d-45a2-a583-d071a8b62d18")
-		)
-		(instances
-			(project "logic-pcb"
-				(path "/27daf012-9196-46de-9851-628d059dd653/4cbd7a18-e8d4-4967-8812-b0e62bd487de"
-					(reference "R47")
-					(unit 1)
-				)
-				(path "/27daf012-9196-46de-9851-628d059dd653/9109e088-f402-4361-80a0-27e4d8532683"
-					(reference "R53")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R_Small")
-		(at 176.53 92.71 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "d9001f39-2d01-48a8-889a-bb6e8da86fa2")
-		(property "Reference" "R49"
-			(at 173.99 93.9801 0)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "1k"
-			(at 173.99 91.4401 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
-			(at 176.53 92.71 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 176.53 92.71 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor, small symbol"
-			(at 176.53 92.71 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "CRCW08051K00FKEA"
-			(at 176.53 92.71 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "Vishay"
-			(at 176.53 92.71 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacter" ""
-			(at 176.53 92.71 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "c588c0a3-2097-468c-9487-27fa9855ede3")
-		)
-		(pin "2"
-			(uuid "e26bdaaf-3051-4037-81e1-ef324fa6bca1")
-		)
-		(instances
-			(project "logic-pcb"
-				(path "/27daf012-9196-46de-9851-628d059dd653/4cbd7a18-e8d4-4967-8812-b0e62bd487de"
-					(reference "R49")
-					(unit 1)
-				)
-				(path "/27daf012-9196-46de-9851-628d059dd653/9109e088-f402-4361-80a0-27e4d8532683"
-					(reference "R55")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:+3V3")
-		(at 176.53 74.93 0)
+		(at 176.53 78.74 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2862,7 +2596,7 @@
 		(fields_autoplaced yes)
 		(uuid "da44f42b-c6f2-47fa-af1f-1499b567f45f")
 		(property "Reference" "#PWR0190"
-			(at 176.53 78.74 0)
+			(at 176.53 82.55 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2871,7 +2605,7 @@
 			)
 		)
 		(property "Value" "+3V3"
-			(at 176.53 69.85 0)
+			(at 176.53 73.66 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2879,7 +2613,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 176.53 74.93 0)
+			(at 176.53 78.74 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2888,7 +2622,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 176.53 74.93 0)
+			(at 176.53 78.74 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2897,7 +2631,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3V3\""
-			(at 176.53 74.93 0)
+			(at 176.53 78.74 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3033,106 +2767,6 @@
 				)
 				(path "/27daf012-9196-46de-9851-628d059dd653/9109e088-f402-4361-80a0-27e4d8532683"
 					(reference "U8")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R_Small")
-		(at 176.53 97.79 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "e1e0fa40-c7c4-4a1e-96ef-b271c9ad59de")
-		(property "Reference" "R50"
-			(at 173.99 99.0601 0)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "1k"
-			(at 173.99 96.5201 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
-			(at 176.53 97.79 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 176.53 97.79 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor, small symbol"
-			(at 176.53 97.79 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "CRCW08051K00FKEA"
-			(at 176.53 97.79 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "Vishay"
-			(at 176.53 97.79 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacter" ""
-			(at 176.53 97.79 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "33faeb9f-1461-44bc-bb0c-bc3b11467e50")
-		)
-		(pin "2"
-			(uuid "58c2c621-e616-47f5-be74-f6ae63057e52")
-		)
-		(instances
-			(project "logic-pcb"
-				(path "/27daf012-9196-46de-9851-628d059dd653/4cbd7a18-e8d4-4967-8812-b0e62bd487de"
-					(reference "R50")
-					(unit 1)
-				)
-				(path "/27daf012-9196-46de-9851-628d059dd653/9109e088-f402-4361-80a0-27e4d8532683"
-					(reference "R56")
 					(unit 1)
 				)
 			)

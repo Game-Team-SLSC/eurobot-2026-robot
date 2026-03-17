@@ -6544,7 +6544,7 @@
 	)
 	(wire
 		(pts
-			(xy 176.53 106.68) (xy 181.61 106.68)
+			(xy 175.26 106.68) (xy 181.61 106.68)
 		)
 		(stroke
 			(width 0)
@@ -7513,7 +7513,7 @@
 		(uuid "8957d930-133e-4609-a2d2-5247f4cfb150")
 	)
 	(label "MISO"
-		(at 168.91 106.68 180)
+		(at 167.64 106.68 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8551,7 +8551,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "CRCW0805143K0FKEA"
+		(property "MPN" "CRCW0805143KFKEA"
 			(at 120.65 223.52 0)
 			(effects
 				(font
@@ -10453,7 +10453,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "66202421122"
+		(property "MPN" "43045-2412"
 			(at 245.11 99.06 0)
 			(effects
 				(font
@@ -10462,7 +10462,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer" "Wurth"
+		(property "Manufacturer" "Molex"
 			(at 245.11 99.06 0)
 			(effects
 				(font
@@ -11505,7 +11505,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Project:AMASS_XT30UPB-M_1x02_P5.0mm_Vertical"
+		(property "Footprint" "Project:AMASS_XT30U-M_1x02_P5.0mm_Vertical"
 			(at 228.6 130.81 0)
 			(effects
 				(font
@@ -11639,7 +11639,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Project:AMASS_XT30UPB-M_1x02_P5.0mm_Vertical"
+		(property "Footprint" "Project:AMASS_XT30U-M_1x02_P5.0mm_Vertical"
 			(at 182.88 135.89 0)
 			(effects
 				(font
@@ -12102,7 +12102,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "CRCW0805100K0FKEA"
+		(property "MPN" "CRCW0805100KFKEA"
 			(at 96.52 222.25 0)
 			(effects
 				(font
@@ -13386,7 +13386,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 172.72 106.68 90)
+		(at 171.45 106.68 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -13395,7 +13395,7 @@
 		(fields_autoplaced yes)
 		(uuid "c25928c0-13c9-4777-85c1-f97555b2b23e")
 		(property "Reference" "R7"
-			(at 172.72 100.33 90)
+			(at 171.45 100.33 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13403,7 +13403,7 @@
 			)
 		)
 		(property "Value" "33R"
-			(at 172.72 102.87 90)
+			(at 171.45 102.87 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13411,7 +13411,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
-			(at 172.72 108.458 90)
+			(at 171.45 108.458 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13420,7 +13420,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 172.72 106.68 0)
+			(at 171.45 106.68 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13429,7 +13429,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 172.72 106.68 0)
+			(at 171.45 106.68 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13437,8 +13437,8 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "CRCW080533RFKEA"
-			(at 172.72 106.68 90)
+		(property "MPN" "CRCW080533R0FKEA"
+			(at 171.45 106.68 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13447,7 +13447,7 @@
 			)
 		)
 		(property "Manufacturer" "Vishay"
-			(at 172.72 106.68 90)
+			(at 171.45 106.68 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14129,7 +14129,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Project:AMASS_XT30UPB-M_1x02_P5.0mm_Vertical"
+		(property "Footprint" "Project:AMASS_XT30U-M_1x02_P5.0mm_Vertical"
 			(at 255.27 130.81 0)
 			(effects
 				(font
@@ -15046,15 +15046,15 @@
 	(symbol
 		(lib_id "Connector_Generic:Conn_02x07_Top_Bottom")
 		(at 186.69 101.6 0)
+		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "eff15c75-3b84-4dd5-91b5-633297d793ee")
 		(property "Reference" "J18"
-			(at 187.96 87.63 0)
+			(at 187.96 115.57 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15062,7 +15062,7 @@
 			)
 		)
 		(property "Value" "Conn_02x07_Odd_Even"
-			(at 187.96 90.17 0)
+			(at 187.96 113.03 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15096,7 +15096,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "66201421122"
+		(property "MPN" "43045-1412"
 			(at 186.69 101.6 0)
 			(effects
 				(font
@@ -15105,7 +15105,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer" "Wurth"
+		(property "Manufacturer" "Molex"
 			(at 186.69 101.6 0)
 			(effects
 				(font
@@ -15650,7 +15650,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Project:AMASS_XT30UPB-M_1x02_P5.0mm_Vertical"
+		(property "Footprint" "Project:AMASS_XT30U-M_1x02_P5.0mm_Vertical"
 			(at 196.85 46.99 0)
 			(effects
 				(font
@@ -15811,7 +15811,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "CRCW0805100K0FKEA"
+		(property "MPN" "CRCW0805100KFKEA"
 			(at 110.49 43.18 90)
 			(effects
 				(font

@@ -1,14 +1,6 @@
 name: Build Arms PCB
 
 on:
-  push:
-    paths:
-      - 'hardware/arms-pcb/**'
-      - '.github/workflows/build-arms-pcb.yml'
-  pull_request:
-    paths:
-      - 'hardware/arms-pcb/**'
-      - '.github/workflows/build-arms-pcb.yml'
   workflow_dispatch:
 
 jobs:
