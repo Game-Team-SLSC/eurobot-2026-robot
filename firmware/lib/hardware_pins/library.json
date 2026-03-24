@@ -1,0 +1,8 @@
+{
+  "name": "hardware_pins",
+  "version": "0.1.0",
+  "build": {
+    "srcDir": ".",
+    "includeDir": "."
+  }
+}

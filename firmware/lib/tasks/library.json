@@ -1,0 +1,8 @@
+{
+  "name": "tasks",
+  "version": "0.1.0",
+  "build": {
+    "srcDir": ".",
+    "includeDir": "."
+  }
+}

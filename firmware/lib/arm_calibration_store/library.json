@@ -1,0 +1,8 @@
+{
+  "name": "arm_calibration_store",
+  "version": "0.1.0",
+  "build": {
+    "srcDir": ".",
+    "includeDir": "."
+  }
+}
