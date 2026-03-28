@@ -1,8 +1,0 @@
-{
-  "name": "event_bus",
-  "version": "0.1.0",
-  "build": {
-    "srcDir": ".",
-    "includeDir": "."
-  }
-}

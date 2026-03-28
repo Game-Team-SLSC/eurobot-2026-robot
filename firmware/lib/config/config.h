@@ -3,64 +3,78 @@
 #include <cstdint>
 
 namespace robot::config {
+    enum class I2CBusId: uint8_t {
+        ACTUATION = 0,
+        SENSORS = 1
+    };
+}
 
-constexpr uint32_t SERIAL_BAUDRATE = 115200;
+struct I2CBusConfig {
+    uint8_t sdaPin;
+    uint8_t sclPin;
+};
 
-// Task periods in milliseconds.
-constexpr uint32_t COMM_PERIOD_MS = 10;      // 100 Hz base loop (supports up to 200 Hz RF updates)
-constexpr uint32_t SENSOR_PERIOD_MS = 20;    // 50 Hz sensor aggregation
-constexpr uint32_t CONTROL_PERIOD_MS = 10;   // 100 Hz control loop
-constexpr uint32_t UI_PERIOD_MS = 100;       // 10 Hz UI refresh
-constexpr uint32_t SAFETY_PERIOD_MS = 50;    // 20 Hz safety checks
+struct I2CDeviceConfig {
+    uint8_t address;
+    robot::config::I2CBusId busId;
+};
 
-// Event queue sizing.
-constexpr uint32_t EVENT_QUEUE_LENGTH = 32;
+struct SPIBusConfig {
+    uint8_t sckPin;
+    uint8_t misoPin;
+    uint8_t mosiPin;
+};
 
-// RF24 link supervision.
-constexpr uint32_t RF_LINK_TIMEOUT_MS = 250;
+struct TMCConfig {
+    uint8_t csPin;
+    uint8_t stepPin;
+    uint8_t dirPin;
+    bool dirHighCountsUp = false;
+};
 
-// RF24 radio setup.
-constexpr uint8_t RF24_CHANNEL = 90;
-constexpr uint8_t RF24_DATA_RATE = 1;  // 0: 250kbps, 1: 1Mbps, 2: 2Mbps
-constexpr uint8_t RF24_PA_LEVEL = 1;   // 0: MIN, 1: LOW, 2: HIGH, 3: MAX
-constexpr uint64_t RF24_RX_PIPE = 0xE8E8F0F0E1ULL;
+namespace robot::config {
+    constexpr uint8_t critical_batt_th = 15; // %
+    constexpr uint8_t warning_batt_th = 25; // %
 
-// Battery display thresholds.
-constexpr float BATTERY_WARN_VOLTAGE = 13.2F;
+    constexpr float cell_1_voltage_ratio = 1.67;
+    constexpr float cell_2_voltage_ratio = 1.67;
+    constexpr float cell_3_voltage_ratio = 1.67;
+    constexpr float full_bat_voltage_ratio = 1.67;
 
-// Drive tuning.
-constexpr int16_t DRIVE_MAX_LINEAR = 1000;
-constexpr int16_t DRIVE_MAX_ANGULAR = 600;
-constexpr uint16_t STEPPER_MAX_STEP_HZ = 4000;
-constexpr uint16_t STEPPER_MIN_STEP_HZ = 40;
+    
+    constexpr I2CBusConfig i2c_actuation_config = {13, 14};
+    constexpr I2CBusConfig i2c_sensors_config = {4, 5};
 
-// I2C addresses.
-constexpr uint8_t PCA9685_ADDR_0 = 0x40;
-constexpr uint8_t PCA9685_ADDR_1 = 0x41;
-constexpr uint8_t PCA9685_ADDR_2 = 0x42;
-constexpr uint8_t TCA9555_PUMP_ADDR = 0x20;
-constexpr uint8_t TCA9548_COLOR_ADDR = 0x70;
-constexpr uint8_t COLOR_SENSOR_ADDR = 0x29;
+    constexpr I2CDeviceConfig ads1015_i2c_config = {0x48, I2CBusId::SENSORS};
+    constexpr I2CDeviceConfig logic_tca9548_i2c_config = {0x70, I2CBusId::ACTUATION};
+    constexpr I2CDeviceConfig tca9555_i2c_config = {0x27, I2CBusId::ACTUATION};
 
-// Servo pulse defaults (PCA9685 ticks at 50Hz cycle 0..4095).
-constexpr uint16_t SERVO_PULSE_MIN = 120;
-constexpr uint16_t SERVO_PULSE_MID = 307;
-constexpr uint16_t SERVO_PULSE_MAX = 500;
-constexpr uint16_t STOCK_ISLAND_LOCKED_PULSE = 220;
-constexpr uint16_t STOCK_ISLAND_OPEN_PULSE = 420;
-constexpr uint16_t FLIP_STRAIGHT_PULSE = 260;
-constexpr uint16_t FLIP_FOLD_PULSE = 420;
-constexpr uint16_t FLIP_LOCKED_PULSE = 220;
-constexpr uint16_t FLIP_UNLOCKED_PULSE = 430;
+    constexpr uint8_t tca_pin_motors_enable = 2;
 
-// Shared PCA channels for auxiliary outputs.
-constexpr uint8_t LED_PCA_INDEX = 2;
-constexpr uint8_t LED_PCA_CHANNEL = 0;
-constexpr uint8_t FAN_PCA_INDEX = 2;
-constexpr uint8_t FAN_PCA_CHANNEL = 1;
+    constexpr TMCConfig tmc_fr_config = {39, 41, 1};
+    constexpr TMCConfig tmc_fl_config = {40, 42, 2};
+    constexpr TMCConfig tmc_br_config = {9, 15, 18};
+    constexpr TMCConfig tmc_bl_config = {8, 16, 17};
+    
+    constexpr float tmc_rsense = 0.075f;
+    constexpr uint16_t motor_microsteps = 8;
+    constexpr uint32_t motion_speed_hz = 15000;
+    constexpr uint32_t motion_accel = 25000;
+    constexpr uint16_t motor_rms_current_ma = 1200; 
 
-// Color detection policy for TCS34725/SEN0201.
-constexpr float COLOR_BLUE_RATIO_MIN = 1.15F;
-constexpr float COLOR_YELLOW_RATIO_MIN = 1.10F;
+    // Movement calibration: 200 steps = 18.85 cm.
+    constexpr float movers_steps_per_meter = 200.0f / 0.1885f;
+    // Target robot linear speed in m/s at full joystick command.
+    constexpr float movers_velocity = 1.0f;
+    // drive() update frequency (Hz). Keep in sync with the control loop period.
+    constexpr uint16_t movers_control_hz = 100;
 
-}  // namespace robot::config
+    constexpr uint8_t spi_sck_pin = 12;
+    constexpr uint8_t spi_miso_pin = 11;
+    constexpr uint8_t spi_mosi_pin = 21;
+
+    constexpr uint8_t rf_ce_pin = 48;
+    constexpr uint8_t rf_csn_pin = 38;
+    constexpr uint8_t rf_frequency = 50; // Hz
+    constexpr uint16_t rf_timeout_ms = 400;
+}
