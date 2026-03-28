@@ -12,6 +12,7 @@
 #include <movers.h>
 #include <remote.h>
 #include <state.h>
+#include <logging.h>
 
 namespace {
 QueueHandle_t g_motionCommandMailbox = nullptr;
@@ -54,38 +55,41 @@ TickType_t controlPeriodTicks() {
 namespace robot::tasks {
     bool begin() {
         if (g_started) {
+            robot::logging::info("tasks", "begin called while already started");
             return true;
         }
 
+        robot::logging::info("tasks", "task system init start");
+
         if (!robot::buses::begin()) {
-            Serial.println("[tasks] buses init failed");
+            robot::logging::warn("tasks", "buses init failed");
             return false;
         }
 
         if (!robot::ioexpander::begin()) {
-            Serial.println("[tasks] ioexpander init failed");
+            robot::logging::warn("tasks", "ioexpander init failed");
             return false;
         }
 
         if (!robot::movers::begin()) {
-            Serial.println("[tasks] movers init failed");
+            robot::logging::warn("tasks", "movers init failed");
             return false;
         }
 
         g_motionCommandMailbox = xQueueCreate(1, sizeof(MotionCommand));
         if (g_motionCommandMailbox == nullptr) {
-            Serial.println("[tasks] motion mailbox allocation failed");
+            robot::logging::warn("tasks", "motion mailbox allocation failed");
             return false;
         }
 
         g_ioCommandQueue = xQueueCreate(IO_COMMAND_QUEUE_LENGTH, sizeof(robot::ioexpander::Command));
         if (g_ioCommandQueue == nullptr) {
-            Serial.println("[tasks] io command queue allocation failed");
+            robot::logging::warn("tasks", "io command queue allocation failed");
             return false;
         }
 
         if (!robot::state::begin()) {
-            Serial.println("[tasks] state init failed");
+            robot::logging::warn("tasks", "state init failed");
             return false;
         }
 
@@ -95,19 +99,11 @@ namespace robot::tasks {
                         nullptr,
                         COMM_TASK_PRIORITY,
                         nullptr) != pdPASS) {
-            Serial.println("[tasks] comm task creation failed");
+            robot::logging::warn("tasks", "comm task creation failed");
             return false;
         }
 
-        if (xTaskCreate(controlTask,
-                        "controlTask",
-                        CONTROL_TASK_STACK_WORDS,
-                        nullptr,
-                        CONTROL_TASK_PRIORITY,
-                        nullptr) != pdPASS) {
-            Serial.println("[tasks] control task creation failed");
-            return false;
-        }
+        // controlTask intentionally disabled while isolating RF24/comm path.
 
         if (xTaskCreate(ioTask,
                         "ioTask",
@@ -115,7 +111,7 @@ namespace robot::tasks {
                         nullptr,
                         IO_TASK_PRIORITY,
                         nullptr) != pdPASS) {
-            Serial.println("[tasks] io task creation failed");
+            robot::logging::warn("tasks", "io task creation failed");
             return false;
         }
 
@@ -126,6 +122,7 @@ namespace robot::tasks {
         submitIoCommand(bootMotorsEnable);
 
         g_started = true;
+        robot::logging::info("tasks", "task system init complete");
         return true;
     }
 
@@ -135,30 +132,43 @@ namespace robot::tasks {
 
     bool submitIoCommand(const robot::ioexpander::Command& command) {
         if (g_ioCommandQueue == nullptr) {
+            robot::logging::warn("tasks", "submitIoCommand called before queue init");
             return false;
         }
 
-        return xQueueSend(g_ioCommandQueue, &command, pdMS_TO_TICKS(5)) == pdTRUE;
+        const bool queued = xQueueSend(g_ioCommandQueue, &command, pdMS_TO_TICKS(5)) == pdTRUE;
+        if (!queued) {
+            robot::logging::warn("tasks", "submitIoCommand queue full or unavailable");
+        }
+        return queued;
     }
 
     void commTask(void* parameter) {
         (void) parameter;
 
+        robot::logging::info("comm", "task started");
+
         while (!robot::remote::connect()) {
             robot::state::setRadioConnected(false);
-            Serial.println("[comm] RF24 connect failed, retrying in 1s...");
+            robot::logging::warn("comm", "RF24 connect failed, retrying in 1s");
             vTaskDelay(pdMS_TO_TICKS(RADIO_RETRY_DELAY_MS));
         }
 
         robot::state::setRadioConnected(true);
+        robot::logging::info("comm", "RF24 connected");
 
         const TickType_t period = commandPeriodTicks();
         TickType_t lastWake = xTaskGetTickCount();
+        uint32_t rxCount = 0;
 
         while (true) {
             robot::types::RemoteData frame;
             if (robot::remote::fetch(frame)) {
                 MotionCommand command;
+                robot::logging::infof("comm", "received frame: fwd=%d strafe=%d rot=%d",
+                                      static_cast<int>(frame.joystickLeft.y),
+                                      static_cast<int>(frame.joystickLeft.x),
+                                      static_cast<int>(frame.joystickRight.x));
                 command.forward = normalizeAxis(frame.joystickLeft.y, true);
                 command.strafe = normalizeAxis(frame.joystickLeft.x, false);
                 command.rotate = normalizeAxis(frame.joystickRight.x, false);
@@ -169,6 +179,14 @@ namespace robot::tasks {
                 }
 
                 robot::state::setFrameReceivedAt(command.timestampMs);
+                ++rxCount;
+                if ((rxCount % 50U) == 0U) {
+                    robot::logging::infof("comm", "frames=%lu fwd=%d strafe=%d rot=%d",
+                                          static_cast<unsigned long>(rxCount),
+                                          static_cast<int>(command.forward),
+                                          static_cast<int>(command.strafe),
+                                          static_cast<int>(command.rotate));
+                }
             }
 
             vTaskDelayUntil(&lastWake, period);
@@ -178,10 +196,13 @@ namespace robot::tasks {
     void controlTask(void* parameter) {
         (void) parameter;
 
+        robot::logging::info("control", "task started");
+
         const TickType_t period = controlPeriodTicks();
         TickType_t lastWake = xTaskGetTickCount();
 
         MotionCommand latestCommand{};
+        bool lastTimedOut = true;
 
         while (true) {
             MotionCommand incoming{};
@@ -201,6 +222,15 @@ namespace robot::tasks {
                                     latestCommand.rotate);
             }
 
+            if (timedOut != lastTimedOut) {
+                lastTimedOut = timedOut;
+                if (timedOut) {
+                    robot::logging::warn("control", "radio timeout -> stopping motors");
+                } else {
+                    robot::logging::info("control", "radio recovered -> control active");
+                }
+            }
+
             robot::state::setControlSnapshot(timedOut, latestCommand);
 
             vTaskDelayUntil(&lastWake, period);
@@ -210,11 +240,15 @@ namespace robot::tasks {
     void ioTask(void* parameter) {
         (void) parameter;
 
+        robot::logging::info("io", "task started");
+
         while (true) {
             robot::ioexpander::Command command{};
             if ((g_ioCommandQueue != nullptr) &&
                 (xQueueReceive(g_ioCommandQueue, &command, pdMS_TO_TICKS(100)) == pdPASS)) {
-                robot::ioexpander::apply(command);
+                if (!robot::ioexpander::apply(command)) {
+                    robot::logging::warn("io", "failed to apply ioexpander command");
+                }
             }
         }
     }

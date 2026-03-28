@@ -2,17 +2,16 @@
 
 #include <tasks.h>
 
+
 void setup() {
     Serial.begin(115200);
-    delay(500);
-
     if (!robot::tasks::begin()) {
-        Serial.println("[boot] task system init failed");
+        Serial.println("[tasks] failed to begin");
     } else {
-        Serial.println("[boot] task system started");
+        Serial.println("[tasks] started successfully");
     }
 }
 
 void loop() {
-    delay(1000);
+    vTaskDelay(pdMS_TO_TICKS(10000));
 }

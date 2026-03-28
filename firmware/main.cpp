@@ -5,7 +5,6 @@
 #include <FastAccelStepper.h>
 #include <TMCStepper.h>
 #include <RemoteData.h>
-#include <SecretSettings.h>
 
 #define RF_ADDRESS "GT912"
 #define RF_CHANNEL 100
