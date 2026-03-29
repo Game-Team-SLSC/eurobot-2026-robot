@@ -15,16 +15,13 @@ namespace robot::logging {
             return;
         }
 
-        Serial.print("[");
-        Serial.print(tag);
-        Serial.print("]");
+        char buffer[256];
         if (level != nullptr) {
-            Serial.print("[");
-            Serial.print(level);
-            Serial.print("]");
+            snprintf(buffer, sizeof(buffer), "[%s][%s] %s", tag, level, message);
+        } else {
+            snprintf(buffer, sizeof(buffer), "[%s] %s", tag, message);
         }
-        Serial.print(" ");
-        Serial.println(message);
+        Serial.println(buffer);
     }
 
     template <typename... Args>

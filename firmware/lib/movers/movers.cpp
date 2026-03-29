@@ -50,18 +50,29 @@ bool g_moversReady = false;
 
 constexpr int32_t JOYSTICK_MAX_ABS = 127;
 
+int16_t clampToInt16(int32_t value) {
+	if (value > 32767) {
+		return 32767;
+	}
+	if (value < -32768) {
+		return -32768;
+	}
+	return static_cast<int16_t>(value);
+}
+
+int32_t getStepperSpeedMilliHz(FastAccelStepper* stepper) {
+	if (stepper == nullptr) {
+		return 0;
+	}
+	// realtime=false gives a smoother estimate during accel/decel.
+	return stepper->getCurrentSpeedInMilliHz(false);
+}
+
 void setAllDriverChipSelectInactive() {
 	digitalWrite(robot::config::tmc_bl_config.csPin, HIGH);
 	digitalWrite(robot::config::tmc_fl_config.csPin, HIGH);
 	digitalWrite(robot::config::tmc_br_config.csPin, HIGH);
 	digitalWrite(robot::config::tmc_fr_config.csPin, HIGH);
-}
-
-static int32_t computeDriveStepDeltaMax() {
-	const float stepsPerSecond = robot::config::movers_velocity * robot::config::movers_steps_per_meter;
-	const float stepsPerTick = stepsPerSecond / static_cast<float>(robot::config::movers_control_hz);
-	const int32_t rounded = static_cast<int32_t>(stepsPerTick + 0.5f);
-	return max<int32_t>(1, rounded);
 }
 
 void applyDriverSettings(TMC5160Stepper& drv) {
@@ -110,21 +121,12 @@ bool begin() {
 	stepper_br = engine.stepperConnectToPin(robot::config::tmc_br_config.stepPin);
 	stepper_bl = engine.stepperConnectToPin(robot::config::tmc_bl_config.stepPin);
 
-	if ((stepper_fr == nullptr) || (stepper_fl == nullptr) ||
-		(stepper_br == nullptr) || (stepper_bl == nullptr)) {
-		robot::logging::warn("movers", "failed to bind one or more steppers");
-		return false;
-	}
-
 	applyStepperSettings(stepper_fr, robot::config::tmc_fr_config);
     applyStepperSettings(stepper_fl, robot::config::tmc_fl_config);
     applyStepperSettings(stepper_br, robot::config::tmc_br_config);
     applyStepperSettings(stepper_bl, robot::config::tmc_bl_config);
 
 	g_moversReady = true;
-	robot::logging::infof("movers", "ready speed_hz=%lu accel=%lu",
-	                     static_cast<unsigned long>(robot::config::motion_speed_hz),
-	                     static_cast<unsigned long>(robot::config::motion_accel));
 
 	return true;
 }
@@ -141,10 +143,10 @@ void drive(int8_t forward, int8_t strafe, int8_t rotate) {
 		return;
 	}
 
-	int32_t frCmd = static_cast<int32_t>(forward) - static_cast<int32_t>(strafe) - static_cast<int32_t>(rotate);
-	int32_t flCmd = static_cast<int32_t>(forward) + static_cast<int32_t>(strafe) + static_cast<int32_t>(rotate);
-	int32_t brCmd = static_cast<int32_t>(forward) + static_cast<int32_t>(strafe) - static_cast<int32_t>(rotate);
-	int32_t blCmd = static_cast<int32_t>(forward) - static_cast<int32_t>(strafe) + static_cast<int32_t>(rotate);
+	int32_t frCmd = static_cast<int32_t>(forward) + static_cast<int32_t>(strafe) + static_cast<int32_t>(rotate);
+	int32_t flCmd = static_cast<int32_t>(forward) - static_cast<int32_t>(strafe) - static_cast<int32_t>(rotate);
+	int32_t brCmd = static_cast<int32_t>(forward) - static_cast<int32_t>(strafe) + static_cast<int32_t>(rotate);
+	int32_t blCmd = static_cast<int32_t>(forward) + static_cast<int32_t>(strafe) - static_cast<int32_t>(rotate);
 
 	int32_t maxMagnitude = abs(frCmd);
 	maxMagnitude = max(maxMagnitude, abs(flCmd));
@@ -157,22 +159,31 @@ void drive(int8_t forward, int8_t strafe, int8_t rotate) {
 	brCmd = (brCmd * JOYSTICK_MAX_ABS) / maxMagnitude;
 	blCmd = (blCmd * JOYSTICK_MAX_ABS) / maxMagnitude;
 
-	const int32_t driveStepDeltaMax = computeDriveStepDeltaMax();
+	const int32_t driveStepDeltaMax = 220;
 
 	const int32_t frDelta = (frCmd * driveStepDeltaMax) / JOYSTICK_MAX_ABS;
 	const int32_t flDelta = (flCmd * driveStepDeltaMax) / JOYSTICK_MAX_ABS;
 	const int32_t brDelta = (brCmd * driveStepDeltaMax) / JOYSTICK_MAX_ABS;
 	const int32_t blDelta = (blCmd * driveStepDeltaMax) / JOYSTICK_MAX_ABS;
 
+	Serial.printf("[movers] drive cmd f=%d s=%d r=%d -> frDelta=%ld flDelta=%ld brDelta=%ld blDelta=%ld\n",
+	              static_cast<int>(forward),
+	              static_cast<int>(strafe),
+	              static_cast<int>(rotate),
+	              static_cast<long>(frDelta),
+	              static_cast<long>(flDelta),
+	              static_cast<long>(brDelta),
+	              static_cast<long>(blDelta));
+
 	fr_target += frDelta;
 	fl_target += flDelta;
 	br_target += brDelta;
 	bl_target += blDelta;
 
-	stepper_fr->moveTo(fr_target);
-	stepper_fl->moveTo(fl_target);
-	stepper_br->moveTo(br_target);
-	stepper_bl->moveTo(bl_target);
+	stepper_fr->move(frDelta);
+	stepper_fl->move(flDelta);
+	stepper_br->move(brDelta);
+	stepper_bl->move(blDelta);
 
 	static uint32_t lastDriveLogMs = 0;
 	const uint32_t nowMs = millis();
@@ -188,4 +199,45 @@ void drive(int8_t forward, int8_t strafe, int8_t rotate) {
 		                     static_cast<long>(bl_target));
 	}
 }
+
+Vec3 getCurrentVelocity() {
+	Vec3 vel{0, 0, 0};
+
+	if (!g_moversReady || (stepper_fr == nullptr) || (stepper_fl == nullptr) ||
+		(stepper_br == nullptr) || (stepper_bl == nullptr)) {
+		return vel;
+	}
+
+	const int32_t frSpeedMilliHz = getStepperSpeedMilliHz(stepper_fr);
+	const int32_t flSpeedMilliHz = getStepperSpeedMilliHz(stepper_fl);
+	const int32_t brSpeedMilliHz = getStepperSpeedMilliHz(stepper_br);
+	const int32_t blSpeedMilliHz = getStepperSpeedMilliHz(stepper_bl);
+
+	// Inverse mixing from wheel speeds to robot axes.
+	const int32_t forwardMilliHz = (frSpeedMilliHz + flSpeedMilliHz + brSpeedMilliHz + blSpeedMilliHz) / 4;
+	const int32_t strafeMilliHz = (frSpeedMilliHz - flSpeedMilliHz - brSpeedMilliHz + blSpeedMilliHz) / 4;
+	const int32_t rotateMilliHz = (frSpeedMilliHz - flSpeedMilliHz + brSpeedMilliHz - blSpeedMilliHz) / 4;
+
+	const int32_t maxWheelMilliHz = static_cast<int32_t>(robot::config::motion_speed_hz) * 1000;
+	if (maxWheelMilliHz <= 0) {
+		return vel;
+	}
+
+	const int32_t forwardNorm = (forwardMilliHz * JOYSTICK_MAX_ABS) / maxWheelMilliHz;
+	const int32_t strafeNorm = (strafeMilliHz * JOYSTICK_MAX_ABS) / maxWheelMilliHz;
+	const int32_t rotateNorm = (rotateMilliHz * JOYSTICK_MAX_ABS) / maxWheelMilliHz;
+
+	vel.forward = clampToInt16(forwardNorm);
+	vel.strafe = clampToInt16(strafeNorm);
+	vel.rotate = clampToInt16(rotateNorm);
+	Serial.printf("[movers] velocity fwd=%d strafe=%d rot=%d (raw fwd=%ld strafe=%ld rot=%ld)\n",
+	              static_cast<int>(vel.forward),
+	              static_cast<int>(vel.strafe),
+	              static_cast<int>(vel.rotate),
+	              static_cast<long>(forwardMilliHz),
+	              static_cast<long>(strafeMilliHz),
+	              static_cast<long>(rotateMilliHz));
+	return vel;
+}
+
 } // namespace robot::movers

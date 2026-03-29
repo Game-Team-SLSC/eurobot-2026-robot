@@ -24,32 +24,9 @@ bool writeShadow() {
 
 namespace robot::ioexpander {
     bool begin() {
-        robot::logging::infof("ioexpander", "init addr=0x%02X", robot::config::tca9555_i2c_config.address);
-
-        if (!g_tca.begin()) {
-            robot::logging::warn("ioexpander", "begin failed");
-            return false;
-        }
-
-        if (!g_tca.isConnected()) {
-            robot::logging::warn("ioexpander", "device not connected");
-            return false;
-        }
-
-        for (uint8_t pin = 0; pin < 16; ++pin) {
-            if (!g_tca.pinMode1(pin, OUTPUT)) {
-                robot::logging::warnf("ioexpander", "pinMode failed pin=%u", pin);
-                return false;
-            }
-            if (!g_tca.write1(pin, LOW)) {
-                robot::logging::warnf("ioexpander", "initial write failed pin=%u", pin);
-                return false;
-            }
-        }
-
-        g_outputShadow = 0;
+        Serial.println(g_tca.begin()? "[ioexpander] initialized" : "[ioexpander] initialization failed");
         g_ready = true;
-        robot::logging::info("ioexpander", "ready");
+
         return true;
     }
 
@@ -61,22 +38,12 @@ namespace robot::ioexpander {
 
         switch (command.type) {
             case CommandType::SetPin: {
-                if (command.pin >= 16) {
-                    robot::logging::warnf("ioexpander", "invalid pin=%u", command.pin);
-                    return false;
-                }
-
-                const uint16_t bit = static_cast<uint16_t>(1U << command.pin);
-                if (command.level) {
-                    g_outputShadow |= bit;
-                } else {
-                    g_outputShadow &= static_cast<uint16_t>(~bit);
-                }
-                robot::logging::infof("ioexpander", "set pin=%u level=%u shadow=0x%04X",
-                                      command.pin,
-                                      static_cast<unsigned int>(command.level),
-                                      g_outputShadow);
-                return writeShadow();
+                g_tca.pinMode1(command.pin, OUTPUT);
+                Serial.printf("[ioexpander] SetPin pin=%u level=%u\n",
+                              static_cast<unsigned int>(command.pin),
+                              static_cast<unsigned int>(command.level));
+                
+                return (g_tca.write1(command.pin, command.level ? HIGH : LOW));
             }
 
             case CommandType::WriteMasked: {

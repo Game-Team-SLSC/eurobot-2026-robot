@@ -9,7 +9,7 @@
 #include <RemoteData.h>
 #include <buses.h>
 #include <ioexpander.h>
-#include <movers.h>
+//#include <movers.h>
 #include <remote.h>
 #include <state.h>
 #include <logging.h>
@@ -71,10 +71,10 @@ namespace robot::tasks {
             return false;
         }
 
-        if (!robot::movers::begin()) {
-            robot::logging::warn("tasks", "movers init failed");
-            return false;
-        }
+        // if (!robot::movers::begin()) {
+        //     robot::logging::warn("tasks", "movers init failed");
+        //     return false;
+        // }
 
         g_motionCommandMailbox = xQueueCreate(1, sizeof(MotionCommand));
         if (g_motionCommandMailbox == nullptr) {
@@ -105,21 +105,21 @@ namespace robot::tasks {
 
         // controlTask intentionally disabled while isolating RF24/comm path.
 
-        if (xTaskCreate(ioTask,
-                        "ioTask",
-                        IO_TASK_STACK_WORDS,
-                        nullptr,
-                        IO_TASK_PRIORITY,
-                        nullptr) != pdPASS) {
-            robot::logging::warn("tasks", "io task creation failed");
-            return false;
-        }
+        // if (xTaskCreate(ioTask,
+        //                 "ioTask",
+        //                 IO_TASK_STACK_WORDS,
+        //                 nullptr,
+        //                 IO_TASK_PRIORITY,
+        //                 nullptr) != pdPASS) {
+        //     robot::logging::warn("tasks", "io task creation failed");
+        //     return false;
+        // }
 
-        robot::ioexpander::Command bootMotorsEnable{};
-        bootMotorsEnable.type = robot::ioexpander::CommandType::SetPin;
-        bootMotorsEnable.pin = robot::config::tca_pin_motors_enable;
-        bootMotorsEnable.level = true;
-        submitIoCommand(bootMotorsEnable);
+        // robot::ioexpander::Command bootMotorsEnable{};
+        // bootMotorsEnable.type = robot::ioexpander::CommandType::SetPin;
+        // bootMotorsEnable.pin = robot::config::tca_pin_motors_enable;
+        // bootMotorsEnable.level = true;
+        // submitIoCommand(bootMotorsEnable);
 
         g_started = true;
         robot::logging::info("tasks", "task system init complete");
@@ -146,50 +146,13 @@ namespace robot::tasks {
     void commTask(void* parameter) {
         (void) parameter;
 
-        robot::logging::info("comm", "task started");
-
-        while (!robot::remote::connect()) {
-            robot::state::setRadioConnected(false);
-            robot::logging::warn("comm", "RF24 connect failed, retrying in 1s");
-            vTaskDelay(pdMS_TO_TICKS(RADIO_RETRY_DELAY_MS));
-        }
-
-        robot::state::setRadioConnected(true);
-        robot::logging::info("comm", "RF24 connected");
-
-        const TickType_t period = commandPeriodTicks();
-        TickType_t lastWake = xTaskGetTickCount();
-        uint32_t rxCount = 0;
-
+        robot::remote::connect();
         while (true) {
-            robot::types::RemoteData frame;
-            if (robot::remote::fetch(frame)) {
-                MotionCommand command;
-                robot::logging::infof("comm", "received frame: fwd=%d strafe=%d rot=%d",
-                                      static_cast<int>(frame.joystickLeft.y),
-                                      static_cast<int>(frame.joystickLeft.x),
-                                      static_cast<int>(frame.joystickRight.x));
-                command.forward = normalizeAxis(frame.joystickLeft.y, true);
-                command.strafe = normalizeAxis(frame.joystickLeft.x, false);
-                command.rotate = normalizeAxis(frame.joystickRight.x, false);
-                command.timestampMs = millis();
-
-                if (g_motionCommandMailbox != nullptr) {
-                    xQueueOverwrite(g_motionCommandMailbox, &command);
-                }
-
-                robot::state::setFrameReceivedAt(command.timestampMs);
-                ++rxCount;
-                if ((rxCount % 50U) == 0U) {
-                    robot::logging::infof("comm", "frames=%lu fwd=%d strafe=%d rot=%d",
-                                          static_cast<unsigned long>(rxCount),
-                                          static_cast<int>(command.forward),
-                                          static_cast<int>(command.strafe),
-                                          static_cast<int>(command.rotate));
-                }
+            robot::types::RemoteData data;
+            if (robot::remote::fetch(data)) {
+                Serial.println("Frame received");
             }
-
-            vTaskDelayUntil(&lastWake, period);
+            vTaskDelay(pdMS_TO_TICKS(500));
         }
     }
 
@@ -215,11 +178,11 @@ namespace robot::tasks {
                                   ((nowMs - latestCommand.timestampMs) > RADIO_TIMEOUT_MS);
 
             if (timedOut) {
-                robot::movers::drive(0, 0, 0);
+                // robot::movers::drive(0, 0, 0);
             } else {
-                robot::movers::drive(latestCommand.forward,
-                                    latestCommand.strafe,
-                                    latestCommand.rotate);
+                // robot::movers::drive(latestCommand.forward,
+                //                     latestCommand.strafe,
+                //                     latestCommand.rotate);
             }
 
             if (timedOut != lastTimedOut) {

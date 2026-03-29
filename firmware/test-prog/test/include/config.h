@@ -40,21 +40,6 @@ namespace robot::config {
     constexpr float cell_2_voltage_ratio = 1.67;
     constexpr float cell_3_voltage_ratio = 1.67;
     constexpr float full_bat_voltage_ratio = 1.67;
-
-    
-    constexpr I2CBusConfig i2c_actuation_config = {13, 14};
-    constexpr I2CBusConfig i2c_sensors_config = {4, 5};
-
-    constexpr I2CDeviceConfig ads1015_i2c_config = {0x48, I2CBusId::SENSORS};
-    constexpr I2CDeviceConfig logic_tca9548_i2c_config = {0x70, I2CBusId::ACTUATION};
-    constexpr I2CDeviceConfig tca9555_i2c_config = {0x27, I2CBusId::ACTUATION};
-
-    constexpr uint8_t tca_pin_motors_enable = 2;
-
-    constexpr TMCConfig tmc_fr_config = {39, 41, 1, true};
-    constexpr TMCConfig tmc_fl_config = {40, 42, 2};
-    constexpr TMCConfig tmc_br_config = {9, 15, 18};
-    constexpr TMCConfig tmc_bl_config = {8, 16, 17};
     
     constexpr float tmc_rsense = 0.075f;
     constexpr uint16_t motor_microsteps = 8;
