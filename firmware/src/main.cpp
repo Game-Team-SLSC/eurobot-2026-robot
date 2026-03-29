@@ -1,5 +1,7 @@
 #include <Arduino.h>
 
+#include <math.h>
+
 #include <freertos/FreeRTOS.h>
 #include <freertos/queue.h>
 #include <printf.h>
@@ -19,10 +21,32 @@ struct MotionCommand {
 };
 
 inline int8_t normalizeAxisValue(int16_t value) {
-    if (value <= 2 && value >= -2) {
+    if (value <= 1 && value >= -1) {
         return 0;
     }
     return value;
+}
+
+inline int8_t applyExpoResponse(int8_t value) {
+    constexpr float AXIS_MAX = 127.0f;
+    constexpr float EXPO_GAIN = 3.0f;
+
+    if (value == 0) {
+        return 0;
+    }
+
+    const float sign = (value < 0) ? -1.0f : 1.0f;
+    const float x = fabsf(static_cast<float>(value)) / AXIS_MAX;
+    const float y = (expf(EXPO_GAIN * x) - 1.0f) / (expf(EXPO_GAIN) - 1.0f);
+
+    int16_t shaped = static_cast<int16_t>(lroundf(sign * y * AXIS_MAX));
+    if (shaped > 127) {
+        shaped = 127;
+    }
+    if (shaped < -127) {
+        shaped = -127;
+    }
+    return static_cast<int8_t>(shaped);
 }
 
 inline bool hasOppositeSign(int16_t command, int16_t velocity) {
@@ -54,13 +78,16 @@ void commTask(void* parameter) {
             robot::movers::Vec3 currentVel = robot::movers::getCurrentVelocity();
 
             int16_t forward = static_cast<int16_t>(data.joystickLeft.y) - 127;
-            cmd.forward = normalizeAxisValue((forward > 127) ? 127 : (forward < -128 ? -128 : forward));
+            const int16_t forwardClamped = (forward > 127) ? 127 : (forward < -127 ? -127 : forward);
+            cmd.forward = applyExpoResponse(normalizeAxisValue(forwardClamped));
             
             int16_t strafe = static_cast<int16_t>(data.joystickLeft.x) - 127;
-            cmd.strafe = normalizeAxisValue((strafe > 127) ? 127 : (strafe < -128 ? -128 : strafe));
+            const int16_t strafeClamped = (strafe > 127) ? 127 : (strafe < -127 ? -127 : strafe);
+            cmd.strafe = applyExpoResponse(normalizeAxisValue(strafeClamped));
 
             int16_t rotate = static_cast<int16_t>(data.joystickRight.x) - 127;
-            cmd.rotate = normalizeAxisValue((rotate > 127) ? 127 : (rotate < -128 ? -128 : rotate));
+            const int16_t rotateClamped = (rotate > 127) ? 127 : (rotate < -127 ? -127 : rotate);
+            cmd.rotate = applyExpoResponse(normalizeAxisValue(rotateClamped));
 
             const int16_t velForward = velocitySignDeadzone(currentVel.forward);
             const int16_t velStrafe = velocitySignDeadzone(currentVel.strafe);

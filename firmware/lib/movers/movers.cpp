@@ -81,6 +81,7 @@ void applyDriverSettings(TMC5160Stepper& drv) {
 	// drv.blank_time(24);
 	drv.rms_current(robot::config::motor_rms_current_ma);
 	drv.microsteps(robot::config::motor_microsteps);
+	drv.en_pwm_mode(true);
 }
 
 void applyStepperSettings(FastAccelStepper* stepper, const TMCConfig& axisConfig) {
