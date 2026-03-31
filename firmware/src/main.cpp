@@ -7,11 +7,25 @@
 #include <printf.h>
 #include <remote.h>
 #include <ioexpander.h>
+#include <pwm-controller.h>
 #include <buses.h>
 #include <movers.h>
 
 QueueHandle_t g_ioCommandQueue = nullptr;
 QueueHandle_t g_motionCommandMailbox = nullptr;
+QueueHandle_t g_pwmCommand_Mailbox = nullptr;
+QueueHandle_t g_actionCommandQueue = nullptr;
+
+enum class Servo: uint8_t {
+        BACK_LEFT_TURNER,
+        FRONT_LEFT_TURNER,
+        BACK_RIGHT_TURNER,
+        FRONT_RIGHT_TURNER,
+        BACK_LEFT_GRABBER,
+        FRONT_LEFT_GRABBER,
+        BACK_RIGHT_GRABBER,
+        FRONT_RIGHT_GRABBER,
+    };
 
 struct MotionCommand {
     int8_t forward = 0;
@@ -73,6 +87,9 @@ void commTask(void* parameter) {
         robot::types::RemoteData data;
         if (robot::remote::fetch(data)) {
             Serial.println("[comm] Frame received");
+
+            // Motion
+
             MotionCommand cmd{};
 
             robot::movers::Vec3 currentVel = robot::movers::getCurrentVelocity();
@@ -103,11 +120,21 @@ void commTask(void* parameter) {
                 cmd.rotate = 0;
             }
 
-
-
             cmd.timestampMs = millis();
 
             xQueueSend(g_motionCommandMailbox, &cmd, 0);
+
+            // Actions
+
+            for (uint8_t btnIdx = 0; btnIdx < static_cast<uint8_t>(robot::config::Button::_BUTTON_COUNT); ++btnIdx) {
+                if (!data.buttons[btnIdx]) {
+                    continue;
+                }
+                if (btnIdx == static_cast<uint8_t>(robot::config::turn_action_btn)) {
+                    xQueueSend(g_actionCommandQueue, static_cast<uint8_t>(robot::config::Actions::TURN), 0);
+                }
+            }
+
         }
         vTaskDelay(pdMS_TO_TICKS(10));
     }
@@ -143,7 +170,24 @@ void ioTask(void* parameter) {
     }
 }
 
+void miscControl(void* parameter) {
+    (void) parameter;
 
+    Serial.println("[misc]: Task started");
+
+    while (true) {
+
+        robot::pwmcontroller::Command pwmCommand{};
+        if ((g_pwmCommand_Mailbox != nullptr) &&
+            (xQueueReceive(g_pwmCommand_Mailbox, &pwmCommand, pdMS_TO_TICKS(100)) == pdPASS)) {
+            if (!robot::pwmcontroller::apply(pwmCommand)) {
+                Serial.println("[misc] Failed to apply pwm command");
+            }
+        }
+        
+        vTaskDelay(pdMS_TO_TICKS(100));
+    }
+}
 
 void setup() {
     Serial.begin(115200);
@@ -152,15 +196,19 @@ void setup() {
     
     g_ioCommandQueue = xQueueCreate(16, sizeof(robot::ioexpander::Command));
     g_motionCommandMailbox = xQueueCreate(1, sizeof(MotionCommand));
+    g_pwmCommand_Mailbox = xQueueCreate(1, sizeof(robot::pwmcontroller::Command));
+    g_actionCommandQueue = xQueueCreate(16, sizeof(uint8_t));
 
     robot::buses::begin();
     robot::ioexpander::begin();
     robot::movers::begin();
+    robot::pwmcontroller::begin();
     robot::remote::connect();
 
     xTaskCreatePinnedToCore(commTask, "commTask", 4096, nullptr, 1, nullptr, 1);
     xTaskCreatePinnedToCore(ioTask, "ioTask", 4096, nullptr, 1, nullptr, 0);
     xTaskCreatePinnedToCore(controlTask, "controlTask", 4096, nullptr, 1, nullptr, 0);
+    xTaskCreatePinnedToCore(miscControl, "miscControl", 4096, nullptr, 1, nullptr, 0);
 
     robot::ioexpander::Command cmd{};
     cmd.pin = 7;
