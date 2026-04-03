@@ -14,6 +14,16 @@ namespace robot::config {
         RIGHT
     };
 
+    enum class IOExpander: uint8_t {
+        LOGIC,
+        KINETIC
+    };
+
+    enum class I2CController: uint8_t {
+        TCA9548_SENSORS,
+        TCA9548_LOGIC
+    };
+
     enum class Button: uint8_t {
         LSIDE_L_BTN,
         LSIDE_U_BTN,
@@ -31,7 +41,8 @@ namespace robot::config {
         _BUTTON_COUNT
     };
 
-    enum class Actions: uint8_t {
+    enum class Action: uint8_t {
+        IDLE,
         TURN,
 
         _ACTION_COUNT
@@ -68,23 +79,31 @@ struct PWMControl {
 
 
 namespace robot::config {
-    constexpr uint8_t critical_batt_th = 15; // %
+    // Battery
+    constexpr uint8_t critical_batt_th = 10; // %
     constexpr uint8_t warning_batt_th = 25; // %
 
-    constexpr float cell_1_voltage_ratio = 1.67;
-    constexpr float cell_2_voltage_ratio = 1.67;
-    constexpr float cell_3_voltage_ratio = 1.67;
-    constexpr float full_bat_voltage_ratio = 1.67;
+    constexpr float cell_1_voltage_ratio = 1.679;
+    constexpr float cell_2_voltage_ratio = 3.371;
+    constexpr float cell_3_voltage_ratio = 5.048;
+    constexpr float full_bat_voltage_ratio = 6.687;
+
+    // I2C config
+
 
     constexpr I2CBusConfig i2c_actuation_config = {13, 14};
     constexpr I2CBusConfig i2c_sensors_config = {4, 5};
 
-    constexpr I2CDeviceConfig ads1015_i2c_config = {0x48, I2CBusId::SENSORS};
-    constexpr I2CDeviceConfig logic_tca9548_i2c_config = {0x70, I2CBusId::ACTUATION};
-    constexpr I2CDeviceConfig tca9555_i2c_config = {0x27, I2CBusId::ACTUATION};
-    constexpr I2CDeviceConfig pca9685_left_i2c_config = {-1,  I2CBusId::ACTUATION};
-    constexpr I2CDeviceConfig pca9685_right_i2c_config = {-1,  I2CBusId::ACTUATION};
-    constexpr I2CDeviceConfig pca9685_misc_i2c_config = {-1,  I2CBusId::ACTUATION};
+    constexpr I2CDeviceConfig ads1015_i2c_config = {0x48, I2CBusId::ACTUATION};
+    constexpr I2CDeviceConfig tca9555_logic_i2c_config = {0x27, I2CBusId::ACTUATION};
+    constexpr I2CDeviceConfig tca9555_kinetic_i2c_config = {0x26, I2CBusId::ACTUATION};
+    constexpr I2CDeviceConfig pca9685_left_i2c_config = {0x5f,  I2CBusId::ACTUATION};
+    constexpr I2CDeviceConfig pca9685_right_i2c_config = {0x4f,  I2CBusId::ACTUATION};
+    constexpr I2CDeviceConfig pca9685_misc_i2c_config = {0x57,  I2CBusId::ACTUATION};
+    constexpr I2CDeviceConfig tca9548_sensors_i2c_config = {0x76, I2CBusId::SENSORS};
+    constexpr I2CDeviceConfig tca9548_logic_i2c_config = {0x70, I2CBusId::ACTUATION};
+
+    // Movers config
 
     constexpr uint8_t tca_pin_motors_enable = 2;
 
@@ -95,32 +114,66 @@ namespace robot::config {
     
     constexpr float tmc_rsense = 0.075f;
     constexpr uint16_t motor_microsteps = 8;
-    constexpr uint32_t motion_speed_hz = 15000;
-    constexpr uint32_t motion_accel = 25000;
+    constexpr uint32_t motion_speed_hz = 8488;
+    constexpr uint32_t motion_accel = 20000;
     constexpr uint16_t motor_rms_current_ma = 1200; 
 
-    constexpr float movers_steps_per_meter = 200.0f / 0.1885f;
+    constexpr float wheel_radius_mm = 30.0f;
+    constexpr float mm_to_m = 0.001f;
+    constexpr float pi_f = 3.14159265f;
+    constexpr float wheel_circumference_m = 2.0f * pi_f * wheel_radius_mm * mm_to_m;
+    constexpr float motor_steps_per_revolution = 200.0f * static_cast<float>(motor_microsteps);
+    constexpr float movers_steps_per_meter = motor_steps_per_revolution / wheel_circumference_m;
     constexpr float movers_velocity = 1.0f;
     constexpr uint16_t movers_control_hz = 100;
+
+    // SPI config
 
     constexpr uint8_t spi_sck_pin = 12;
     constexpr uint8_t spi_miso_pin = 11;
     constexpr uint8_t spi_mosi_pin = 21;
+
+    // Radio config
 
     constexpr uint8_t rf_ce_pin = 48;
     constexpr uint8_t rf_csn_pin = 38;
     constexpr uint8_t rf_frequency = 50; // Hz
     constexpr uint16_t rf_timeout_ms = 400;
 
+    // Servo config
+
     constexpr PWMControl back_left_turner = {robot::config::PWMController::LEFT, 8};
-    constexpr PWMControl front_left_turner = {robot::config::PWMController::LEFT, 9};
+    constexpr PWMControl front_left_turner = {robot::config::PWMController::LEFT, 8};
     constexpr PWMControl back_right_turner = {robot::config::PWMController::RIGHT, 8};
-    constexpr PWMControl front_right_turner = {robot::config::PWMController::RIGHT, 9};
+    constexpr PWMControl front_right_turner = {robot::config::PWMController::RIGHT, 8};
 
     constexpr PWMControl back_left_grabber = {robot::config::PWMController::LEFT, 6};
     constexpr PWMControl front_left_grabber = {robot::config::PWMController::LEFT, 7};
     constexpr PWMControl back_right_grabber = {robot::config::PWMController::RIGHT, 6};
     constexpr PWMControl front_right_grabber = {robot::config::PWMController::RIGHT, 7};
+
+    // Color config
+
+    constexpr uint8_t BEL_CAPTOR_CHN = 0;
+    constexpr uint8_t BIL_CAPTOR_CHN = 0;
+    constexpr uint8_t BIR_CAPTOR_CHN = 0;
+    constexpr uint8_t BER_CAPTOR_CHN = 0;
+
+    constexpr uint8_t FEL_CAPTOR_CHN = 0;
+    constexpr uint8_t FIL_CAPTOR_CHN = 0;
+    constexpr uint8_t FIR_CAPTOR_CHN = 0;
+    constexpr uint8_t FER_CAPTOR_CHN = 0;
+
+    // Diag LEDs
+
+    // TCA9555 pin indices are 0..15:
+    // P14=12, P15=13, P16=14, P17=15.
+    constexpr uint8_t led_1_tca_pin = 15; // P17
+    constexpr uint8_t led_2_tca_pin = 14; // P16
+    constexpr uint8_t led_3_tca_pin = 13; // P15
+    constexpr uint8_t led_4_tca_pin = 12; // P14
+
+    // Actions config
 
     constexpr robot::config::Button turn_action_btn = robot::config::Button::LSIDE_U_BTN;
 }

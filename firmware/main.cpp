@@ -9,8 +9,6 @@
 #define RF_ADDRESS "GT912"
 #define RF_CHANNEL 100
 
-using robot::types::RemoteData;
-
 constexpr uint32_t MY_SCK = 12;
 constexpr uint32_t MY_MISO = 11;
 constexpr uint32_t MY_MOSI = 21;

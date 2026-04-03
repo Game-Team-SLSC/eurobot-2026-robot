@@ -1,26 +1,31 @@
 #pragma once
 
 #include <cstdint>
+#include <FreeRTOS.h>
+#include <freertos/semphr.h>
+#include <RemoteData.h>
+#include <config.h>
+
+struct GlobalState {
+    RemoteData remoteData{};
+    bool radioConnected = false;
+    robot::config::Action action = robot::config::Action::IDLE;
+    uint32_t lastFrameReceivedAt = 0;
+    bool lowSpeedMode = false;
+    
+};
 
 namespace robot::state {
-    struct MotionCommand {
-        int8_t forward = 0;
-        int8_t strafe = 0;
-        int8_t rotate = 0;
-        uint32_t timestampMs = 0;
-    };
 
-    struct GlobalState {
-        bool radioConnected = false;
-        bool radioTimedOut = true;
-        uint32_t lastFrameTimestampMs = 0;
-        MotionCommand activeCommand{};
-    };
+    extern SemaphoreHandle_t mutex;
 
     bool begin();
-    bool get(GlobalState& out);
 
-    bool setRadioConnected(bool connected);
-    bool setFrameReceivedAt(uint32_t timestampMs);
-    bool setControlSnapshot(bool timedOut, const MotionCommand& command);
+    GlobalState get();
+
+    // setters
+
+    bool setRadio(RemoteData& data);
+    bool setAction(robot::config::Action action);
+    bool setLowSpeedMode(bool lowSpeed);
 }

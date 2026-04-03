@@ -1,16 +1,12 @@
 #pragma once
-
+#include <Vec3.h>
 #include <cstdint>
+#include <commands.h>
 
 
 namespace robot::movers {
-    struct Vec3 {
-        int16_t forward;
-        int16_t strafe;
-        int16_t rotate;
-    };
-
     bool begin();
-    void drive(int8_t vx, int8_t vy, int8_t va);
+    void drive(MotionCommand& cmd);
+    void goToTarget(const MotionCommand& cmd);
     Vec3 getCurrentVelocity();
 }

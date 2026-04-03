@@ -2,7 +2,6 @@
 
 #include <secrets.h>
 #include <config.h>
-#include <logging.h>
 #include <SPI.h>
 #include <cstring>
 
@@ -60,12 +59,9 @@ namespace robot::remote {
 		const bool ready = radio->begin(&radioSpi);
 		const bool chipConnected = radio->isChipConnected();
 		if (!ready) {
-			robot::logging::warn("remote", "radio.begin failed");
-			robot::logging::warnf("remote", "isChipConnected=%u", static_cast<unsigned int>(chipConnected));
+			Serial.println("[remote] Failed to initialize RF24 radio");
 			return false;
 		}
-
-		robot::logging::infof("remote", "isChipConnected=%u", static_cast<unsigned int>(chipConnected));
 
 		radio->openReadingPipe(1, rfAddressToUint64(robot::secrets::rf_address));
 		radio->setDataRate(RF24_250KBPS);
@@ -73,30 +69,21 @@ namespace robot::remote {
 			
 		radio->startListening();
 
-		radio->printDetails();
-
 		return true;
 	}
 
-	bool fetch(robot::types::RemoteData& data) {
+	bool fetch(RemoteData& data) {
 		if (radio == nullptr) {
 			Serial.println("[remote] fetch called before radio initialized");
 			return false;
 		}
 
 		if (!radio->available()) {
-			static uint32_t lastNoRxLogMs = 0;
-			const uint32_t nowMs = millis();
-			if ((nowMs - lastNoRxLogMs) >= NO_RX_LOG_PERIOD_MS) {
-				lastNoRxLogMs = nowMs;
-				robot::logging::infof("remote", "no packet yet carrier");
-			}
 			return false;
 		}
 
 		radio->read(&data, sizeof(data));
 
-		Serial.println("[remote] frame received");
 		return true;
 	}
 }

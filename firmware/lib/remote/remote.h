@@ -7,5 +7,5 @@
 
 namespace robot::remote {
     bool connect();
-    bool fetch(robot::types::RemoteData& data);
+    bool fetch(RemoteData& data);
 }

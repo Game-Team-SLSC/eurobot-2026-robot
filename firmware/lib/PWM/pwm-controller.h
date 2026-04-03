@@ -1,16 +1,13 @@
 #pragma once
 
-#include <config.h>
-
+#include <commands.h>
 #include <cstdint>
+#include <commands.h>
 
 namespace robot::pwmcontroller {
-    struct Command {
-        robot::config::PWMController controller;
-        uint8_t pin;
-        uint16_t value = 0;
-    };
-    
+    constexpr uint8_t MAX_CMD = 8;
+
     bool begin();
-    bool apply(const Command& command);
+    bool apply(const PWMCommand& command);
+    bool apply(const CommandBatch<PWMCommand>& batch);
 }

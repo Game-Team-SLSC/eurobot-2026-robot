@@ -6,7 +6,7 @@
 #include <FastAccelStepper.h>
 
 #include <config.h>
-#include <logging.h>
+
 
 namespace {
 
@@ -50,6 +50,12 @@ bool g_moversReady = false;
 
 constexpr int32_t JOYSTICK_MAX_ABS = 127;
 
+constexpr uint8_t TMC_TOFF = 4;
+constexpr uint8_t TMC_BLANK_TIME = 24;
+constexpr uint8_t TMC_IHOLD_PCT = 5;
+constexpr uint8_t TMC_IRUN_PCT = 100;
+constexpr uint8_t TMC_IHOLDDELAY = 2;
+
 int16_t clampToInt16(int32_t value) {
 	if (value > 32767) {
 		return 32767;
@@ -60,12 +66,52 @@ int16_t clampToInt16(int32_t value) {
 	return static_cast<int16_t>(value);
 }
 
+int32_t targetAxisMmToSteps(int16_t targetMm) {
+	const float targetMeters = static_cast<float>(targetMm) * robot::config::mm_to_m;
+	return static_cast<int32_t>(lroundf(targetMeters * robot::config::movers_steps_per_meter));
+}
+
 int32_t getStepperSpeedMilliHz(FastAccelStepper* stepper) {
 	if (stepper == nullptr) {
 		return 0;
 	}
 	// realtime=false gives a smoother estimate during accel/decel.
 	return stepper->getCurrentSpeedInMilliHz(false);
+}
+
+void applyWheelCommand(FastAccelStepper* stepper, int32_t cmd) {
+	if (stepper == nullptr) {
+		return;
+	}
+
+	const int32_t signedSpeedHz =
+		(static_cast<int32_t>(robot::config::motion_speed_hz) * cmd) / JOYSTICK_MAX_ABS;
+	uint32_t speedHz = static_cast<uint32_t>((signedSpeedHz < 0) ? -signedSpeedHz : signedSpeedHz);
+	stepper->setSpeedInHz(speedHz);
+
+	if (cmd == 0) {
+		stepper->stopMove();
+	} else
+
+	if (cmd > 0) {
+		stepper->runForward();
+	} else {
+		stepper->runBackward();
+	}
+
+	stepper->applySpeedAcceleration();
+}
+
+void prepareStepperForPositionMove(FastAccelStepper* stepper) {
+	if (stepper == nullptr) {
+		return;
+	}
+
+	// moveTo() relies on current speed/acceleration settings.
+	// drive(0) can leave speed at 0 Hz, so restore nominal motion settings.
+	stepper->setSpeedInHz(robot::config::motion_speed_hz);
+	stepper->setAcceleration(robot::config::motion_accel);
+	stepper->applySpeedAcceleration();
 }
 
 void setAllDriverChipSelectInactive() {
@@ -77,20 +123,23 @@ void setAllDriverChipSelectInactive() {
 
 void applyDriverSettings(TMC5160Stepper& drv) {
 	drv.begin();
-	// drv.toff(4);
-	// drv.blank_time(24);
+	//drv.toff(TMC_TOFF);
+	//drv.blank_time(TMC_BLANK_TIME);
 	drv.rms_current(robot::config::motor_rms_current_ma);
 	drv.microsteps(robot::config::motor_microsteps);
-	drv.en_pwm_mode(true);
+	//drv.ihold((31U * TMC_IHOLD_PCT) / 100U);
+	//drv.irun((31U * TMC_IRUN_PCT) / 100U);
+	//drv.iholddelay(TMC_IHOLDDELAY);
+	//drv.en_pwm_mode(true);
 }
 
-void applyStepperSettings(FastAccelStepper* stepper, const TMCConfig& axisConfig) {
+void applyStepperSettings(FastAccelStepper* stepper, const robot::config::TMCConfig& axisConfig) {
 	if (stepper == nullptr) {
 		return;
 	}
 
 	stepper->setDirectionPin(axisConfig.dirPin, axisConfig.dirHighCountsUp);
-    stepper->setSpeedInHz(robot::config::motion_speed_hz);
+	stepper->setSpeedInHz(robot::config::motion_speed_hz);
     stepper->setAcceleration(robot::config::motion_accel);
     stepper->forceStopAndNewPosition(0);
 }
@@ -99,7 +148,7 @@ void applyStepperSettings(FastAccelStepper* stepper, const TMCConfig& axisConfig
 namespace robot::movers {
 
 bool begin() {
-	robot::logging::info("movers", "init start");
+	Serial.println("[movers] Initializing movers...");
 
 	pinMode(robot::config::tmc_bl_config.csPin, OUTPUT);
     pinMode(robot::config::tmc_br_config.csPin, OUTPUT);
@@ -116,7 +165,7 @@ bool begin() {
 	setAllDriverChipSelectInactive();
 
 	engine.init();
-
+	
 	stepper_fr = engine.stepperConnectToPin(robot::config::tmc_fr_config.stepPin);
 	stepper_fl = engine.stepperConnectToPin(robot::config::tmc_fl_config.stepPin);
 	stepper_br = engine.stepperConnectToPin(robot::config::tmc_br_config.stepPin);
@@ -132,22 +181,22 @@ bool begin() {
 	return true;
 }
 
-void drive(int8_t forward, int8_t strafe, int8_t rotate) {
+void drive(MotionCommand& cmd) {
 	if (!g_moversReady || (stepper_fr == nullptr) || (stepper_fl == nullptr) ||
 		(stepper_br == nullptr) || (stepper_bl == nullptr)) {
 		static uint32_t lastWarnMs = 0;
 		const uint32_t nowMs = millis();
 		if ((nowMs - lastWarnMs) >= 1000U) {
 			lastWarnMs = nowMs;
-			robot::logging::warn("movers", "drive called while movers not ready");
+			Serial.println("[movers] drive command received but movers not ready");
 		}
 		return;
 	}
 
-	int32_t frCmd = static_cast<int32_t>(forward) + static_cast<int32_t>(strafe) + static_cast<int32_t>(rotate);
-	int32_t flCmd = static_cast<int32_t>(forward) - static_cast<int32_t>(strafe) - static_cast<int32_t>(rotate);
-	int32_t brCmd = static_cast<int32_t>(forward) - static_cast<int32_t>(strafe) + static_cast<int32_t>(rotate);
-	int32_t blCmd = static_cast<int32_t>(forward) + static_cast<int32_t>(strafe) - static_cast<int32_t>(rotate);
+	int32_t frCmd = static_cast<int32_t>(cmd.forward) + static_cast<int32_t>(cmd.strafe) + static_cast<int32_t>(cmd.rotate);
+	int32_t flCmd = static_cast<int32_t>(cmd.forward) - static_cast<int32_t>(cmd.strafe) - static_cast<int32_t>(cmd.rotate);
+	int32_t brCmd = static_cast<int32_t>(cmd.forward) - static_cast<int32_t>(cmd.strafe) + static_cast<int32_t>(cmd.rotate);
+	int32_t blCmd = static_cast<int32_t>(cmd.forward) + static_cast<int32_t>(cmd.strafe) - static_cast<int32_t>(cmd.rotate);
 
 	int32_t maxMagnitude = abs(frCmd);
 	maxMagnitude = max(maxMagnitude, abs(flCmd));
@@ -160,45 +209,49 @@ void drive(int8_t forward, int8_t strafe, int8_t rotate) {
 	brCmd = (brCmd * JOYSTICK_MAX_ABS) / maxMagnitude;
 	blCmd = (blCmd * JOYSTICK_MAX_ABS) / maxMagnitude;
 
-	const int32_t driveStepDeltaMax = 220;
+	applyWheelCommand(stepper_fr, frCmd);
+	applyWheelCommand(stepper_fl, flCmd);
+	applyWheelCommand(stepper_br, brCmd);
+	applyWheelCommand(stepper_bl, blCmd);
+}
 
-	const int32_t frDelta = (frCmd * driveStepDeltaMax) / JOYSTICK_MAX_ABS;
-	const int32_t flDelta = (flCmd * driveStepDeltaMax) / JOYSTICK_MAX_ABS;
-	const int32_t brDelta = (brCmd * driveStepDeltaMax) / JOYSTICK_MAX_ABS;
-	const int32_t blDelta = (blCmd * driveStepDeltaMax) / JOYSTICK_MAX_ABS;
-
-	Serial.printf("[movers] drive cmd f=%d s=%d r=%d -> frDelta=%ld flDelta=%ld brDelta=%ld blDelta=%ld\n",
-	              static_cast<int>(forward),
-	              static_cast<int>(strafe),
-	              static_cast<int>(rotate),
-	              static_cast<long>(frDelta),
-	              static_cast<long>(flDelta),
-	              static_cast<long>(brDelta),
-	              static_cast<long>(blDelta));
-
-	fr_target += frDelta;
-	fl_target += flDelta;
-	br_target += brDelta;
-	bl_target += blDelta;
-
-	stepper_fr->move(frDelta);
-	stepper_fl->move(flDelta);
-	stepper_br->move(brDelta);
-	stepper_bl->move(blDelta);
-
-	static uint32_t lastDriveLogMs = 0;
-	const uint32_t nowMs = millis();
-	if ((nowMs - lastDriveLogMs) >= 500U) {
-		lastDriveLogMs = nowMs;
-		robot::logging::infof("movers", "cmd f=%d s=%d r=%d tgt fr=%ld fl=%ld br=%ld bl=%ld",
-		                     static_cast<int>(forward),
-		                     static_cast<int>(strafe),
-		                     static_cast<int>(rotate),
-		                     static_cast<long>(fr_target),
-		                     static_cast<long>(fl_target),
-		                     static_cast<long>(br_target),
-		                     static_cast<long>(bl_target));
+void goToTarget(const MotionCommand& cmd) {
+	if (!g_moversReady || (stepper_fr == nullptr) || (stepper_fl == nullptr) ||
+		(stepper_br == nullptr) || (stepper_bl == nullptr)) {
+		static uint32_t lastWarnMs = 0;
+		const uint32_t nowMs = millis();
+		if ((nowMs - lastWarnMs) >= 1000U) {
+			lastWarnMs = nowMs;
+			Serial.println("[movers] goToTarget command received but movers not ready");
+		}
+		return;
 	}
+
+	const int32_t forwardTargetSteps = targetAxisMmToSteps(-cmd.target.forward);
+	const int32_t strafeTargetSteps = targetAxisMmToSteps(cmd.target.strafe);
+	const int32_t rotateTargetSteps = targetAxisMmToSteps(cmd.target.rotate);
+
+	fr_target = forwardTargetSteps + strafeTargetSteps + rotateTargetSteps;
+	fl_target = forwardTargetSteps - strafeTargetSteps - rotateTargetSteps;
+	br_target = forwardTargetSteps - strafeTargetSteps + rotateTargetSteps;
+	bl_target = forwardTargetSteps + strafeTargetSteps - rotateTargetSteps;
+
+	// print targets for each stepper
+
+	prepareStepperForPositionMove(stepper_fr);
+	prepareStepperForPositionMove(stepper_fl);
+	prepareStepperForPositionMove(stepper_br);
+	prepareStepperForPositionMove(stepper_bl);
+
+	const int32_t frCurrent = stepper_fr->getCurrentPosition();
+	const int32_t flCurrent = stepper_fl->getCurrentPosition();
+	const int32_t brCurrent = stepper_br->getCurrentPosition();
+	const int32_t blCurrent = stepper_bl->getCurrentPosition();
+
+	stepper_fr->moveTo(frCurrent + fr_target);
+	stepper_fl->moveTo(flCurrent + fl_target);
+	stepper_br->moveTo(brCurrent + br_target);
+	stepper_bl->moveTo(blCurrent + bl_target);
 }
 
 Vec3 getCurrentVelocity() {
@@ -231,13 +284,6 @@ Vec3 getCurrentVelocity() {
 	vel.forward = clampToInt16(forwardNorm);
 	vel.strafe = clampToInt16(strafeNorm);
 	vel.rotate = clampToInt16(rotateNorm);
-	Serial.printf("[movers] velocity fwd=%d strafe=%d rot=%d (raw fwd=%ld strafe=%ld rot=%ld)\n",
-	              static_cast<int>(vel.forward),
-	              static_cast<int>(vel.strafe),
-	              static_cast<int>(vel.rotate),
-	              static_cast<long>(forwardMilliHz),
-	              static_cast<long>(strafeMilliHz),
-	              static_cast<long>(rotateMilliHz));
 	return vel;
 }
 
