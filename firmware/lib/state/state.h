@@ -30,5 +30,5 @@ namespace robot::state {
     bool setRadio(RemoteData& data);
     bool setAction(robot::config::Action action);
     bool setLowSpeedMode(bool lowSpeed);
-    bool setTeam(bool isYellow);
+    bool setIsYellow(bool isYellow);
 }

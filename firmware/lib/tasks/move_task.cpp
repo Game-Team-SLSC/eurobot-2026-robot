@@ -5,6 +5,7 @@
 #include <state.h>
 #include <commands.h>
 #include <config.h>
+#include <Logger.h>
 
 namespace {
 constexpr int16_t JOYSTICK_CENTER = 127;
@@ -83,7 +84,7 @@ namespace robot::tasks {
         TickType_t xLastWakeTime = xTaskGetTickCount();
         const TickType_t xPeriode = pdMS_TO_TICKS(5);
 
-        Serial.println("[control] task started");
+        info("move_task", "task started");
 
         while (true) {
             vTaskDelayUntil(&xLastWakeTime, xPeriode);

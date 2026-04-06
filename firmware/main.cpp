@@ -5,6 +5,7 @@
 #include <FastAccelStepper.h>
 #include <TMCStepper.h>
 #include <RemoteData.h>
+#include <Logger.h>
 
 #define RF_ADDRESS "GT912"
 #define RF_CHANNEL 100
@@ -124,11 +125,11 @@ static void setAllTmcChipSelectInactive() {
 
 bool configureTca() {
   if (!tca9555.begin()) {
-    Serial.printf("[TCA] begin failed, err=0x%02X\n", tca9555.lastError());
+    error("main", "[TCA] begin failed, err=0x%02X", tca9555.lastError());
     return false;
   }
   if (!tca9555.isConnected()) {
-    Serial.printf("[TCA] not connected @0x%02X, err=0x%02X\n", tca9555.getAddress(), tca9555.lastError());
+    error("main", "[TCA] not connected @0x%02X, err=0x%02X", tca9555.getAddress(), tca9555.lastError());
     return false;
   }
 
@@ -138,38 +139,38 @@ bool configureTca() {
   const uint8_t readBack = tca9555.read1(7);
   const int tcaErr = tca9555.lastError();
 
-  Serial.printf("[TCA] pinMode=%u write=%u readBack=%u err=0x%02X\n",
-                static_cast<unsigned int>(modeOk),
-                static_cast<unsigned int>(writeOk),
-                static_cast<unsigned int>(readBack),
-                static_cast<unsigned int>(tcaErr));
+    info("main", "[TCA] pinMode=%u write=%u readBack=%u err=0x%02X",
+      static_cast<unsigned int>(modeOk),
+      static_cast<unsigned int>(writeOk),
+      static_cast<unsigned int>(readBack),
+      static_cast<unsigned int>(tcaErr));
 
   return modeOk && writeOk && (tcaErr == TCA9555_OK);
 }
 
 static void printRemoteData(const RemoteData &data) {
-  Serial.print("Received: joystickLeft=(");
-  Serial.print(data.joystickLeft.x);
-  Serial.print(",");
-  Serial.print(data.joystickLeft.y);
-  Serial.print(") joystickRight=(");
-  Serial.print(data.joystickRight.x);
-  Serial.print(",");
-  Serial.print(data.joystickRight.y);
-  Serial.print(") slider=");
-  Serial.print(data.slider);
-  Serial.print(" score=");
-  Serial.print(data.score);
-  Serial.print(" buttons=[");
-
-  for (uint8_t i = 0; i < 15; ++i) {
-    Serial.print(data.buttons[i] ? 1 : 0);
-    if (i < 14) {
-      Serial.print(",");
-    }
-  }
-
-  Serial.println("]");
+  info("main", "Received: joystickLeft=(%d,%d) joystickRight=(%d,%d) slider=%d score=%d buttons=[%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u]",
+       static_cast<int>(data.joystickLeft.x),
+       static_cast<int>(data.joystickLeft.y),
+       static_cast<int>(data.joystickRight.x),
+       static_cast<int>(data.joystickRight.y),
+       static_cast<int>(data.slider),
+       static_cast<int>(data.score),
+       static_cast<unsigned int>(data.buttons[0] ? 1 : 0),
+       static_cast<unsigned int>(data.buttons[1] ? 1 : 0),
+       static_cast<unsigned int>(data.buttons[2] ? 1 : 0),
+       static_cast<unsigned int>(data.buttons[3] ? 1 : 0),
+       static_cast<unsigned int>(data.buttons[4] ? 1 : 0),
+       static_cast<unsigned int>(data.buttons[5] ? 1 : 0),
+       static_cast<unsigned int>(data.buttons[6] ? 1 : 0),
+       static_cast<unsigned int>(data.buttons[7] ? 1 : 0),
+       static_cast<unsigned int>(data.buttons[8] ? 1 : 0),
+       static_cast<unsigned int>(data.buttons[9] ? 1 : 0),
+       static_cast<unsigned int>(data.buttons[10] ? 1 : 0),
+       static_cast<unsigned int>(data.buttons[11] ? 1 : 0),
+       static_cast<unsigned int>(data.buttons[12] ? 1 : 0),
+       static_cast<unsigned int>(data.buttons[13] ? 1 : 0),
+       static_cast<unsigned int>(data.buttons[14] ? 1 : 0));
 }
 
 static uint64_t rfAddressToUint64(const char *addr) {
@@ -234,7 +235,7 @@ static void applyMecanumMix(int16_t forward, int16_t strafe, int16_t rotate) {
     const uint32_t now = millis();
     if ((now - lastWarnMs) > 1000) {
       lastWarnMs = now;
-      Serial.println("[DRIVE] steppers not configured, command ignored");
+      warn("main", "[DRIVE] steppers not configured, command ignored");
     }
     return;
   }
@@ -278,18 +279,18 @@ static void applyMecanumMix(int16_t forward, int16_t strafe, int16_t rotate) {
   const uint32_t now = millis();
   if (((forward != 0) || (strafe != 0) || (rotate != 0)) && ((now - lastDriveDebugMs) > 250)) {
     lastDriveDebugMs = now;
-    Serial.printf("[DRIVE] fwd=%d str=%d rot=%d dFR=%ld dFL=%ld dBR=%ld dBL=%ld run=%u%u%u%u\n",
-                  static_cast<int>(forward),
-                  static_cast<int>(strafe),
-                  static_cast<int>(rotate),
-                  static_cast<long>(frDelta),
-                  static_cast<long>(flDelta),
-                  static_cast<long>(brDelta),
-                  static_cast<long>(blDelta),
-                  static_cast<unsigned int>(steppers[AXIS_FR]->isRunning()),
-                  static_cast<unsigned int>(steppers[AXIS_FL]->isRunning()),
-                  static_cast<unsigned int>(steppers[AXIS_BR]->isRunning()),
-                  static_cast<unsigned int>(steppers[AXIS_BL]->isRunning()));
+    info("main", "[DRIVE] fwd=%d str=%d rot=%d dFR=%ld dFL=%ld dBR=%ld dBL=%ld run=%u%u%u%u",
+         static_cast<int>(forward),
+         static_cast<int>(strafe),
+         static_cast<int>(rotate),
+         static_cast<long>(frDelta),
+         static_cast<long>(flDelta),
+         static_cast<long>(brDelta),
+         static_cast<long>(blDelta),
+         static_cast<unsigned int>(steppers[AXIS_FR]->isRunning()),
+         static_cast<unsigned int>(steppers[AXIS_FL]->isRunning()),
+         static_cast<unsigned int>(steppers[AXIS_BR]->isRunning()),
+         static_cast<unsigned int>(steppers[AXIS_BL]->isRunning()));
   }
 }
 
@@ -335,14 +336,14 @@ void configureSteppers() {
 
   if ((TMC_EN_PIN == TMC_CS_FR_PIN) || (TMC_EN_PIN == TMC_CS_FL_PIN) ||
       (TMC_EN_PIN == TMC_CS_BR_PIN) || (TMC_EN_PIN == TMC_CS_BL_PIN)) {
-    Serial.printf("[BOOT] WARNING: TMC_EN_PIN (%u) conflicts with a CS pin, keeping EN forced LOW\n",
-                  static_cast<unsigned int>(TMC_EN_PIN));
+    warn("main", "[BOOT] TMC_EN_PIN (%u) conflicts with a CS pin, keeping EN forced LOW",
+         static_cast<unsigned int>(TMC_EN_PIN));
   }
 
   for (uint8_t axis = 0; axis < AXIS_COUNT; axis++) {
     steppers[axis] = engine.stepperConnectToPin(STEP_PINS[axis]);
     if (steppers[axis] == nullptr) {
-      Serial.printf("[BOOT][%s] FastAccelStepper init failed\n", AXIS_NAMES[axis]);
+      error("main", "[BOOT][%s] FastAccelStepper init failed", AXIS_NAMES[axis]);
       continue;
     }
 
@@ -350,7 +351,7 @@ void configureSteppers() {
     steppers[axis]->setSpeedInHz(motion_speed_hz);
     steppers[axis]->setAcceleration(motion_accel);
     steppers[axis]->forceStopAndNewPosition(0);
-    Serial.printf("[BOOT][%s] configured, hold torque active\n", AXIS_NAMES[axis]);
+    info("main", "[BOOT][%s] configured, hold torque active", AXIS_NAMES[axis]);
   }
 }
 
@@ -360,7 +361,7 @@ void queueRelativeMove(int32_t fr, int32_t fl, int32_t br, int32_t bl, const cha
     axisTargets[axis] += deltas[axis];
     steppers[axis]->moveTo(axisTargets[axis]);
   }
-  Serial.printf("[DEMO] %s\n", label);
+  info("main", "[DEMO] %s", label);
 }
 bool allSteppersConfigured() {
   for (uint8_t axis = 0; axis < AXIS_COUNT; axis++) {
@@ -423,7 +424,7 @@ void runDemoSequence() {
 
     case DEMO_ROT_TO_ORIGIN:
       demoPhase = DEMO_DONE;
-      Serial.println("[DEMO] done");
+      info("main", "[DEMO] done");
       break;
 
     case DEMO_DONE:
@@ -440,13 +441,13 @@ void configureDrivers() {
 }
 
 void setup() {
-  Serial.begin(115200);
+  loggerSetup();
   delay(2000);
 
   Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
   Wire.setClock(100000);
   tcaReady = configureTca();
-  Serial.printf("[TCA] ready=%s\n", tcaReady ? "YES" : "NO");
+  info("main", "[TCA] ready=%s", tcaReady ? "YES" : "NO");
 
   // Keep RF24 deselected while TMC drivers are configured.
   pinMode(RADIO_CSN_PIN, OUTPUT);
@@ -465,9 +466,8 @@ void setup() {
   hspi.setFrequency(RF24_SPI_HZ);
   radioReady = radio.begin(&hspi);
   if (!radioReady) {
-    Serial.println("[RADIO] begin failed, continuing with forced config");
-    Serial.print("[RADIO] isChipConnected: ");
-    Serial.println(radio.isChipConnected());
+    warn("main", "[RADIO] begin failed, continuing with forced config");
+    info("main", "[RADIO] isChipConnected: %u", static_cast<unsigned int>(radio.isChipConnected()));
   }
 
   radio.openReadingPipe(1, rfAddressToUint64(RF_ADDRESS));
@@ -475,10 +475,10 @@ void setup() {
   radio.setDataRate(RF24_250KBPS);
 
   radio.startListening();
-  Serial.printf("[RADIO] ready=%u channel=%u spi=%luHz\n",
-                static_cast<unsigned int>(radioReady),
-                static_cast<unsigned int>(RF_CHANNEL),
-                static_cast<unsigned long>(RF24_SPI_HZ));
+    info("main", "[RADIO] ready=%u channel=%u spi=%luHz",
+      static_cast<unsigned int>(radioReady),
+      static_cast<unsigned int>(RF_CHANNEL),
+      static_cast<unsigned long>(RF24_SPI_HZ));
   
   radio.printDetails();
 }
@@ -505,7 +505,7 @@ void loop() {
         allSteppersIdle()) {
       timeoutHoldApplied = true;
       stopAllMotionHold();
-      Serial.println("[DRIVE] radio timeout -> brake then hold");
+      warn("main", "[DRIVE] radio timeout -> brake then hold");
     }
   }
 

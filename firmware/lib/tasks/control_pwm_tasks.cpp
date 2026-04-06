@@ -3,12 +3,13 @@
 #include <commands.h>
 #include <queues.h>
 #include <pwm-controller.h>
+#include <Logger.h>
 
 namespace robot::tasks {
     void control_PWM_task(void* parameter) {
         (void) parameter;
 
-        Serial.println("[misc]: Task started");
+        info("control_pwm_task", "Task started");
 
         while (true) {
             CommandBatch<PWMCommand> pwmBatch{};

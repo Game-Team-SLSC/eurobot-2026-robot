@@ -2,6 +2,11 @@
 
 #include <cstdint>
 
+#define LOG_STATE
+#define INFO_STATE
+#define WARN_STATE
+#define ERROR_STATE
+
 namespace robot::config {
     enum class I2CBusId: uint8_t {
         ACTUATION,
@@ -161,8 +166,8 @@ namespace robot::config {
     constexpr PWMControl front_right_turner = {robot::config::PWMController::RIGHT, 8};
 
     constexpr PWMControl back_left_grabber = {robot::config::PWMController::LEFT, 6};
-    constexpr PWMControl front_left_grabber = {robot::config::PWMController::LEFT, 7};
-    constexpr PWMControl back_right_grabber = {robot::config::PWMController::RIGHT, 6};
+    constexpr PWMControl front_left_grabber = {robot::config::PWMController::LEFT, 6};
+    constexpr PWMControl back_right_grabber = {robot::config::PWMController::RIGHT, 7};
     constexpr PWMControl front_right_grabber = {robot::config::PWMController::RIGHT, 7};
 
     // Color config

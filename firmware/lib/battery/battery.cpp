@@ -1,6 +1,7 @@
 #include <battery.h>
 #include <config.h>
 #include <buses.h>
+#include <Logger.h>
 
 ADS1015 adc(robot::config::ads1015_i2c_config.address, robot::buses::get(robot::config::ads1015_i2c_config.busId));
 
@@ -9,12 +10,12 @@ namespace robot::battery {
     bool begin() {
 
         if (!adc.begin()) {
-            Serial.println("[battery] Failed to initialize ADC");
+            error("battery", "Failed to initialize ADC");
             return false;
         }
 
         adc.setGain(1);
-        Serial.println("[battery] ADC initialized");
+        info("battery", "Initialized");
         return true;
     }
 

@@ -9,12 +9,13 @@
 #include <remote.h>
 #include <queues.h>
 #include <state.h>
+#include <Logger.h>
 
 namespace robot::tasks {
     void comm_task(void* parameter) {
         (void) parameter;
         
-        Serial.println("[comm] task started");
+        info("comm", "task started");
         
         while (true) {
             RemoteData data;
@@ -60,13 +61,13 @@ namespace robot::tasks {
                             continue;
                         }
                         GlobalState state = state::get();
-                        state::setTeam(true);
+                        state::setIsYellow(true);
                     } else if (btnIdx == static_cast<uint8_t>(robot::config::blue_mode_btn)) {
                         if (!data.buttons[btnIdx]) {
                             continue;
                         }
                         GlobalState state = state::get();
-                        state::setTeam(false);
+                        state::setIsYellow(false);
                     }
 
                     if (btnIdx == static_cast<uint8_t>(robot::config::Button::DOUBLE_U_BTN)) {
@@ -79,15 +80,14 @@ namespace robot::tasks {
                             continue;
                         }
 
-                        Serial.println("[comm] RSIDE_R_BTN pressed, toggling grabbers");
+                        info("comm", "RSIDE_R_BTN pressed, toggling grabbers");
 
                         CommandBatch<PWMCommand> pwmBatch;
 
                         PWMCommand cmd;
-
                         cmd.controller = robot::config::front_right_grabber.controller;
                         cmd.pin = robot::config::front_right_grabber.pin;
-                        cmd.value = 172;
+                        cmd.value = 50;
 
                         pwmBatch.add(cmd);
 
@@ -95,7 +95,7 @@ namespace robot::tasks {
 
                         cmd2.controller = robot::config::front_left_grabber.controller;
                         cmd2.pin = robot::config::front_left_grabber.pin;
-                        cmd2.value = 10;
+                        cmd2.value = 118;
 
                         pwmBatch.add(cmd2);
 
@@ -105,22 +105,22 @@ namespace robot::tasks {
                             continue;
                         }
 
-                        Serial.println("[comm] RSIDE_D_BTN pressed, stopping grabbers");
+                        info("comm", "RSIDE_D_BTN pressed, stopping grabbers");
                         CommandBatch<PWMCommand> pwmBatch;
 
                         PWMCommand cmd;
 
                         cmd.controller = robot::config::front_right_grabber.controller;
                         cmd.pin = robot::config::front_right_grabber.pin;
-                        cmd.value = 10;
+                        cmd.value = 0;
 
                         pwmBatch.add(cmd);
 
                         PWMCommand cmd2;
 
                         cmd2.controller = robot::config::front_left_grabber.controller;
-                        cmd2.pin = robot::config::back_right_grabber.pin;
-                        cmd2.value = 50;
+                        cmd2.pin = robot::config::front_left_grabber.pin;
+                        cmd2.value = 168;
 
                         pwmBatch.add(cmd2);
 

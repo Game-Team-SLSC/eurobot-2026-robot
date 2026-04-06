@@ -5,12 +5,13 @@
 #include <queues.h>
 #include <FreeRTOS.h>
 #include <freertos/queue.h>
+#include <Logger.h>
 
 namespace robot::tasks {
     void battery_watch_task(void* parameter) {
         (void) parameter;
 
-        Serial.println("[battery_watch_task]: Task started");
+        info("battery_watch_task", "Task started");
 
         constexpr TickType_t blink_half_period_ticks = pdMS_TO_TICKS(162.5);
         bool blink_phase_on = false;
@@ -35,22 +36,22 @@ namespace robot::tasks {
             const bool cell_4_warning = (status.cell_4_percentage <= robot::config::warning_batt_th);
 
             // // print all cell voltages and percentages for debugging
-            // Serial.printf("[battery_watch_task] cell1: %u%% (%u mV) %s%s\n",
+            // info("battery_watch_task", "cell1: %u%% (%u mV) %s%s",
             //               static_cast<unsigned int>(status.cell_1_percentage),
             //               static_cast<unsigned int>(status.cell_1_voltage_mv),
             //               cell_1_critical ? "CRITICAL " : "",
             //               cell_1_warning ? "WARNING" : "");
-            //     Serial.printf("[battery_watch_task] cell2: %u%% (%u mV) %s%s\n",
+            //     info("battery_watch_task", "cell2: %u%% (%u mV) %s%s",
             //               static_cast<unsigned int>(status.cell_2_percentage),
             //               static_cast<unsigned int>(status.cell_2_voltage_mv),
             //               cell_2_critical ? "CRITICAL " : "",
             //               cell_2_warning ? "WARNING" : "");
-            //     Serial.printf("[battery_watch_task] cell3: %u%% (%u mV) %s%s\n",
+            //     info("battery_watch_task", "cell3: %u%% (%u mV) %s%s",
             //                 static_cast<unsigned int>(status.cell_3_percentage),
             //                 static_cast<unsigned int>(status.cell_3_voltage_mv),
             //                 cell_3_critical ? "CRITICAL " : "",
             //                 cell_3_warning ? "WARNING" : "");
-            //     Serial.printf("[battery_watch_task] cell4: %u%% (%u mV) %s%s\n",
+            //     info("battery_watch_task", "cell4: %u%% (%u mV) %s%s",
             //                 static_cast<unsigned int>(status.cell_4_percentage),
             //                 static_cast<unsigned int>(status.cell_4_voltage_mv),
             //                 cell_4_critical ? "CRITICAL " : "",

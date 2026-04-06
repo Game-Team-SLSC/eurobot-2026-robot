@@ -4,6 +4,7 @@
 #include <config.h>
 #include <SPI.h>
 #include <cstring>
+#include <Logger.h>
 
 namespace {
 RF24 *radio = nullptr;
@@ -59,7 +60,7 @@ namespace robot::remote {
 		const bool ready = radio->begin(&radioSpi);
 		const bool chipConnected = radio->isChipConnected();
 		if (!ready) {
-			Serial.println("[remote] Failed to initialize RF24 radio");
+			error("remote", "RF24 begin failed");
 			return false;
 		}
 
@@ -69,12 +70,13 @@ namespace robot::remote {
 			
 		radio->startListening();
 
+		info("remote", "Initialized");
 		return true;
 	}
 
 	bool fetch(RemoteData& data) {
 		if (radio == nullptr) {
-			Serial.println("[remote] fetch called before radio initialized");
+			warn("remote", "fetch called before radio initialized");
 			return false;
 		}
 

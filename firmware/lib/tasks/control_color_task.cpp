@@ -3,19 +3,20 @@
 #include <queues.h>
 #include <ioexpander.h>
 #include <color_sensors.h>
+#include <Logger.h>
 
 namespace robot::tasks {
 void control_color_task(void* parameter) {
     (void)parameter;
 
-    Serial.println("[color] task started");
+    info("control_color_task", "task started");
 
     while (true) {
         ColorCommand command;
         if ((robot::queues::color_command_queue != nullptr) &&
             (xQueueReceive(robot::queues::color_command_queue, &command, pdMS_TO_TICKS(100)) == pdPASS)) {
             if (!robot::color_sensors::apply(command)) {
-                Serial.printf("[color] Failed to apply color sensor command\n");
+                warn("control_color_task", "Failed to apply color sensor command");
             }
         }
 

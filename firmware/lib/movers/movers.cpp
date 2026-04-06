@@ -4,6 +4,7 @@
 #include <SPI.h>
 #include <TMCStepper.h>
 #include <FastAccelStepper.h>
+#include <Logger.h>
 
 #include <config.h>
 
@@ -175,6 +176,8 @@ bool begin() {
     applyStepperSettings(stepper_bl, robot::config::tmc_bl_config);
 
 	g_moversReady = true;
+
+	info("movers", "Initialized");
 
 	return true;
 }

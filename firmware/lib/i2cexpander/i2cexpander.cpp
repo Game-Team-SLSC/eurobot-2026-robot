@@ -5,6 +5,7 @@
 
 #include <buses.h>
 #include <config.h>
+#include <Logger.h>
 
 namespace {
     TCA9548 logicMux(robot::config::tca9548_logic_i2c_config.address, robot::buses::get(robot::config::tca9548_logic_i2c_config.busId));
@@ -35,7 +36,9 @@ bool begin() {
     }
 
     if (!ok) {
-        Serial.println("[i2cexpander] init failed");
+        error("i2cexpander", "Initialization failed");
+    } else {
+        info("i2cexpander", "Initialized");
     }
 
     return ok;

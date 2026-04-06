@@ -5,7 +5,7 @@
 #include <FreeRTOS.h>
 #include <freertos/queue.h>
 #include <queues.h>
-
+#include <Logger.h>
 #include <buses.h>
 #include <config.h>
 
@@ -69,13 +69,6 @@ bool readTarget(DFRobot_TCS34725& target) {
     uint16_t r, g, b, c;
     target.getRGBC(&r, &g, &b, &c);
 
-    Serial.printf(
-        "[color] RGB: R=%u G=%u B=%u\n",
-        static_cast<unsigned int>(r),
-        static_cast<unsigned int>(g),
-        static_cast<unsigned int>(b)
-    );
-
     HSV hsv = rgbToHsv(r, g, b);
     ColorResponse cmd{.h = hsv.h, .s = hsv.s, .v = hsv.v};
     xQueueSend(robot::queues::color_response_queue, &cmd, 0);
@@ -87,8 +80,6 @@ void focusI2COnTarget(const robot::config::SubI2CDeviceConfig& target) {
     I2CExpanderCommand cmd;
     cmd.controller = target.controller;
     cmd.channel = target.channel;
-
-    Serial.printf("[color] Focusing I2C on controller %u channel %u\n", static_cast<unsigned int>(cmd.controller), static_cast<unsigned int>(cmd.channel));
     robot::i2cexpander::apply(cmd);
 }
 
@@ -116,12 +107,12 @@ bool begin() {
         ok = false;
     }
 
-
-    Serial.println("[color sensors] init done, waiting for sensors to be ready...");
-
     if (!ok) {
-        Serial.println("[color sensors] init failed");
+        error("color_sensors", "Initialization failed");
+        return false;
     }
+
+    info("color_sensors", "Initialized");
 
     return ok;
 }
@@ -136,7 +127,7 @@ bool apply(const ColorCommand& command) {
         case robot::config::ColorSensor::FIL: cfg = &robot::config::FIL_CAPTOR; target = &filSensor; break;
         case robot::config::ColorSensor::FEL: cfg = &robot::config::FEL_CAPTOR; target = &felSensor; break;
         default:
-            Serial.printf("[color] Invalid color sensor : %u\n", static_cast<unsigned int>(command.sensor));
+            error("color_sensors", "Invalid color sensor : %u", static_cast<unsigned int>(command.sensor));
             return false;
     }
 

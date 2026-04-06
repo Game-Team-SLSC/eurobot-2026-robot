@@ -2,7 +2,6 @@
 
 #include <freertos/FreeRTOS.h>
 #include <freertos/queue.h>
-#include <printf.h>
 #include <remote.h>
 #include <ioexpander.h>
 #include <pwm-controller.h>
@@ -14,13 +13,15 @@
 #include <state.h>
 #include <battery.h>
 #include <color_sensors.h>
+#include <Logger.h>
 
 namespace robot {}
 
 void setup() {
-    Serial.begin(115200);
-    printf_begin();
+    loggerSetup();
     delay(1000); // Allow time for Serial to initialize
+
+    info("main", "Setup started");
     
     robot::state::begin();
     robot::queues::begin();

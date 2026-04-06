@@ -57,7 +57,7 @@ namespace robot::state {
         return true;
     }
 
-    bool setTeam(bool isYellow) {
+    bool setIsYellow(bool isYellow) {
         if (!xSemaphoreTake(mutex, portMAX_DELAY)) {
             return false;
         }
