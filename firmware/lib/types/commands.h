@@ -49,7 +49,17 @@ struct PWMCommand {
     uint16_t value = 0;
 };
 
+struct ColorCommand {
+    robot::config::ColorSensor sensor;
+};
+
 struct I2CExpanderCommand {
-    robot::config::I2CDeviceConfig controller;
+    robot::config::I2CController controller;
     uint8_t channel;
+};
+
+struct ColorResponse {
+    float h;
+    float s;
+    float v;
 };

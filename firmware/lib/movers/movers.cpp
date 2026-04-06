@@ -123,13 +123,13 @@ void setAllDriverChipSelectInactive() {
 
 void applyDriverSettings(TMC5160Stepper& drv) {
 	drv.begin();
-	//drv.toff(TMC_TOFF);
-	//drv.blank_time(TMC_BLANK_TIME);
+	drv.toff(TMC_TOFF);
+	drv.blank_time(TMC_BLANK_TIME);
 	drv.rms_current(robot::config::motor_rms_current_ma);
 	drv.microsteps(robot::config::motor_microsteps);
-	//drv.ihold((31U * TMC_IHOLD_PCT) / 100U);
-	//drv.irun((31U * TMC_IRUN_PCT) / 100U);
-	//drv.iholddelay(TMC_IHOLDDELAY);
+	drv.ihold((31U * TMC_IHOLD_PCT) / 100U);
+	drv.irun(31U);
+	drv.iholddelay(TMC_IHOLDDELAY);
 	//drv.en_pwm_mode(true);
 }
 
@@ -148,8 +148,6 @@ void applyStepperSettings(FastAccelStepper* stepper, const robot::config::TMCCon
 namespace robot::movers {
 
 bool begin() {
-	Serial.println("[movers] Initializing movers...");
-
 	pinMode(robot::config::tmc_bl_config.csPin, OUTPUT);
     pinMode(robot::config::tmc_br_config.csPin, OUTPUT);
     pinMode(robot::config::tmc_fl_config.csPin, OUTPUT);
@@ -184,12 +182,6 @@ bool begin() {
 void drive(MotionCommand& cmd) {
 	if (!g_moversReady || (stepper_fr == nullptr) || (stepper_fl == nullptr) ||
 		(stepper_br == nullptr) || (stepper_bl == nullptr)) {
-		static uint32_t lastWarnMs = 0;
-		const uint32_t nowMs = millis();
-		if ((nowMs - lastWarnMs) >= 1000U) {
-			lastWarnMs = nowMs;
-			Serial.println("[movers] drive command received but movers not ready");
-		}
 		return;
 	}
 
@@ -218,12 +210,6 @@ void drive(MotionCommand& cmd) {
 void goToTarget(const MotionCommand& cmd) {
 	if (!g_moversReady || (stepper_fr == nullptr) || (stepper_fl == nullptr) ||
 		(stepper_br == nullptr) || (stepper_bl == nullptr)) {
-		static uint32_t lastWarnMs = 0;
-		const uint32_t nowMs = millis();
-		if ((nowMs - lastWarnMs) >= 1000U) {
-			lastWarnMs = nowMs;
-			Serial.println("[movers] goToTarget command received but movers not ready");
-		}
 		return;
 	}
 
@@ -236,8 +222,6 @@ void goToTarget(const MotionCommand& cmd) {
 	br_target = forwardTargetSteps - strafeTargetSteps + rotateTargetSteps;
 	bl_target = forwardTargetSteps + strafeTargetSteps - rotateTargetSteps;
 
-	// print targets for each stepper
-
 	prepareStepperForPositionMove(stepper_fr);
 	prepareStepperForPositionMove(stepper_fl);
 	prepareStepperForPositionMove(stepper_br);
@@ -248,10 +232,15 @@ void goToTarget(const MotionCommand& cmd) {
 	const int32_t brCurrent = stepper_br->getCurrentPosition();
 	const int32_t blCurrent = stepper_bl->getCurrentPosition();
 
-	stepper_fr->moveTo(frCurrent + fr_target);
-	stepper_fl->moveTo(flCurrent + fl_target);
-	stepper_br->moveTo(brCurrent + br_target);
-	stepper_bl->moveTo(blCurrent + bl_target);
+	const int32_t frAbsTarget = frCurrent + fr_target;
+	const int32_t flAbsTarget = flCurrent + fl_target;
+	const int32_t brAbsTarget = brCurrent + br_target;
+	const int32_t blAbsTarget = blCurrent + bl_target;
+
+	stepper_fr->moveTo(frAbsTarget);
+	stepper_fl->moveTo(flAbsTarget);
+	stepper_br->moveTo(brAbsTarget);
+	stepper_bl->moveTo(blAbsTarget);
 }
 
 Vec3 getCurrentVelocity() {

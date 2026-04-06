@@ -30,23 +30,105 @@ namespace robot::tasks {
                             continue;
                         }
                         GlobalState state = state::get();
-                        Serial.println("Sending action");
                         if (state.action == robot::config::Action::TURN) continue;
 
                         const uint8_t action = static_cast<uint8_t>(robot::config::Action::TURN);
                         state.action = robot::config::Action::TURN;
                         xQueueSend(robot::queues::action_command_queue, &action, 0);
+                    } else if (btnIdx == static_cast<uint8_t>(robot::config::stock_action_btn)) {
+                        if (!data.buttons[btnIdx]) {
+                            continue;
+                        }
+                        GlobalState state = state::get();
+                        if (state.action == robot::config::Action::STOCK) continue;
+
+                        const uint8_t action = static_cast<uint8_t>(robot::config::Action::STOCK);
+                        state.action = robot::config::Action::STOCK;
+                        xQueueSend(robot::queues::action_command_queue, &action, 0);
+                    } else if (btnIdx == static_cast<uint8_t>(robot::config::release_action_btn)) {
+                        if (!data.buttons[btnIdx]) {
+                            continue;
+                        }
+                        GlobalState state = state::get();
+                        if (state.action == robot::config::Action::RELEASE) continue;
+
+                        const uint8_t action = static_cast<uint8_t>(robot::config::Action::RELEASE);
+                        state.action = robot::config::Action::RELEASE;
+                        xQueueSend(robot::queues::action_command_queue, &action, 0);
+                    } else if (btnIdx == static_cast<uint8_t>(robot::config::yellow_mode_btn)) {
+                        if (!data.buttons[btnIdx]) {
+                            continue;
+                        }
+                        GlobalState state = state::get();
+                        state::setTeam(true);
+                    } else if (btnIdx == static_cast<uint8_t>(robot::config::blue_mode_btn)) {
+                        if (!data.buttons[btnIdx]) {
+                            continue;
+                        }
+                        GlobalState state = state::get();
+                        state::setTeam(false);
                     }
 
                     if (btnIdx == static_cast<uint8_t>(robot::config::Button::DOUBLE_U_BTN)) {
-                        Serial.println("Setting low speed mode to " + String(data.buttons[btnIdx]));
                         GlobalState state = state::get();
                         state::setLowSpeedMode(data.buttons[btnIdx]);
                     }
+
+                    if (btnIdx == static_cast<uint8_t>(robot::config::Button::RSIDE_R_BTN)) {
+                        if (!data.buttons[btnIdx]) {
+                            continue;
+                        }
+
+                        Serial.println("[comm] RSIDE_R_BTN pressed, toggling grabbers");
+
+                        CommandBatch<PWMCommand> pwmBatch;
+
+                        PWMCommand cmd;
+
+                        cmd.controller = robot::config::front_right_grabber.controller;
+                        cmd.pin = robot::config::front_right_grabber.pin;
+                        cmd.value = 172;
+
+                        pwmBatch.add(cmd);
+
+                        PWMCommand cmd2;
+
+                        cmd2.controller = robot::config::front_left_grabber.controller;
+                        cmd2.pin = robot::config::front_left_grabber.pin;
+                        cmd2.value = 10;
+
+                        pwmBatch.add(cmd2);
+
+                        xQueueSend(robot::queues::pwm_command_queue, &pwmBatch, 0);
+                    } else if (btnIdx == static_cast<uint8_t>(robot::config::Button::RSIDE_D_BTN)) {
+                        if (!data.buttons[btnIdx]) {
+                            continue;
+                        }
+
+                        Serial.println("[comm] RSIDE_D_BTN pressed, stopping grabbers");
+                        CommandBatch<PWMCommand> pwmBatch;
+
+                        PWMCommand cmd;
+
+                        cmd.controller = robot::config::front_right_grabber.controller;
+                        cmd.pin = robot::config::front_right_grabber.pin;
+                        cmd.value = 10;
+
+                        pwmBatch.add(cmd);
+
+                        PWMCommand cmd2;
+
+                        cmd2.controller = robot::config::front_left_grabber.controller;
+                        cmd2.pin = robot::config::back_right_grabber.pin;
+                        cmd2.value = 50;
+
+                        pwmBatch.add(cmd2);
+
+                        xQueueSend(robot::queues::pwm_command_queue, &pwmBatch, 0);
                 }
         
             }
             vTaskDelay(pdMS_TO_TICKS(10));
         }
         }
-}
+}}

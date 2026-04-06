@@ -12,7 +12,7 @@ namespace robot::tasks {
 
         while (true) {
             CommandBatch<PWMCommand> pwmBatch{};
-            if (xQueueReceive(robot::queues::pwm_command_mailbox, &pwmBatch, pdMS_TO_TICKS(100)) == pdPASS) {
+            if (xQueueReceive(robot::queues::pwm_command_queue, &pwmBatch, pdMS_TO_TICKS(100)) == pdPASS) {
                 robot::pwmcontroller::apply(pwmBatch);
             }
             

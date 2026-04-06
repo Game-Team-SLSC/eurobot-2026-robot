@@ -12,6 +12,7 @@ namespace robot::tasks {
     void control_action_task(void* parameter);
     void sense_task(void* parameter);
     void battery_watch_task(void* parameter);
+    void control_color_task(void* parameter);
 
     bool begin();
 };

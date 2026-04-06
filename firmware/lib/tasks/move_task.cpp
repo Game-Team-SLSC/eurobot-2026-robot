@@ -7,9 +7,28 @@
 #include <config.h>
 
 namespace {
-constexpr int16_t JOYSTICK_CENTER = 128;
+constexpr int16_t JOYSTICK_CENTER = 127;
+constexpr int16_t JOYSTICK_CENTER_SNAP = 2;
 constexpr int16_t AXIS_DEADZONE = 4;
-constexpr int16_t ROTATE_DEADZONE = 6;
+constexpr int16_t ROTATE_DEADZONE = 8;
+constexpr float STRAIGHT_FORWARD_MIN = 20.0f;
+constexpr float STRAIGHT_STRAFE_MAX = 10.0f;
+constexpr float ROTATE_DRIFT_MAX = 12.0f;
+constexpr uint32_t MOVE_DEBUG_PERIOD_MS = 120;
+
+inline int16_t centeredAxisFromRaw(uint8_t rawValue) {
+    int16_t centered = static_cast<int16_t>(rawValue) - JOYSTICK_CENTER;
+    if ((centered <= JOYSTICK_CENTER_SNAP) && (centered >= -JOYSTICK_CENTER_SNAP)) {
+        return 0;
+    }
+    if (centered > 127) {
+        return 127;
+    }
+    if (centered < -127) {
+        return -127;
+    }
+    return centered;
+}
 
 inline int8_t normalizeAxisValue(int16_t value, int16_t deadzone) {
     if ((value <= deadzone) && (value >= -deadzone)) {
@@ -76,22 +95,27 @@ namespace robot::tasks {
             
                 Vec3 currentVel = robot::movers::getCurrentVelocity();
             
-                int16_t forward = static_cast<int16_t>(state.remoteData.joystickLeft.y) - JOYSTICK_CENTER;
-                const int16_t forwardClamped = (forward > 127) ? 127 : (forward < -127 ? -127 : forward);
-                cmd.forward = applyExpoResponse(normalizeAxisValue(forwardClamped, AXIS_DEADZONE));
+                const int16_t forward = centeredAxisFromRaw(state.remoteData.joystickLeft.y);
+                cmd.forward = applyExpoResponse(normalizeAxisValue(forward, AXIS_DEADZONE));
                 
-                int16_t strafe = static_cast<int16_t>(state.remoteData.joystickLeft.x) - JOYSTICK_CENTER;
-                const int16_t strafeClamped = (strafe > 127) ? 127 : (strafe < -127 ? -127 : strafe);
-                cmd.strafe = applyExpoResponse(normalizeAxisValue(strafeClamped, AXIS_DEADZONE));
+                const int16_t strafe = centeredAxisFromRaw(state.remoteData.joystickLeft.x);
+                cmd.strafe = applyExpoResponse(normalizeAxisValue(strafe, AXIS_DEADZONE));
         
-                int16_t rotate = static_cast<int16_t>(state.remoteData.joystickRight.x) - JOYSTICK_CENTER;
-                const int16_t rotateClamped = (rotate > 127) ? 127 : (rotate < -127 ? -127 : rotate);
-                cmd.rotate = applyExpoResponse(normalizeAxisValue(rotateClamped, ROTATE_DEADZONE));
+                const int16_t rotate = centeredAxisFromRaw(state.remoteData.joystickRight.x);
+                cmd.rotate = applyExpoResponse(normalizeAxisValue(rotate, ROTATE_DEADZONE));
 
                 const float lowSpeedScale = state.lowSpeedMode ? 0.1f : 1.0f;
                 cmd.forward *= lowSpeedScale;
                 cmd.strafe *= lowSpeedScale;
                 cmd.rotate *= lowSpeedScale;
+
+                bool rotateDriftClamped = false;
+                if ((fabsf(cmd.forward) >= STRAIGHT_FORWARD_MIN) &&
+                    (fabsf(cmd.strafe) <= STRAIGHT_STRAFE_MAX) &&
+                    (fabsf(cmd.rotate) <= ROTATE_DRIFT_MAX)) {
+                    rotateDriftClamped = true;
+                    cmd.rotate = 0;
+                }
         
                 const int16_t velForward = velocitySignDeadzone(currentVel.forward);
                 const int16_t velStrafe = velocitySignDeadzone(currentVel.strafe);

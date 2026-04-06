@@ -24,6 +24,13 @@ namespace robot::config {
         TCA9548_LOGIC
     };
 
+    enum class ColorSensor: uint8_t {
+        FEL,
+        FIL,
+        FIR,
+        FER
+    };
+
     enum class Button: uint8_t {
         LSIDE_L_BTN,
         LSIDE_U_BTN,
@@ -44,6 +51,8 @@ namespace robot::config {
     enum class Action: uint8_t {
         IDLE,
         TURN,
+        STOCK,
+        RELEASE,
 
         _ACTION_COUNT
     };
@@ -56,6 +65,11 @@ struct I2CBusConfig {
 struct I2CDeviceConfig {
     uint8_t address;
     robot::config::I2CBusId busId;
+};
+
+struct SubI2CDeviceConfig {
+    uint8_t channel;
+    robot::config::I2CController controller;
 };
 
 struct SPIBusConfig {
@@ -100,8 +114,7 @@ namespace robot::config {
     constexpr I2CDeviceConfig pca9685_left_i2c_config = {0x5f,  I2CBusId::ACTUATION};
     constexpr I2CDeviceConfig pca9685_right_i2c_config = {0x4f,  I2CBusId::ACTUATION};
     constexpr I2CDeviceConfig pca9685_misc_i2c_config = {0x57,  I2CBusId::ACTUATION};
-    constexpr I2CDeviceConfig tca9548_sensors_i2c_config = {0x76, I2CBusId::SENSORS};
-    constexpr I2CDeviceConfig tca9548_logic_i2c_config = {0x70, I2CBusId::ACTUATION};
+    constexpr I2CDeviceConfig tca9548_logic_i2c_config = {0x77, I2CBusId::SENSORS};
 
     // Movers config
 
@@ -114,9 +127,9 @@ namespace robot::config {
     
     constexpr float tmc_rsense = 0.075f;
     constexpr uint16_t motor_microsteps = 8;
-    constexpr uint32_t motion_speed_hz = 8488;
+    constexpr uint32_t motion_speed_hz = 9000;
     constexpr uint32_t motion_accel = 20000;
-    constexpr uint16_t motor_rms_current_ma = 1200; 
+    constexpr uint16_t motor_rms_current_ma = 1750; 
 
     constexpr float wheel_radius_mm = 30.0f;
     constexpr float mm_to_m = 0.001f;
@@ -154,15 +167,10 @@ namespace robot::config {
 
     // Color config
 
-    constexpr uint8_t BEL_CAPTOR_CHN = 0;
-    constexpr uint8_t BIL_CAPTOR_CHN = 0;
-    constexpr uint8_t BIR_CAPTOR_CHN = 0;
-    constexpr uint8_t BER_CAPTOR_CHN = 0;
-
-    constexpr uint8_t FEL_CAPTOR_CHN = 0;
-    constexpr uint8_t FIL_CAPTOR_CHN = 0;
-    constexpr uint8_t FIR_CAPTOR_CHN = 0;
-    constexpr uint8_t FER_CAPTOR_CHN = 0;
+    constexpr SubI2CDeviceConfig FEL_CAPTOR = {3, I2CController::TCA9548_LOGIC};
+    constexpr SubI2CDeviceConfig FIL_CAPTOR = {2, I2CController::TCA9548_LOGIC};
+    constexpr SubI2CDeviceConfig FIR_CAPTOR = {1, I2CController::TCA9548_LOGIC};
+    constexpr SubI2CDeviceConfig FER_CAPTOR = {0, I2CController::TCA9548_LOGIC};
 
     // Diag LEDs
 
@@ -176,4 +184,8 @@ namespace robot::config {
     // Actions config
 
     constexpr robot::config::Button turn_action_btn = robot::config::Button::LSIDE_U_BTN;
+    constexpr robot::config::Button stock_action_btn = robot::config::Button::LSIDE_R_BTN;
+    constexpr robot::config::Button release_action_btn = robot::config::Button::LSIDE_D_BTN;
+    constexpr robot::config::Button yellow_mode_btn = robot::config::Button::RSIDE_U_BTN;
+    constexpr robot::config::Button blue_mode_btn = robot::config::Button::RSIDE_L_BTN;
 }

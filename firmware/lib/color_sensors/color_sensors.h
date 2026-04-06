@@ -4,8 +4,8 @@
 #include <cstdint>
 #include <commands.h>
 
-namespace robot::i2cexpander {
+namespace robot::color_sensors {
 
 	bool begin();
-	bool apply(const I2CExpanderCommand& command);
+	bool apply(const ColorCommand& command);
 }

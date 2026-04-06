@@ -56,4 +56,15 @@ namespace robot::state {
         
         return true;
     }
+
+    bool setTeam(bool isYellow) {
+        if (!xSemaphoreTake(mutex, portMAX_DELAY)) {
+            return false;
+        }
+
+        globalState.isYellowTeam = isYellow;
+        xSemaphoreGive(mutex);
+        
+        return true;
+    }
 }

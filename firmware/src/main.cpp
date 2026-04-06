@@ -13,6 +13,7 @@
 #include <tasks.h>
 #include <state.h>
 #include <battery.h>
+#include <color_sensors.h>
 
 namespace robot {}
 
@@ -30,14 +31,26 @@ void setup() {
     robot::remote::connect();
     robot::i2cexpander::begin();
     robot::battery::begin();
+    robot::color_sensors::begin();
 
     robot::tasks::begin();
     
-
     IOExpanderCommand cmd{};
     cmd.pin = 7;
     cmd.level = false;
     xQueueSend(robot::queues::io_command_queue, &cmd, 0);
+
+    CommandBatch<PWMCommand> batch{};
+
+    PWMCommand pwmCmd{};
+    pwmCmd.controller = robot::config::front_left_turner.controller;
+    pwmCmd.pin = robot::config::front_left_turner.pin;
+    pwmCmd.value = 20;
+    
+    batch.add(pwmCmd);
+    
+    xQueueSend(robot::queues::pwm_command_queue, &batch, 0);
+
 }
 
 void loop() {

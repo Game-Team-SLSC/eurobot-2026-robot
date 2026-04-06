@@ -19,7 +19,7 @@ namespace robot::buses {
             case robot::config::I2CBusId::ACTUATION:
                 return &i2c_actuation;
             case robot::config::I2CBusId::SENSORS:
-                return &i2c_sensors;
+                    return &i2c_sensors;
             default:
                 return nullptr;
         }

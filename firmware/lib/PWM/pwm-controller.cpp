@@ -27,6 +27,7 @@ namespace robot::pwmcontroller {
         } else {
             Serial.println("[pwmcontroller] Failed to initialize PWM controllers");
         }
+        
         return result;
     }
 
@@ -47,7 +48,6 @@ namespace robot::pwmcontroller {
         }
         
         
-        Serial.printf("[pwmcontroller] Applying PWM command: value=%u\n", map(command.value, 0, 180, 115, 545));
         return pwm->setPWM(command.pin, 0, map(command.value, 0, 180, 115, 545));
     }
 
