@@ -80,8 +80,6 @@ namespace robot::tasks {
                             continue;
                         }
 
-                        info("comm", "RSIDE_R_BTN pressed, toggling grabbers");
-
                         CommandBatch<PWMCommand> pwmBatch;
 
                         PWMCommand cmd;
@@ -104,8 +102,7 @@ namespace robot::tasks {
                         if (!data.buttons[btnIdx]) {
                             continue;
                         }
-
-                        info("comm", "RSIDE_D_BTN pressed, stopping grabbers");
+                        
                         CommandBatch<PWMCommand> pwmBatch;
 
                         PWMCommand cmd;

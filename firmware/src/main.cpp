@@ -46,7 +46,28 @@ void setup() {
     PWMCommand pwmCmd{};
     pwmCmd.controller = robot::config::front_left_turner.controller;
     pwmCmd.pin = robot::config::front_left_turner.pin;
-    pwmCmd.value = 20;
+    pwmCmd.value = 17;
+
+    PWMCommand cmd3;
+    cmd3.controller = robot::config::front_right_turner.controller;
+    cmd3.pin = robot::config::front_right_turner.pin;
+    cmd3.value = 163;
+    batch.add(cmd3);
+
+    PWMCommand cmdala;
+    cmdala.controller = robot::config::front_right_grabber.controller;
+    cmdala.pin = robot::config::front_right_grabber.pin;
+    cmdala.value = 100;
+
+    batch.add(cmdala);
+
+    PWMCommand cmd2a;
+
+    cmd2a.controller = robot::config::front_left_grabber.controller;
+    cmd2a.pin = robot::config::front_left_grabber.pin;
+    cmd2a.value = 68;
+
+    batch.add(cmd2a);
     
     batch.add(pwmCmd);
     
