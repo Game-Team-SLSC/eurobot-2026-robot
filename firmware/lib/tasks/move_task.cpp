@@ -6,6 +6,7 @@
 #include <commands.h>
 #include <config.h>
 #include <Logger.h>
+#include <actions.h>
 
 namespace {
 constexpr int16_t JOYSTICK_CENTER = 127;
@@ -85,26 +86,32 @@ namespace robot::tasks {
         const TickType_t xPeriode = pdMS_TO_TICKS(5);
 
         info("move_task", "task started");
-
+        
         while (true) {
             vTaskDelayUntil(&xLastWakeTime, xPeriode);
-
-            if (robot::state::get().action == robot::config::Action::IDLE) {
+            
+            if (robot::state::get().action == Action::IDLE) {
                 GlobalState state = robot::state::get();
-
+                
                 MotionCommand cmd{};
-            
+                
                 Vec3 currentVel = robot::movers::getCurrentVelocity();
-            
+                
                 const int16_t forward = centeredAxisFromRaw(state.remoteData.joystickLeft.y);
                 cmd.forward = applyExpoResponse(normalizeAxisValue(forward, AXIS_DEADZONE));
                 
                 const int16_t strafe = centeredAxisFromRaw(state.remoteData.joystickLeft.x);
                 cmd.strafe = applyExpoResponse(normalizeAxisValue(strafe, AXIS_DEADZONE));
-        
+                
                 const int16_t rotate = centeredAxisFromRaw(state.remoteData.joystickRight.x);
                 cmd.rotate = applyExpoResponse(normalizeAxisValue(rotate, ROTATE_DEADZONE));
-
+                
+                if (state.remoteData.joystickLeft.x == 0 && state.remoteData.joystickLeft.y == 0 && state.remoteData.joystickRight.x == 0) {
+                    MotionCommand stopCmd{};
+                    robot::movers::drive(stopCmd);
+                    continue;
+                }
+                
                 const float lowSpeedScale = state.lowSpeedMode ? 0.1f : 1.0f;
                 cmd.forward *= lowSpeedScale;
                 cmd.strafe *= lowSpeedScale;
@@ -131,6 +138,7 @@ namespace robot::tasks {
                 if (hasOppositeSign(cmd.rotate, velRotate)) {
                     cmd.rotate = 0;
                 }
+
 
                 robot::movers::drive(cmd);   
             } else {

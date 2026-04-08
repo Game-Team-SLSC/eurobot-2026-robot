@@ -35,7 +35,7 @@ namespace robot::state {
         return true;
     }
 
-    bool setAction(config::Action action) {
+    bool setAction(Action action) {
         if (!xSemaphoreTake(mutex, portMAX_DELAY)) {
             return false;
         }
@@ -63,6 +63,17 @@ namespace robot::state {
         }
 
         globalState.isYellowTeam = isYellow;
+        xSemaphoreGive(mutex);
+        
+        return true;
+    }
+
+    bool setStocking(bool isStocking) {
+        if (!xSemaphoreTake(mutex, portMAX_DELAY)) {
+            return false;
+        }
+
+        globalState.isStocking = isStocking;
         xSemaphoreGive(mutex);
         
         return true;

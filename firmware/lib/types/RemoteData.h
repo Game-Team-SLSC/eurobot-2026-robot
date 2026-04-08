@@ -11,10 +11,10 @@ struct RemoteData {
     JoystickData joystickLeft{};
     JoystickData joystickRight{};
 
-    bool buttons[15] = {
-        false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
+    bool buttons[10] = {
+        false, false, false, false, false, false, false, false, false, false
     };
     // for each button true if pressed
     uint8_t slider = 0; // 0 to 255
-    uint8_t score = 0;  // 0 to 255
+    bool isYellow = true;
 };

@@ -4,17 +4,18 @@
 #include <FreeRTOS.h>
 #include <freertos/semphr.h>
 #include <RemoteData.h>
-#include <config.h>
+#include <actions.h>
 
 struct GlobalState {
     RemoteData remoteData{};
     bool radioConnected = false;
     uint32_t lastFrameReceivedAt = 0;
 
-    robot::config::Action action = robot::config::Action::IDLE;
+    Action action = Action::IDLE;
 
     bool lowSpeedMode = false;
     bool isYellowTeam = false;
+    bool isStocking = false;
 };
 
 namespace robot::state {
@@ -28,7 +29,8 @@ namespace robot::state {
     // setters
 
     bool setRadio(RemoteData& data);
-    bool setAction(robot::config::Action action);
+    bool setAction(Action action);
     bool setLowSpeedMode(bool lowSpeed);
     bool setIsYellow(bool isYellow);
+    bool setStocking(bool isStocking);
 }

@@ -191,6 +191,10 @@ namespace robot::config {
     constexpr robot::config::Button turn_action_btn = robot::config::Button::LSIDE_U_BTN;
     constexpr robot::config::Button stock_action_btn = robot::config::Button::LSIDE_R_BTN;
     constexpr robot::config::Button release_action_btn = robot::config::Button::LSIDE_D_BTN;
+    
+    constexpr robot::config::Button fold_grabber_btn = robot::config::Button::RSIDE_R_BTN;
+    constexpr robot::config::Button deploy_grabber_btn = robot::config::Button::RSIDE_D_BTN;
+
     constexpr robot::config::Button yellow_mode_btn = robot::config::Button::RSIDE_U_BTN;
     constexpr robot::config::Button blue_mode_btn = robot::config::Button::RSIDE_L_BTN;
 }

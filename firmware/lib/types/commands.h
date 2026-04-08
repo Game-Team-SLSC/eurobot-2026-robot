@@ -33,6 +33,8 @@ struct MotionCommand {
         int16_t strafe = 0;
         int16_t rotate = 0;
     } target;
+
+    int16_t maxSpeed = 0;
     
     uint32_t timestampMs = 0;
 };

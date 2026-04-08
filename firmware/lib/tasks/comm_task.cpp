@@ -10,6 +10,7 @@
 #include <queues.h>
 #include <state.h>
 #include <Logger.h>
+#include <actions.h>
 
 namespace robot::tasks {
     void comm_task(void* parameter) {
@@ -21,61 +22,59 @@ namespace robot::tasks {
             RemoteData data;
             if (robot::remote::fetch(data)) {
 
+                GlobalState currentState = state::get();
                 state::setRadio(data);
         
                 // Actions
+
+                state::setIsYellow(data.isYellow);
                 
                 for (uint8_t btnIdx = 0; btnIdx < static_cast<uint8_t>(robot::config::Button::_BUTTON_COUNT); ++btnIdx) {
+                    if (currentState.remoteData.buttons[btnIdx] == data.buttons[btnIdx]) {
+                        continue;
+                    }
+                    
                     if (btnIdx == static_cast<uint8_t>(robot::config::turn_action_btn)) {
                         if (!data.buttons[btnIdx]) {
                             continue;
                         }
-                        GlobalState state = state::get();
-                        if (state.action == robot::config::Action::TURN) continue;
+                        
+                        if (currentState.action == Action::TURN) continue;
 
-                        const uint8_t action = static_cast<uint8_t>(robot::config::Action::TURN);
-                        state.action = robot::config::Action::TURN;
+                        const Action action = Action::TURN;
+                        currentState.action = action;
                         xQueueSend(robot::queues::action_command_queue, &action, 0);
-                    } else if (btnIdx == static_cast<uint8_t>(robot::config::stock_action_btn)) {
+                    }
+                    
+                    if (btnIdx == static_cast<uint8_t>(robot::config::stock_action_btn)) {
                         if (!data.buttons[btnIdx]) {
                             continue;
                         }
-                        GlobalState state = state::get();
-                        if (state.action == robot::config::Action::STOCK) continue;
 
-                        const uint8_t action = static_cast<uint8_t>(robot::config::Action::STOCK);
-                        state.action = robot::config::Action::STOCK;
-                        xQueueSend(robot::queues::action_command_queue, &action, 0);
-                    } else if (btnIdx == static_cast<uint8_t>(robot::config::release_action_btn)) {
-                        if (!data.buttons[btnIdx]) {
-                            continue;
-                        }
-                        GlobalState state = state::get();
-                        if (state.action == robot::config::Action::RELEASE) continue;
+                        if (currentState.action == Action::STOCK) continue;
 
-                        const uint8_t action = static_cast<uint8_t>(robot::config::Action::RELEASE);
-                        state.action = robot::config::Action::RELEASE;
+                        const Action action = Action::STOCK;
+                        currentState.action = action;
                         xQueueSend(robot::queues::action_command_queue, &action, 0);
-                    } else if (btnIdx == static_cast<uint8_t>(robot::config::yellow_mode_btn)) {
+                    }
+                    
+                    if (btnIdx == static_cast<uint8_t>(robot::config::release_action_btn)) {
                         if (!data.buttons[btnIdx]) {
                             continue;
                         }
-                        GlobalState state = state::get();
-                        state::setIsYellow(true);
-                    } else if (btnIdx == static_cast<uint8_t>(robot::config::blue_mode_btn)) {
-                        if (!data.buttons[btnIdx]) {
-                            continue;
-                        }
-                        GlobalState state = state::get();
-                        state::setIsYellow(false);
+                        
+                        if (currentState.action == Action::RELEASE) continue;
+
+                        const Action action = Action::RELEASE;
+                        currentState.action = action;
+                        xQueueSend(robot::queues::action_command_queue, &action, 0);
                     }
 
                     if (btnIdx == static_cast<uint8_t>(robot::config::Button::DOUBLE_U_BTN)) {
-                        GlobalState state = state::get();
                         state::setLowSpeedMode(data.buttons[btnIdx]);
                     }
 
-                    if (btnIdx == static_cast<uint8_t>(robot::config::Button::RSIDE_R_BTN)) {
+                    if (btnIdx == static_cast<uint8_t>(robot::config::fold_grabber_btn)) {
                         if (!data.buttons[btnIdx]) {
                             continue;
                         }
@@ -85,7 +84,7 @@ namespace robot::tasks {
                         PWMCommand cmd;
                         cmd.controller = robot::config::front_right_grabber.controller;
                         cmd.pin = robot::config::front_right_grabber.pin;
-                        cmd.value = 50;
+                        cmd.value = 100;
 
                         pwmBatch.add(cmd);
 
@@ -93,12 +92,12 @@ namespace robot::tasks {
 
                         cmd2.controller = robot::config::front_left_grabber.controller;
                         cmd2.pin = robot::config::front_left_grabber.pin;
-                        cmd2.value = 118;
+                        cmd2.value = 60;
 
                         pwmBatch.add(cmd2);
 
                         xQueueSend(robot::queues::pwm_command_queue, &pwmBatch, 0);
-                    } else if (btnIdx == static_cast<uint8_t>(robot::config::Button::RSIDE_D_BTN)) {
+                    } else if (btnIdx == static_cast<uint8_t>(robot::config::deploy_grabber_btn)) {
                         if (!data.buttons[btnIdx]) {
                             continue;
                         }
@@ -109,7 +108,7 @@ namespace robot::tasks {
 
                         cmd.controller = robot::config::front_right_grabber.controller;
                         cmd.pin = robot::config::front_right_grabber.pin;
-                        cmd.value = 0;
+                        cmd.value = 150;
 
                         pwmBatch.add(cmd);
 
@@ -117,7 +116,7 @@ namespace robot::tasks {
 
                         cmd2.controller = robot::config::front_left_grabber.controller;
                         cmd2.pin = robot::config::front_left_grabber.pin;
-                        cmd2.value = 168;
+                        cmd2.value = 10;
 
                         pwmBatch.add(cmd2);
 

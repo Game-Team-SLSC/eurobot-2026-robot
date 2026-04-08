@@ -69,7 +69,9 @@ int16_t clampToInt16(int32_t value) {
 
 int32_t targetAxisMmToSteps(int16_t targetMm) {
 	const float targetMeters = static_cast<float>(targetMm) * robot::config::mm_to_m;
-	return static_cast<int32_t>(lroundf(targetMeters * robot::config::movers_steps_per_meter));
+	int32_t mm = static_cast<int32_t>(lroundf(targetMeters * robot::config::movers_steps_per_meter));
+
+	return mm;
 }
 
 int32_t getStepperSpeedMilliHz(FastAccelStepper* stepper) {
@@ -218,13 +220,17 @@ void goToTarget(const MotionCommand& cmd) {
 
 	const int32_t forwardTargetSteps = targetAxisMmToSteps(-cmd.target.forward);
 	const int32_t strafeTargetSteps = targetAxisMmToSteps(cmd.target.strafe);
-	const int32_t rotateTargetSteps = targetAxisMmToSteps(cmd.target.rotate);
+	const int32_t rotateTargetSteps = targetAxisMmToSteps(map(cmd.target.rotate,-180, 180, -PI*209, PI*209));
+
+	Serial.printf("steps : %d\n", rotateTargetSteps);
+
 
 	fr_target = forwardTargetSteps + strafeTargetSteps + rotateTargetSteps;
 	fl_target = forwardTargetSteps - strafeTargetSteps - rotateTargetSteps;
 	br_target = forwardTargetSteps - strafeTargetSteps + rotateTargetSteps;
 	bl_target = forwardTargetSteps + strafeTargetSteps - rotateTargetSteps;
 
+	
 	prepareStepperForPositionMove(stepper_fr);
 	prepareStepperForPositionMove(stepper_fl);
 	prepareStepperForPositionMove(stepper_br);
