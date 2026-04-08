@@ -53,15 +53,6 @@ namespace robot::config {
         _BUTTON_COUNT
     };
 
-    enum class Action: uint8_t {
-        IDLE,
-        TURN,
-        STOCK,
-        RELEASE,
-
-        _ACTION_COUNT
-    };
-
 struct I2CBusConfig {
     uint8_t sdaPin;
     uint8_t sclPin;
