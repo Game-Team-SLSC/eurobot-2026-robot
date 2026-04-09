@@ -78,4 +78,26 @@ namespace robot::state {
         
         return true;
     }
+
+    bool setSpeedGain(float gain) {
+        if (!xSemaphoreTake(mutex, portMAX_DELAY)) {
+            return false;
+        }
+
+        globalState.speedGain = gain;
+        xSemaphoreGive(mutex);
+        
+        return true;
+    }
+
+    bool setCriticalBattery(bool critical) {
+        if (!xSemaphoreTake(mutex, portMAX_DELAY)) {
+            return false;
+        }
+
+        globalState.criticalBattery = critical;
+        xSemaphoreGive(mutex);
+        
+        return true;
+    }
 }

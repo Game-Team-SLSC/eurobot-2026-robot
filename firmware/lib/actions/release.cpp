@@ -5,12 +5,9 @@
 #include <commands.h>
 #include <queues.h>
 #include <state.h>
-#include <Logger.h>
 
 namespace robot::actions {
 void release() {
-    info("control_action_task", "RELEASE action received");
-
     CommandBatch<PWMCommand> pwmBatch;
 
     robot::state::setStocking(false);

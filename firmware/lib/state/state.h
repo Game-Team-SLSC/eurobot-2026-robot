@@ -11,7 +11,11 @@ struct GlobalState {
     bool radioConnected = false;
     uint32_t lastFrameReceivedAt = 0;
 
+    float speedGain = 1.0f;
+
     Action action = Action::IDLE;
+
+    bool criticalBattery = false;
 
     bool lowSpeedMode = false;
     bool isYellowTeam = false;
@@ -33,4 +37,6 @@ namespace robot::state {
     bool setLowSpeedMode(bool lowSpeed);
     bool setIsYellow(bool isYellow);
     bool setStocking(bool isStocking);
+    bool setSpeedGain(float gain);
+    bool setCriticalBattery(bool critical);
 }

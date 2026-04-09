@@ -6,6 +6,7 @@
 #include <FreeRTOS.h>
 #include <freertos/queue.h>
 #include <Logger.h>
+#include <state.h>
 
 namespace robot::tasks {
     void battery_watch_task(void* parameter) {
@@ -14,6 +15,8 @@ namespace robot::tasks {
         info("battery_watch_task", "Task started");
 
         constexpr TickType_t blink_half_period_ticks = pdMS_TO_TICKS(162.5);
+        constexpr TickType_t log_period_ticks = pdMS_TO_TICKS(3000);
+        TickType_t last_log_time = 0;
         bool blink_phase_on = false;
 
         auto push_led_state = [](uint8_t pin, bool level) {
@@ -22,6 +25,8 @@ namespace robot::tasks {
         };
 
         while (true) {
+            GlobalState state = robot::state::get();
+            
             blink_phase_on = !blink_phase_on;
             robot::battery::BatteryStatus status = robot::battery::getStatus();
 
@@ -58,6 +63,28 @@ namespace robot::tasks {
             //                 cell_4_warning ? "WARNING" : "");
 
 
+            TickType_t current_time = xTaskGetTickCount();
+            if (current_time - last_log_time >= log_period_ticks) {
+                last_log_time = current_time;
+                if (status.cell_1_percentage <= 0 || status.cell_2_percentage <= 0 || status.cell_3_percentage <= 0 || status.cell_4_percentage <= 0) {
+                    warn("battery_watch_task", "Critical battery level detected! Stopping the robot.");
+                    state::setCriticalBattery(true);
+                } else {
+                    if (cell_1_critical || cell_2_critical || cell_3_critical || cell_4_critical) {
+                        warn("battery_watch_task", "Critical battery level detected! Stopping the robot.");
+                    } else
+                    if (cell_1_warning || cell_2_warning || cell_3_warning || cell_4_warning) {
+                        warn("battery_watch_task", "Battery level warning.");
+                    }
+                    state::setCriticalBattery(false);
+                }
+            } else {
+                if (cell_1_critical || cell_2_critical || cell_3_critical || cell_4_critical) {
+                    state::setCriticalBattery(true);
+                } else {
+                    state::setCriticalBattery(false);
+                }
+            }
 
             push_led_state(
                 robot::config::led_1_tca_pin,

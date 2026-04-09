@@ -124,7 +124,7 @@ namespace robot::config {
     constexpr float tmc_rsense = 0.075f;
     constexpr uint16_t motor_microsteps = 8;
     constexpr uint32_t motion_speed_hz = 9000;
-    constexpr uint32_t motion_accel = 20000;
+    constexpr uint32_t motion_accel = 25000;
     constexpr uint16_t motor_rms_current_ma = 1750; 
 
     constexpr float wheel_radius_mm = 30.0f;
@@ -135,6 +135,9 @@ namespace robot::config {
     constexpr float movers_steps_per_meter = motor_steps_per_revolution / wheel_circumference_m;
     constexpr float movers_velocity = 1.0f;
     constexpr uint16_t movers_control_hz = 100;
+
+    constexpr float min_speed_gain = 0.1f;
+    constexpr float max_speed_gain = 1.0f;
 
     // SPI config
 

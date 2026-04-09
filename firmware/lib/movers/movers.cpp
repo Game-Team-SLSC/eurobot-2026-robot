@@ -8,7 +8,6 @@
 
 #include <config.h>
 
-
 namespace {
 
 FastAccelStepperEngine engine = FastAccelStepperEngine();

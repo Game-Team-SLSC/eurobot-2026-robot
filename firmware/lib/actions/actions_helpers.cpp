@@ -59,11 +59,11 @@ bool isOurTeam(const ColorResponse& color) {
 
     const GlobalState state = robot::state::get();
 
-    if (state.isYellowTeam && (color.h >= 60.0f) && (color.h <= 80.0f)) {
+    if (!state.isYellowTeam && (color.h >= 50.0f) && (color.h <= 80.0f)) {
         return true;
     }
 
-    if (!state.isYellowTeam && (color.h >= 210.0f) && (color.h <= 230.0f)) {
+    if (state.isYellowTeam && (color.h >= 210.0f) && (color.h <= 230.0f)) {
         return true;
     }
 

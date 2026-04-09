@@ -11,8 +11,8 @@
 namespace {
 constexpr int16_t JOYSTICK_CENTER = 127;
 constexpr int16_t JOYSTICK_CENTER_SNAP = 2;
-constexpr int16_t AXIS_DEADZONE = 4;
-constexpr int16_t ROTATE_DEADZONE = 8;
+constexpr int16_t AXIS_DEADZONE = 2;
+constexpr int16_t ROTATE_DEADZONE = 2;
 constexpr float STRAIGHT_FORWARD_MIN = 20.0f;
 constexpr float STRAIGHT_STRAFE_MAX = 10.0f;
 constexpr float ROTATE_DRIFT_MAX = 12.0f;
@@ -69,7 +69,7 @@ inline bool hasOppositeSign(int16_t command, int16_t velocity) {
 }
 
 inline int16_t velocitySignDeadzone(int16_t value) {
-    constexpr int16_t VELOCITY_SIGN_EPSILON = 3;
+    constexpr int16_t VELOCITY_SIGN_EPSILON = 2;
     if ((value >= -VELOCITY_SIGN_EPSILON) && (value <= VELOCITY_SIGN_EPSILON)) {
         return 0;
     }
@@ -90,21 +90,28 @@ namespace robot::tasks {
         while (true) {
             vTaskDelayUntil(&xLastWakeTime, xPeriode);
             
-            if (robot::state::get().action == Action::IDLE) {
-                GlobalState state = robot::state::get();
+            GlobalState state = robot::state::get();
+
+            if (state.criticalBattery) {
+                MotionCommand stopCmd{};
+                robot::movers::drive(stopCmd);
+                continue;
+            }
+            
+            if (state.action == Action::IDLE) {
                 
                 MotionCommand cmd{};
                 
                 Vec3 currentVel = robot::movers::getCurrentVelocity();
                 
                 const int16_t forward = centeredAxisFromRaw(state.remoteData.joystickLeft.y);
-                cmd.forward = applyExpoResponse(normalizeAxisValue(forward, AXIS_DEADZONE));
+                cmd.forward = applyExpoResponse(normalizeAxisValue(forward, AXIS_DEADZONE)) * state.speedGain;
                 
                 const int16_t strafe = centeredAxisFromRaw(state.remoteData.joystickLeft.x);
-                cmd.strafe = applyExpoResponse(normalizeAxisValue(strafe, AXIS_DEADZONE));
+                cmd.strafe = applyExpoResponse(normalizeAxisValue(strafe, AXIS_DEADZONE)) * state.speedGain;
                 
                 const int16_t rotate = centeredAxisFromRaw(state.remoteData.joystickRight.x);
-                cmd.rotate = applyExpoResponse(normalizeAxisValue(rotate, ROTATE_DEADZONE));
+                cmd.rotate = applyExpoResponse(normalizeAxisValue(rotate, ROTATE_DEADZONE)) * state.speedGain;
                 
                 if (state.remoteData.joystickLeft.x == 0 && state.remoteData.joystickLeft.y == 0 && state.remoteData.joystickRight.x == 0) {
                     MotionCommand stopCmd{};
@@ -144,6 +151,10 @@ namespace robot::tasks {
             } else {
                 MotionCommand cmd;
                 if (xQueueReceive(robot::queues::motion_command_queue, &cmd, 0) == pdPASS) {
+                    info("move_task", "Handling motion command (target: f=%d s=%d r=%d)",
+                         static_cast<int>(cmd.target.forward),
+                         static_cast<int>(cmd.target.strafe),
+                         static_cast<int>(cmd.target.rotate));
                     robot::movers::goToTarget(cmd);
                 }
             }

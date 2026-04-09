@@ -24,12 +24,15 @@ void control_action_task(void* parameter) {
 
             switch (action) {
                 case Action::TURN:
+                    info("control_action_task", "Handling action command: TURN");
                     robot::actions::turn();
                     break;
                 case Action::STOCK:
+                    info("control_action_task", "Handling action command: STOCK");
                     robot::actions::stock();
                     break;
                 case Action::RELEASE:
+                    info("control_action_task", "Handling action command: RELEASE");
                     robot::actions::release();
                     break;
                 default:
