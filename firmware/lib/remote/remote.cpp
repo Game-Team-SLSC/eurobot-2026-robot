@@ -65,7 +65,7 @@ namespace robot::remote {
 		}
 
 		radio->openReadingPipe(1, rfAddressToUint64(robot::secrets::rf_address));
-		radio->setPALevel(RF24_PA_LOW);
+		radio->setPALevel(RF24_PA_HIGH);
 		radio->setDataRate(RF24_250KBPS);
 		radio->setChannel(robot::secrets::rf_channel);
 			

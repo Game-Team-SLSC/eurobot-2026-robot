@@ -7,6 +7,7 @@ enum class Action: uint8_t {
     TURN,
     STOCK,
     RELEASE,
+    TURN_TWO,
 
     _ACTION_COUNT
 };
@@ -15,4 +16,5 @@ namespace robot::actions {
     void turn();
     void stock();
     void release();
+    void turn_two();
 }

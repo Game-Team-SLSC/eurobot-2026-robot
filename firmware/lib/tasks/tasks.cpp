@@ -9,7 +9,7 @@ namespace robot::tasks {
         xTaskCreatePinnedToCore(control_action_task, "control_action_task", 4096, nullptr, 1, nullptr, 1);
         xTaskCreatePinnedToCore(battery_watch_task, "battery_watch_task", 4096, nullptr, 1, nullptr, 1);
         xTaskCreatePinnedToCore(control_color_task, "control_color_task", 4096, nullptr, 1, nullptr, 1);
-
+        xTaskCreatePinnedToCore(control_leds_task, "control_leds_task", 4096, nullptr, 1, nullptr, 0);
         return true;
     }
 }

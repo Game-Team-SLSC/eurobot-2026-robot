@@ -61,17 +61,10 @@ namespace robot::pwmcontroller {
                 error("pwmcontroller", "Invalid PWM controller id: %u", static_cast<unsigned int>(command.controller));
                 return false;
         }
-
-        if (!controllerReady) {
-            warn("pwmcontroller", "Ignoring PWM command on non-initialized controller %u (pin=%u value=%u)",
-                 static_cast<unsigned int>(command.controller),
-                 static_cast<unsigned int>(command.pin),
-                 static_cast<unsigned int>(command.value));
-            return false;
-        }
         
         
-        bool ok = pwm->setPWM(command.pin, 0, map(command.value, 0, 180, 115, 545));
+        //bool ok = pwm->setPWM(command.pin, 0, map(command.value, 0, 180, 115, 545));
+        bool ok = pwm->setPWM(command.pin, 0, command.value);
         return ok;
     }
 

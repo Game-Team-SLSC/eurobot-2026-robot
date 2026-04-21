@@ -14,7 +14,6 @@ namespace robot::tasks {
         while (true) {
             CommandBatch<PWMCommand> pwmBatch{};
             if (xQueueReceive(robot::queues::pwm_command_queue, &pwmBatch, pdMS_TO_TICKS(100)) == pdPASS) {
-                info("control_pwm_task", "Handling PWM command batch (count=%u)", static_cast<unsigned int>(pwmBatch.count));
                 robot::pwmcontroller::apply(pwmBatch);
             }
             

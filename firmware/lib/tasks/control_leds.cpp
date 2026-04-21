@@ -4,6 +4,21 @@
 #include <state.h>
 #include <Logger.h>
 
+namespace {
+uint16_t step_toward(uint16_t current, uint16_t target, uint16_t step) {
+    if (current < target) {
+        const uint32_t next = static_cast<uint32_t>(current) + step;
+        return (next > target) ? target : static_cast<uint16_t>(next);
+    }
+
+    if (current > target) {
+        return (current - target > step) ? static_cast<uint16_t>(current - step) : target;
+    }
+
+    return current;
+}
+}
+
 
 namespace robot::tasks {
 void control_leds_task(void* parameter) {
@@ -11,64 +26,42 @@ void control_leds_task(void* parameter) {
 
     info("control_leds_task", "task started");
 
-    uint8_t current_red = 0, current_green = 0, current_blue = 0;
-    uint8_t target_red = 0, target_green = 0, target_blue = 0;
+    uint16_t current_red = 0, current_green = 0, current_blue = 0;
+    uint16_t target_red = 0, target_green = 0, target_blue = 0;
     
-    constexpr TickType_t update_period_ms = 100; // 10Hz
-    TickType_t last_update_time = 0;
-    
+    constexpr TickType_t update_period_ms = 100; // 50Hz
+    constexpr uint16_t led_max = 4095;
+    constexpr uint16_t fade_step = 700;
+
     while (true) {
         GlobalState state = robot::state::get();
-        TickType_t current_time = xTaskGetTickCount();
-
         // Update target colors based on team
         if (state.isYellowTeam) {
-            target_red = 255;
-            target_green = 255;
+            target_red = 4095;
+            target_green = 2500;
             target_blue = 0;
         } else {
             target_red = 0;
             target_green = 0;
-            target_blue = 255;
+            target_blue = 4095;
         }
 
-        // Only update at 10Hz
-        if (current_time - last_update_time >= pdMS_TO_TICKS(update_period_ms)) {
-            last_update_time = current_time;
-            
-            // Smooth transition with small steps
-            constexpr uint8_t step = 10;
-            
-            if (current_red < target_red) {
-                current_red = (current_red + step > target_red) ? target_red : current_red + step;
-            } else if (current_red > target_red) {
-                current_red = (current_red - step < target_red) ? target_red : current_red - step;
-            }
-            
-            if (current_green < target_green) {
-                current_green = (current_green + step > target_green) ? target_green : current_green + step;
-            } else if (current_green > target_green) {
-                current_green = (current_green - step < target_green) ? target_green : current_green - step;
-            }
-            
-            if (current_blue < target_blue) {
-                current_blue = (current_blue + step > target_blue) ? target_blue : current_blue + step;
-            } else if (current_blue > target_blue) {
-                current_blue = (current_blue - step < target_blue) ? target_blue : current_blue - step;
-            }
-            
-            CommandBatch<PWMCommand> pwmBatch;
-            
-            PWMCommand red{.controller = robot::config::PWMController::MISC, .pin = 4, .value = current_red};
-            PWMCommand green{.controller = robot::config::PWMController::MISC, .pin = 5, .value = current_green};
-            PWMCommand blue{.controller = robot::config::PWMController::MISC, .pin = 6, .value = current_blue};
-            
-            pwmBatch.add(red);
-            pwmBatch.add(green);
-            pwmBatch.add(blue);
-            
-            xQueueSend(robot::queues::pwm_command_queue, &pwmBatch, 0);
-        }
+        current_red = step_toward(current_red, target_red, fade_step);
+        current_green = step_toward(current_green, target_green, fade_step);
+        current_blue = step_toward(current_blue, target_blue, fade_step);
+
+        CommandBatch<PWMCommand> pwmBatch;
+
+        PWMCommand red{.controller = robot::config::led_left_r.controller, .pin = robot::config::led_left_r.pin, .value = current_red};
+        PWMCommand green{.controller = robot::config::led_left_g.controller, .pin = robot::config::led_left_g.pin, .value = current_green};
+        PWMCommand blue{.controller = robot::config::led_left_b.controller, .pin = robot::config::led_left_b.pin, .value = current_blue};
+
+        pwmBatch.add(red);
+        pwmBatch.add(green);
+        pwmBatch.add(blue);
+
+        xQueueSend(robot::queues::pwm_command_queue, &pwmBatch, 0);
+        vTaskDelay(pdMS_TO_TICKS(update_period_ms));
     }
 }
 }

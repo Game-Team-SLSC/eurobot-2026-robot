@@ -68,12 +68,12 @@ namespace robot::state {
         return true;
     }
 
-    bool setStocking(bool isStocking) {
+    bool setStocking(StockingState stockingState) {
         if (!xSemaphoreTake(mutex, portMAX_DELAY)) {
             return false;
         }
 
-        globalState.isStocking = isStocking;
+        globalState.stockingState = stockingState;
         xSemaphoreGive(mutex);
         
         return true;

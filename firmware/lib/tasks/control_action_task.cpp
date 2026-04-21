@@ -35,6 +35,10 @@ void control_action_task(void* parameter) {
                     info("control_action_task", "Handling action command: RELEASE");
                     robot::actions::release();
                     break;
+                case Action::TURN_TWO:
+                    info("control_action_task", "Handling action command: TURN_TWO");
+                    robot::actions::turn_two();
+                    break;
                 default:
                     warn("control_action_task", "Unknown action command received");
                     break;

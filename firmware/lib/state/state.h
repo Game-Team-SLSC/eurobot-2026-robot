@@ -6,6 +6,12 @@
 #include <RemoteData.h>
 #include <actions.h>
 
+enum class StockingState: uint8_t {
+    EMPTY,
+    HALF,
+    FULL
+};
+
 struct GlobalState {
     RemoteData remoteData{};
     bool radioConnected = false;
@@ -19,7 +25,7 @@ struct GlobalState {
 
     bool lowSpeedMode = false;
     bool isYellowTeam = false;
-    bool isStocking = false;
+    StockingState stockingState = StockingState::EMPTY;
 };
 
 namespace robot::state {
@@ -36,7 +42,7 @@ namespace robot::state {
     bool setAction(Action action);
     bool setLowSpeedMode(bool lowSpeed);
     bool setIsYellow(bool isYellow);
-    bool setStocking(bool isStocking);
+    bool setStocking(StockingState stockingState);
     bool setSpeedGain(float gain);
     bool setCriticalBattery(bool critical);
 }

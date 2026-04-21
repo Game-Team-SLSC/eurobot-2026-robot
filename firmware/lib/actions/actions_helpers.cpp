@@ -1,4 +1,5 @@
 #include <actions_helpers.h>
+#include <Arduino.h>
 
 #include <config.h>
 #include <queues.h>
@@ -42,14 +43,19 @@ void angleTurn(CommandBatch<PWMCommand>& batch, uint8_t angle) {
     PWMCommand cmd;
     cmd.controller = robot::config::front_left_turner.controller;
     cmd.pin = robot::config::front_left_turner.pin;
-    cmd.value = angle;
+    cmd.value = robot::actions::detail::angleToPWMValue(angle);
     batch.add(cmd);
 
     PWMCommand cmd2;
     cmd2.controller = robot::config::front_right_turner.controller;
     cmd2.pin = robot::config::front_right_turner.pin;
-    cmd2.value = 180 - angle + 5;
+    cmd2.value = robot::actions::detail::angleToPWMValue(180 - angle + 3);
     batch.add(cmd2);
+}
+
+uint16_t angleToPWMValue(uint8_t angle) {
+    // Map 0-180 to 115-545
+    return map(angle, 0, 180, 115, 545);
 }
 
 bool isOurTeam(const ColorResponse& color) {

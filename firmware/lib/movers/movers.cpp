@@ -189,10 +189,10 @@ void drive(MotionCommand& cmd) {
 		return;
 	}
 
-	int32_t frCmd = static_cast<int32_t>(cmd.forward) + static_cast<int32_t>(cmd.strafe) * 0.5 + static_cast<int32_t>(cmd.rotate);
-	int32_t flCmd = static_cast<int32_t>(cmd.forward) - static_cast<int32_t>(cmd.strafe) * 0.5 - static_cast<int32_t>(cmd.rotate);
-	int32_t brCmd = static_cast<int32_t>(cmd.forward) - static_cast<int32_t>(cmd.strafe) * 0.5 + static_cast<int32_t>(cmd.rotate);
-	int32_t blCmd = static_cast<int32_t>(cmd.forward) + static_cast<int32_t>(cmd.strafe) * 0.5 - static_cast<int32_t>(cmd.rotate);
+	int32_t frCmd = static_cast<int32_t>(cmd.forward) + static_cast<int32_t>(cmd.strafe) * 0.7 + static_cast<int32_t>(cmd.rotate);
+	int32_t flCmd = static_cast<int32_t>(cmd.forward) - static_cast<int32_t>(cmd.strafe) * 0.7 - static_cast<int32_t>(cmd.rotate);
+	int32_t brCmd = static_cast<int32_t>(cmd.forward) - static_cast<int32_t>(cmd.strafe) * 0.7 + static_cast<int32_t>(cmd.rotate);
+	int32_t blCmd = static_cast<int32_t>(cmd.forward) + static_cast<int32_t>(cmd.strafe) * 0.7 - static_cast<int32_t>(cmd.rotate);
 
 	int32_t maxMagnitude = abs(frCmd);
 	maxMagnitude = max(maxMagnitude, abs(flCmd));

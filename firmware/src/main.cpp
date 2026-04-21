@@ -14,6 +14,7 @@
 #include <battery.h>
 #include <color_sensors.h>
 #include <Logger.h>
+#include <actions_helpers.h>
 
 namespace robot {}
 
@@ -46,18 +47,18 @@ void setup() {
     PWMCommand pwmCmd{};
     pwmCmd.controller = robot::config::front_left_turner.controller;
     pwmCmd.pin = robot::config::front_left_turner.pin;
-    pwmCmd.value = 17;
+    pwmCmd.value = robot::actions::detail::angleToPWMValue(17);
 
     PWMCommand cmd3;
     cmd3.controller = robot::config::front_right_turner.controller;
     cmd3.pin = robot::config::front_right_turner.pin;
-    cmd3.value = 163;
+    cmd3.value = robot::actions::detail::angleToPWMValue(163);
     batch.add(cmd3);
 
     PWMCommand cmdala;
     cmdala.controller = robot::config::front_right_grabber.controller;
     cmdala.pin = robot::config::front_right_grabber.pin;
-    cmdala.value = 100;
+    cmdala.value = robot::actions::detail::angleToPWMValue(97);
 
     batch.add(cmdala);
 
@@ -65,7 +66,7 @@ void setup() {
 
     cmd2a.controller = robot::config::front_left_grabber.controller;
     cmd2a.pin = robot::config::front_left_grabber.pin;
-    cmd2a.value = 68;
+    cmd2a.value = robot::actions::detail::angleToPWMValue(75);
 
     batch.add(cmd2a);
     

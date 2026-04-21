@@ -5,9 +5,10 @@
 #include <commands.h>
 #include <queues.h>
 #include <state.h>
+#include <actions_helpers.h>
 
 namespace robot::actions {
-void turn() {
+void turn_two() {
     CommandBatch<PWMCommand> pwmBatch;
 
     PWMCommand cmd;
@@ -29,7 +30,7 @@ void turn() {
 
     GlobalState state = robot::state::get();
 
-    if (state.stockingState == StockingState::FULL || state.stockingState == StockingState::HALF) {
+    if (state.stockingState == StockingState::HALF) {
         // check colors
         ColorCommand erColorCmd;
         erColorCmd.sensor = robot::config::ColorSensor::FER;
@@ -60,18 +61,18 @@ void turn() {
         const bool ilOk = xQueueReceive(robot::queues::color_response_queue, &ilColorResp, pdMS_TO_TICKS(1500)) == pdPASS;
         
         // put the right mask on pumps
-        uint8_t pumpsMask = 0;
-        if (erOk && detail::isOurTeam(erColorResp)) {
-            pumpsMask |= 1 << 0;
+        uint8_t pumpsMask = 0b1111;
+        if (erOk && !(detail::isOurTeam(erColorResp))) {
+            pumpsMask &= ~(1 << 0);
         }
-        if (irOk && detail::isOurTeam(irColorResp)) {
-            pumpsMask |= 1 << 1;
+        if (irOk && !(detail::isOurTeam(irColorResp))) {
+            pumpsMask &= ~(1 << 1);
         }
-        if (elOk && detail::isOurTeam(elColorResp)) {
-            pumpsMask |= 1 << 2;
+        if (elOk && !(detail::isOurTeam(elColorResp))) {
+            pumpsMask &= ~(1 << 2);
         }
-        if (ilOk && detail::isOurTeam(ilColorResp)) {
-            pumpsMask |= 1 << 3;
+        if (ilOk && !(detail::isOurTeam(ilColorResp))) {
+            pumpsMask &= ~(1 << 3);
         }
 
         Serial.printf("h : %f, s : %f, v : %f", erColorResp.h, erColorResp.s, erColorResp.v);
@@ -95,10 +96,54 @@ void turn() {
         vTaskDelay(pdMS_TO_TICKS(300));
         
         detail::togglePumps(0b0000);
+        robot::state::setStocking(StockingState::EMPTY);
 
         // now add the code
+    } else if (state.stockingState == StockingState::FULL) {
+        // check colors on right side only
+        ColorCommand erColorCmd;
+        erColorCmd.sensor = robot::config::ColorSensor::FER;
+        xQueueSend(robot::queues::color_command_queue, &erColorCmd, 0);
+
+        ColorResponse erColorResp{};
+        const bool erOk = xQueueReceive(robot::queues::color_response_queue, &erColorResp, pdMS_TO_TICKS(1500)) == pdPASS;
+
+        ColorCommand irColorCmd;
+        irColorCmd.sensor = robot::config::ColorSensor::FIR;
+        xQueueSend(robot::queues::color_command_queue, &irColorCmd, 0);
+
+        ColorResponse irColorResp{};
+        const bool irOk = xQueueReceive(robot::queues::color_response_queue, &irColorResp, pdMS_TO_TICKS(1500)) == pdPASS;
+
+        // put the right mask on pumps (only right two)
+        uint8_t pumpsMask = 0b1111;
+        if (erOk && !(detail::isOurTeam(erColorResp))) {
+            pumpsMask &= ~(1 << 0);
+        }
+        if (irOk && !(detail::isOurTeam(irColorResp))) {
+            pumpsMask &= ~(1 << 1);
+        }
+
+        detail::togglePumps(pumpsMask);
+
+        vTaskDelay(pdMS_TO_TICKS(200));
+        // go to 140 with angle turn
+        pwmBatch.clear();
+        detail::angleTurn(pwmBatch, 140);
+        xQueueSend(robot::queues::pwm_command_queue, &pwmBatch, 0);
+        // wait 1500 ms
+        vTaskDelay(pdMS_TO_TICKS(1500));
+        // go to 25 with angle turn
+        pwmBatch.clear();
+        detail::angleTurn(pwmBatch, 15);
+        xQueueSend(robot::queues::pwm_command_queue, &pwmBatch, 0);
+
+        vTaskDelay(pdMS_TO_TICKS(300));
+        
+        detail::togglePumps(0b1100);
+        robot::state::setStocking(StockingState::HALF);
     } else {
-        Serial.println("Not stocking, just turning");
+        Serial.println("Not stocking, just turning TWO");
 
         MotionCommand mcmd;
 
@@ -142,19 +187,15 @@ void turn() {
         ColorResponse ilColorResp{};
         const bool ilOk = xQueueReceive(robot::queues::color_response_queue, &ilColorResp, pdMS_TO_TICKS(1500)) == pdPASS;
 
-        uint8_t pumpsMask = 0;
-        if (erOk && detail::isOurTeam(erColorResp)) {
-            pumpsMask |= 1 << 0;
+        uint8_t pumpsMask = 0b1111;
+        if (erOk && !(detail::isOurTeam(erColorResp))) {
+            pumpsMask &= ~(1 << 0);  // Efface le bit 0 si ce n'est PAS notre équipe
         }
-        if (irOk && detail::isOurTeam(irColorResp)) {
-            pumpsMask |= 1 << 1;
+        if (irOk && !(detail::isOurTeam(irColorResp))) {
+            pumpsMask &= ~(1 << 1);  // Efface le bit 1 si ce n'est PAS notre équipe
         }
-        if (elOk && detail::isOurTeam(elColorResp)) {
-            pumpsMask |= 1 << 2;
-        }
-        if (ilOk && detail::isOurTeam(ilColorResp)) {
-            pumpsMask |= 1 << 3;
-        }
+
+        Serial.println(pumpsMask, BIN);
 
         detail::togglePumps(pumpsMask);
 
@@ -172,10 +213,13 @@ void turn() {
 
         vTaskDelay(pdMS_TO_TICKS(600));
 
-        detail::togglePumps(0b0000);
+        robot::state::setStocking(StockingState::HALF);
+
+        pumpsMask = 0b1100;
+
+        detail::togglePumps(pumpsMask);
     }
 
-    robot::state::setStocking(StockingState::EMPTY);
 
     const Action idleAction = Action::IDLE;
     xQueueSend(robot::queues::action_command_queue, &idleAction, 0);

@@ -90,7 +90,7 @@ struct PWMControl {
 
 namespace robot::config {
     // Battery
-    constexpr uint8_t critical_batt_th = 10; // %
+    constexpr uint8_t critical_batt_th = 1; // %
     constexpr uint8_t warning_batt_th = 25; // %
 
     constexpr float cell_1_voltage_ratio = 1.679;
@@ -124,8 +124,8 @@ namespace robot::config {
     constexpr float tmc_rsense = 0.075f;
     constexpr uint16_t motor_microsteps = 8;
     constexpr uint32_t motion_speed_hz = 9000;
-    constexpr uint32_t motion_accel = 25000;
-    constexpr uint16_t motor_rms_current_ma = 1750; 
+    constexpr uint32_t motion_accel = 22500;
+    constexpr uint16_t motor_rms_current_ma = 2000; 
 
     constexpr float wheel_radius_mm = 30.0f;
     constexpr float mm_to_m = 0.001f;
@@ -160,9 +160,13 @@ namespace robot::config {
     constexpr PWMControl front_right_turner = {robot::config::PWMController::RIGHT, 8};
 
     constexpr PWMControl back_left_grabber = {robot::config::PWMController::LEFT, 6};
-    constexpr PWMControl front_left_grabber = {robot::config::PWMController::LEFT, 6};
-    constexpr PWMControl back_right_grabber = {robot::config::PWMController::RIGHT, 7};
+    constexpr PWMControl front_left_grabber = {robot::config::PWMController::LEFT, 7};
+    constexpr PWMControl back_right_grabber = {robot::config::PWMController::RIGHT, 6};
     constexpr PWMControl front_right_grabber = {robot::config::PWMController::RIGHT, 7};
+
+    constexpr PWMControl led_left_b = {robot::config::PWMController::LEFT, 0};
+    constexpr PWMControl led_left_g = {robot::config::PWMController::LEFT, 1};
+    constexpr PWMControl led_left_r = {robot::config::PWMController::LEFT, 2};
 
     // Color config
 
@@ -185,9 +189,10 @@ namespace robot::config {
     constexpr robot::config::Button turn_action_btn = robot::config::Button::LSIDE_U_BTN;
     constexpr robot::config::Button stock_action_btn = robot::config::Button::LSIDE_R_BTN;
     constexpr robot::config::Button release_action_btn = robot::config::Button::LSIDE_D_BTN;
+    constexpr robot::config::Button turn_two_action_btn = robot::config::Button::LSIDE_L_BTN;
     
-    constexpr robot::config::Button fold_grabber_btn = robot::config::Button::RSIDE_R_BTN;
-    constexpr robot::config::Button deploy_grabber_btn = robot::config::Button::RSIDE_D_BTN;
+    constexpr robot::config::Button toggle_front_grabber_btn = robot::config::Button::RSIDE_R_BTN;
+    constexpr robot::config::Button toggle_back_grabber_btn = robot::config::Button::DOUBLE_D_BTN;
 
     constexpr robot::config::Button yellow_mode_btn = robot::config::Button::RSIDE_U_BTN;
     constexpr robot::config::Button blue_mode_btn = robot::config::Button::RSIDE_L_BTN;

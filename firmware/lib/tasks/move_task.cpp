@@ -136,25 +136,21 @@ namespace robot::tasks {
                 const int16_t velStrafe = velocitySignDeadzone(currentVel.strafe);
                 const int16_t velRotate = velocitySignDeadzone(currentVel.rotate);
         
-                if (hasOppositeSign(cmd.forward, velForward)) {
-                    cmd.forward = 0;
-                }
-                if (hasOppositeSign(cmd.strafe, velStrafe)) {
-                    cmd.strafe = 0;
-                }
-                if (hasOppositeSign(cmd.rotate, velRotate)) {
-                    cmd.rotate = 0;
-                }
+                // if (hasOppositeSign(cmd.forward, velForward)) {
+                //     cmd.forward = 0;
+                // }
+                // if (hasOppositeSign(cmd.strafe, velStrafe)) {
+                //     cmd.strafe = 0;
+                // }
+                // if (hasOppositeSign(cmd.rotate, velRotate)) {
+                //     cmd.rotate = 0;
+                // }
 
 
                 robot::movers::drive(cmd);   
             } else {
                 MotionCommand cmd;
                 if (xQueueReceive(robot::queues::motion_command_queue, &cmd, 0) == pdPASS) {
-                    info("move_task", "Handling motion command (target: f=%d s=%d r=%d)",
-                         static_cast<int>(cmd.target.forward),
-                         static_cast<int>(cmd.target.strafe),
-                         static_cast<int>(cmd.target.rotate));
                     robot::movers::goToTarget(cmd);
                 }
             }
