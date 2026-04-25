@@ -42,7 +42,7 @@ void stock() {
 
     detail::togglePumps(0b1111);
 
-    vTaskDelay(pdMS_TO_TICKS(700));
+    vTaskDelay(pdMS_TO_TICKS(500));
 
     pwmBatch.clear();
     detail::angleTurn(pwmBatch, 15);

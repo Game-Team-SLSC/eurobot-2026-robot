@@ -91,7 +91,7 @@ void comm_task(void* parameter) {
                 }
 
                 if (btnIdx == static_cast<uint8_t>(robot::config::toggle_back_grabber_btn)) {
-                    if (data.buttons[btnIdx]) {
+                    if (!data.buttons[btnIdx]) {
                         continue;
                     }
 
@@ -123,7 +123,7 @@ void comm_task(void* parameter) {
                 }
 
                 if (btnIdx == static_cast<uint8_t>(robot::config::toggle_front_grabber_btn)) {
-                    if (data.buttons[btnIdx]) {
+                    if (!data.buttons[btnIdx]) {
                         continue;
                     }
 

@@ -164,6 +164,11 @@ namespace robot::config {
     constexpr PWMControl back_right_grabber = {robot::config::PWMController::RIGHT, 6};
     constexpr PWMControl front_right_grabber = {robot::config::PWMController::RIGHT, 7};
 
+    constexpr PWMControl front_interior_right_ev = {robot::config::PWMController::LEFT, 10};
+    constexpr PWMControl front_interior_left_ev = {robot::config::PWMController::LEFT, 11};
+    constexpr PWMControl front_exterior_right_ev = {robot::config::PWMController::LEFT, 13};
+    constexpr PWMControl front_exterior_left_ev = {robot::config::PWMController::LEFT, 14};
+
     constexpr PWMControl led_left_b = {robot::config::PWMController::LEFT, 0};
     constexpr PWMControl led_left_g = {robot::config::PWMController::LEFT, 1};
     constexpr PWMControl led_left_r = {robot::config::PWMController::LEFT, 2};

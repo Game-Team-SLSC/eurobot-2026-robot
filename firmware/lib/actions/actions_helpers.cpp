@@ -33,6 +33,36 @@ void togglePumps(uint8_t state) {
     cmd5.pin = 12;
     cmd5.level = (state & (1 << 2)) != 0;
 
+    CommandBatch<PWMCommand> batch{};
+
+    PWMCommand cmd6;
+    cmd6.controller = robot::config::front_interior_left_ev.controller;
+    cmd6.pin = robot::config::front_interior_left_ev.pin;
+    cmd6.value = (state & (1 << 0)) != 0 ? 4095 : 0;
+    
+    PWMCommand cmd7;
+    cmd7.controller = robot::config::front_interior_right_ev.controller;
+    cmd7.pin = robot::config::front_interior_right_ev.pin;
+    cmd7.value = (state & (1 << 1)) != 0 ? 4095 : 0;
+    
+    PWMCommand cmd8;
+    cmd8.controller = robot::config::front_exterior_left_ev.controller;
+    cmd8.pin = robot::config::front_exterior_left_ev.pin;
+    cmd8.value = (state & (1 << 2)) != 0 ? 4095 : 0;
+    
+    PWMCommand cmd9;
+    cmd9.controller = robot::config::front_exterior_right_ev.controller;
+    cmd9.pin = robot::config::front_exterior_right_ev.pin;
+    cmd9.value = (state & (1 << 3)) != 0 ? 4095 : 0;
+
+    batch.add(cmd6);
+    batch.add(cmd7);
+    batch.add(cmd8);
+    batch.add(cmd9);
+
+    xQueueSend(robot::queues::pwm_command_queue, &batch, 0);
+
+
     xQueueSend(robot::queues::io_command_queue, &cmd2, 0);
     xQueueSend(robot::queues::io_command_queue, &cmd3, 0);
     xQueueSend(robot::queues::io_command_queue, &cmd4, 0);
@@ -58,7 +88,7 @@ uint16_t angleToPWMValue(uint8_t angle) {
     return map(angle, 0, 180, 115, 545);
 }
 
-bool isOurTeam(const ColorResponse& color) {
+bool mustBeTurned(const ColorResponse& color) {
     if (color.s < 0.2f) {
         return false;
     }

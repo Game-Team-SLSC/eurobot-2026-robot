@@ -62,16 +62,16 @@ void turn_two() {
         
         // put the right mask on pumps
         uint8_t pumpsMask = 0b1111;
-        if (erOk && !(detail::isOurTeam(erColorResp))) {
+        if (erOk && !(detail::mustBeTurned(erColorResp))) {
             pumpsMask &= ~(1 << 0);
         }
-        if (irOk && !(detail::isOurTeam(irColorResp))) {
+        if (irOk && !(detail::mustBeTurned(irColorResp))) {
             pumpsMask &= ~(1 << 1);
         }
-        if (elOk && !(detail::isOurTeam(elColorResp))) {
+        if (elOk && !(detail::mustBeTurned(elColorResp))) {
             pumpsMask &= ~(1 << 2);
         }
-        if (ilOk && !(detail::isOurTeam(ilColorResp))) {
+        if (ilOk && !(detail::mustBeTurned(ilColorResp))) {
             pumpsMask &= ~(1 << 3);
         }
 
@@ -85,7 +85,7 @@ void turn_two() {
         detail::angleTurn(pwmBatch,  140);
         xQueueSend(robot::queues::pwm_command_queue, &pwmBatch, 0);
         // wait 500 ms
-        vTaskDelay(pdMS_TO_TICKS(1500));
+        vTaskDelay(pdMS_TO_TICKS(500));
         // go to 25 with angle turn
         pwmBatch.clear();
         detail::angleTurn(pwmBatch,  15);
@@ -117,10 +117,10 @@ void turn_two() {
 
         // put the right mask on pumps (only right two)
         uint8_t pumpsMask = 0b1111;
-        if (erOk && !(detail::isOurTeam(erColorResp))) {
+        if (erOk && !(detail::mustBeTurned(erColorResp))) {
             pumpsMask &= ~(1 << 0);
         }
-        if (irOk && !(detail::isOurTeam(irColorResp))) {
+        if (irOk && !(detail::mustBeTurned(irColorResp))) {
             pumpsMask &= ~(1 << 1);
         }
 
@@ -132,7 +132,7 @@ void turn_two() {
         detail::angleTurn(pwmBatch, 140);
         xQueueSend(robot::queues::pwm_command_queue, &pwmBatch, 0);
         // wait 1500 ms
-        vTaskDelay(pdMS_TO_TICKS(1500));
+        vTaskDelay(pdMS_TO_TICKS(500));
         // go to 25 with angle turn
         pwmBatch.clear();
         detail::angleTurn(pwmBatch, 15);
@@ -188,10 +188,10 @@ void turn_two() {
         const bool ilOk = xQueueReceive(robot::queues::color_response_queue, &ilColorResp, pdMS_TO_TICKS(1500)) == pdPASS;
 
         uint8_t pumpsMask = 0b1111;
-        if (erOk && !(detail::isOurTeam(erColorResp))) {
+        if (erOk && !(detail::mustBeTurned(erColorResp))) {
             pumpsMask &= ~(1 << 0);  // Efface le bit 0 si ce n'est PAS notre équipe
         }
-        if (irOk && !(detail::isOurTeam(irColorResp))) {
+        if (irOk && !(detail::mustBeTurned(irColorResp))) {
             pumpsMask &= ~(1 << 1);  // Efface le bit 1 si ce n'est PAS notre équipe
         }
 
@@ -200,12 +200,6 @@ void turn_two() {
         detail::togglePumps(pumpsMask);
 
         vTaskDelay(pdMS_TO_TICKS(300));
-
-        pwmBatch.clear();
-        detail::angleTurn(pwmBatch, 130);
-        xQueueSend(robot::queues::pwm_command_queue, &pwmBatch, 0);
-
-        vTaskDelay(1000);
 
         pwmBatch.clear();
         detail::angleTurn(pwmBatch, 15);
@@ -218,6 +212,21 @@ void turn_two() {
         pumpsMask = 0b1100;
 
         detail::togglePumps(pumpsMask);
+
+        pwmBatch.clear();
+        detail::angleTurn(pwmBatch, 15);
+        xQueueSend(robot::queues::pwm_command_queue, &pwmBatch, 0);
+
+        vTaskDelay(pdMS_TO_TICKS(300));
+        MotionCommand recule;
+        recule.target = {-50, 0, 0};
+        xQueueSend(robot::queues::motion_command_queue, &recule, 0);
+
+        vTaskDelay(pdMS_TO_TICKS(400));
+
+        MotionCommand ravance;
+        ravance.target = {50, 0, 0};
+        xQueueSend(robot::queues::motion_command_queue, &ravance, 0);
     }
 
 

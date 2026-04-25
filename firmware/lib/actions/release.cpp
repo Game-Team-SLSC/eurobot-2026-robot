@@ -12,21 +12,14 @@ void release() {
 
     robot::state::setStocking(StockingState::EMPTY);
 
-    detail::angleTurn(pwmBatch, 158);
+    detail::angleTurn(pwmBatch, 140);
     xQueueSend(robot::queues::pwm_command_queue, &pwmBatch, 0);
 
     vTaskDelay(pdMS_TO_TICKS(700));
     
     detail::togglePumps(0b0000);
 
-    pwmBatch.clear();
-    detail::angleTurn(pwmBatch, 130);
-    xQueueSend(robot::queues::pwm_command_queue, &pwmBatch, 0);
-
-    vTaskDelay(1000);
-
-
-    vTaskDelay(pdMS_TO_TICKS(1000));
+    vTaskDelay(pdMS_TO_TICKS(200));
 
     pwmBatch.clear();
     detail::angleTurn(pwmBatch, 25);

@@ -14,6 +14,7 @@
 #include <battery.h>
 #include <color_sensors.h>
 #include <Logger.h>
+#include <screen.h>
 #include <actions_helpers.h>
 
 namespace robot {}
@@ -34,6 +35,9 @@ void setup() {
     robot::i2cexpander::begin();
     robot::battery::begin();
     robot::color_sensors::begin();
+    robot::screen::begin();
+
+    delay(1000); // Allow time for peripherals to initialize
 
     robot::tasks::begin();
     
@@ -41,6 +45,8 @@ void setup() {
     cmd.pin = 7;
     cmd.level = false;
     xQueueSend(robot::queues::io_command_queue, &cmd, 0);
+
+    
 
     CommandBatch<PWMCommand> batch{};
 
