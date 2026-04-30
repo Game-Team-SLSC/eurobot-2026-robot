@@ -1,4 +1,6 @@
 #include <tasks.h>
+#include <encoder.h>
+#include <Logger.h>
 
 namespace robot::tasks {
     bool begin() {
@@ -10,6 +12,8 @@ namespace robot::tasks {
         xTaskCreatePinnedToCore(battery_watch_task, "battery_watch_task", 4096, nullptr, 1, nullptr, 1);
         xTaskCreatePinnedToCore(control_color_task, "control_color_task", 4096, nullptr, 1, nullptr, 1);
         xTaskCreatePinnedToCore(control_leds_task, "control_leds_task", 4096, nullptr, 1, nullptr, 0);
+        xTaskCreatePinnedToCore(render_ui_task, "render_ui_task", 4096, nullptr, 1, nullptr, 1);
+        xTaskCreatePinnedToCore(watch_encoder, "watch_encoder", 4096, nullptr, 2, nullptr, 0);
         return true;
     }
 }

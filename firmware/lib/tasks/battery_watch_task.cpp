@@ -7,6 +7,7 @@
 #include <freertos/queue.h>
 #include <Logger.h>
 #include <state.h>
+#include <movers.h>
 
 namespace robot::tasks {
     void battery_watch_task(void* parameter) {
@@ -15,9 +16,10 @@ namespace robot::tasks {
         info("battery_watch_task", "Task started");
 
         constexpr TickType_t blink_half_period_ticks = pdMS_TO_TICKS(162.5);
-        constexpr TickType_t log_period_ticks = pdMS_TO_TICKS(3000);
-        TickType_t last_log_time = 0;
         bool blink_phase_on = false;
+        bool last_critical_state = false;
+        bool last_warning_state = false;
+        bool last_unplugged_state = false;
 
         auto push_led_state = [](uint8_t pin, bool level) {
             IOExpanderCommand cmd{.pin = pin, .level = level};
@@ -26,9 +28,16 @@ namespace robot::tasks {
 
         while (true) {
             GlobalState state = robot::state::get();
+
+            Vec3 current_velocity = robot::movers::getCurrentVelocity();
+            uint8_t speed = static_cast<uint8_t>(sqrt(pow(current_velocity.forward, 2) + pow(current_velocity.strafe, 2)));
+
+            if (speed > 0) continue;
             
             blink_phase_on = !blink_phase_on;
             robot::battery::BatteryStatus status = robot::battery::getStatus();
+
+            robot::state::setBatteryStatus(status);
 
             const bool cell_1_critical = (status.cell_1_percentage <= robot::config::critical_batt_th);
             const bool cell_2_critical = (status.cell_2_percentage <= robot::config::critical_batt_th);
@@ -40,50 +49,42 @@ namespace robot::tasks {
             const bool cell_3_warning = (status.cell_3_percentage <= robot::config::warning_batt_th);
             const bool cell_4_warning = (status.cell_4_percentage <= robot::config::warning_batt_th);
 
-            // // print all cell voltages and percentages for debugging
-            // info("battery_watch_task", "cell1: %u%% (%u mV) %s%s",
-            //               static_cast<unsigned int>(status.cell_1_percentage),
-            //               static_cast<unsigned int>(status.cell_1_voltage_mv),
-            //               cell_1_critical ? "CRITICAL " : "",
-            //               cell_1_warning ? "WARNING" : "");
-            //     info("battery_watch_task", "cell2: %u%% (%u mV) %s%s",
-            //               static_cast<unsigned int>(status.cell_2_percentage),
-            //               static_cast<unsigned int>(status.cell_2_voltage_mv),
-            //               cell_2_critical ? "CRITICAL " : "",
-            //               cell_2_warning ? "WARNING" : "");
-            //     info("battery_watch_task", "cell3: %u%% (%u mV) %s%s",
-            //                 static_cast<unsigned int>(status.cell_3_percentage),
-            //                 static_cast<unsigned int>(status.cell_3_voltage_mv),
-            //                 cell_3_critical ? "CRITICAL " : "",
-            //                 cell_3_warning ? "WARNING" : "");
-            //     info("battery_watch_task", "cell4: %u%% (%u mV) %s%s",
-            //                 static_cast<unsigned int>(status.cell_4_percentage),
-            //                 static_cast<unsigned int>(status.cell_4_voltage_mv),
-            //                 cell_4_critical ? "CRITICAL " : "",
-            //                 cell_4_warning ? "WARNING" : "");
+            bool is_critical = (status.cell_1_percentage <= 0 || status.cell_2_percentage <= 0 || status.cell_3_percentage <= 0 || status.cell_4_percentage <= 0) ||
+                               (cell_1_critical || cell_2_critical || cell_3_critical || cell_4_critical);
+            bool is_warning = (cell_1_warning || cell_2_warning || cell_3_warning || cell_4_warning);
+            bool is_unplugged = (status.voltage_mv < 1000);
 
+            // Log only once when state transitions
+            if (is_unplugged && !last_unplugged_state) {
+                warn("battery_watch_task", "Battery unplugged! Total voltage below 1000mV.");
+                last_unplugged_state = true;
+                last_critical_state = false;
+                last_warning_state = false;
+                state::setCriticalBattery(true);
+            } else if (!is_unplugged && last_unplugged_state) {
+                last_unplugged_state = false;
+            } else if (is_critical && !last_critical_state && !is_unplugged) {
+                warn("battery_watch_task", "Critical battery level detected! Stopping the robot.");
+                last_critical_state = true;
+                last_warning_state = false;
+                state::setCriticalBattery(true);
+            } else if (is_warning && !last_warning_state && !is_critical) {
+                warn("battery_watch_task", "Battery level warning.");
+                last_warning_state = true;
+                last_critical_state = false;
+                state::setCriticalBattery(false);
+            } else if (!is_critical && !is_warning) {
+                last_critical_state = false;
+                last_warning_state = false;
+                state::setCriticalBattery(false);
+            } else if (is_critical) {
+                state::setCriticalBattery(true);
+            } else if (is_warning) {
+                state::setCriticalBattery(false);
+            }
 
-            TickType_t current_time = xTaskGetTickCount();
-            if (current_time - last_log_time >= log_period_ticks) {
-                last_log_time = current_time;
-                if (status.cell_1_percentage <= 0 || status.cell_2_percentage <= 0 || status.cell_3_percentage <= 0 || status.cell_4_percentage <= 0) {
-                    warn("battery_watch_task", "Critical battery level detected! Stopping the robot.");
-                    state::setCriticalBattery(true);
-                } else {
-                    if (cell_1_critical || cell_2_critical || cell_3_critical || cell_4_critical) {
-                        warn("battery_watch_task", "Critical battery level detected! Stopping the robot.");
-                    } else
-                    if (cell_1_warning || cell_2_warning || cell_3_warning || cell_4_warning) {
-                        warn("battery_watch_task", "Battery level warning.");
-                    }
-                    state::setCriticalBattery(false);
-                }
-            } else {
-                if (cell_1_critical || cell_2_critical || cell_3_critical || cell_4_critical) {
-                    state::setCriticalBattery(true);
-                } else {
-                    state::setCriticalBattery(false);
-                }
+            if (is_unplugged) {
+                state::setCriticalBattery(true);
             }
 
             push_led_state(

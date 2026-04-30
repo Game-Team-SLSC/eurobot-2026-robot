@@ -2,6 +2,7 @@
 
 #include <config.h>
 #include <Wire.h>
+#include <SPI.h>
 
 namespace robot::buses {
     extern TwoWire i2c_actuation;

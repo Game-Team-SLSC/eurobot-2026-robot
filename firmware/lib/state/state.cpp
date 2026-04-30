@@ -34,6 +34,28 @@ namespace robot::state {
         
         return true;
     }
+    
+    bool setRadioFrequency(uint8_t frequency) {
+        if (!xSemaphoreTake(mutex, portMAX_DELAY)) {
+            return false;
+        }
+
+        globalState.radioFrequency = frequency;
+        xSemaphoreGive(mutex);
+        
+        return true;
+    }
+
+    bool setBatteryStatus(robot::battery::BatteryStatus status) {
+        if (!xSemaphoreTake(mutex, portMAX_DELAY)) {
+            return false;
+        }
+
+        globalState.batteryStatus = status;
+        xSemaphoreGive(mutex);
+        
+        return true;
+    }
 
     bool setAction(Action action) {
         if (!xSemaphoreTake(mutex, portMAX_DELAY)) {
@@ -96,6 +118,17 @@ namespace robot::state {
         }
 
         globalState.criticalBattery = critical;
+        xSemaphoreGive(mutex);
+        
+        return true;
+    }
+
+    bool setEncoder(int16_t value) {
+        if (!xSemaphoreTake(mutex, portMAX_DELAY)) {
+            return false;
+        }
+
+        globalState.encoderPosition = value;
         xSemaphoreGive(mutex);
         
         return true;

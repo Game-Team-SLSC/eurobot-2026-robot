@@ -153,17 +153,9 @@ void comm_task(void* parameter) {
         // Log frame rate every second
         TickType_t currentTime = xTaskGetTickCount();
         if (currentTime - lastLogTime >= pdMS_TO_TICKS(1000)) {
-            if (frameCount > 0) {
-                info("comm", "Radio frame rate: %lu fps", frameCount);
-            }
+            state::setRadioFrequency(frameCount);
             frameCount = 0;
             lastLogTime = currentTime;
-        }
-
-        if (millis() - currentState.lastFrameReceivedAt > 3000 && millis() - lastRetryTime > 3000) {
-            warn("comm", "No radio frames received for 3 seconds, attempting to reconnect...");
-            lastRetryTime = millis();
-            robot::remote::connect();
         }
 
         vTaskDelay(pdMS_TO_TICKS(5));

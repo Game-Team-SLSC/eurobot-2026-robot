@@ -39,9 +39,14 @@ struct MotionCommand {
     uint32_t timestampMs = 0;
 };
 
+enum class IOAction: uint8_t {
+    READ,
+    WRITE
+};
 struct IOExpanderCommand {
     robot::config::IOExpander expander;
     uint8_t pin = 0;
+    IOAction action = IOAction::WRITE;
     bool level = false;
 };
 

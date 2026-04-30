@@ -8,6 +8,8 @@ namespace robot::queues {
     QueueHandle_t action_command_queue = nullptr;
     QueueHandle_t color_command_queue = nullptr;
     QueueHandle_t color_response_queue = nullptr;
+    QueueHandle_t io_response_queue = nullptr;
+    QueueHandle_t logs_queue = nullptr;
 
     void begin() {
         io_command_queue = xQueueCreate(16, sizeof(IOExpanderCommand));
@@ -16,5 +18,7 @@ namespace robot::queues {
         action_command_queue = xQueueCreate(1, sizeof(Action));
         color_command_queue = xQueueCreate(16, sizeof(ColorCommand));
         color_response_queue = xQueueCreate(1, sizeof(ColorResponse));
+        io_response_queue = xQueueCreate(1, sizeof(int32_t));
+        logs_queue = xQueueCreate(10, sizeof(char*));
     }
 }

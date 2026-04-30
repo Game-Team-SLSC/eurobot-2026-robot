@@ -5,6 +5,7 @@
 #include <TMCStepper.h>
 #include <FastAccelStepper.h>
 #include <Logger.h>
+#include <spi_mutex.h>
 
 #include <config.h>
 
@@ -18,29 +19,13 @@ FastAccelStepper* stepper_fr = nullptr;
 FastAccelStepper* stepper_fl = nullptr;
 
 TMC5160Stepper driver_fr(robot::config::tmc_fr_config.csPin,
-						 robot::config::tmc_rsense,
-						 robot::config::spi_mosi_pin,
-						 robot::config::spi_miso_pin,
-						 robot::config::spi_sck_pin,
-						 -1);
+						 robot::config::tmc_rsense);
 TMC5160Stepper driver_fl(robot::config::tmc_fl_config.csPin,
-						 robot::config::tmc_rsense,
-						 robot::config::spi_mosi_pin,
-						 robot::config::spi_miso_pin,
-						 robot::config::spi_sck_pin,
-						 -1);
+						 robot::config::tmc_rsense);
 TMC5160Stepper driver_br(robot::config::tmc_br_config.csPin,
-						 robot::config::tmc_rsense,
-						 robot::config::spi_mosi_pin,
-						 robot::config::spi_miso_pin,
-						 robot::config::spi_sck_pin,
-						 -1);
+						 robot::config::tmc_rsense);
 TMC5160Stepper driver_bl(robot::config::tmc_bl_config.csPin,
-						 robot::config::tmc_rsense,
-						 robot::config::spi_mosi_pin,
-						 robot::config::spi_miso_pin,
-						 robot::config::spi_sck_pin,
-						 -1);
+						 robot::config::tmc_rsense);
 
 int32_t fr_target = 0;
 int32_t fl_target = 0;
@@ -157,12 +142,19 @@ bool begin() {
     
 	setAllDriverChipSelectInactive();
 
-    applyDriverSettings(driver_fr);
-    applyDriverSettings(driver_fl);
-    applyDriverSettings(driver_br);
-    applyDriverSettings(driver_bl);
-	// Ensure no driver keeps MISO active after config.
-	setAllDriverChipSelectInactive();
+	{
+		robot::spi_mutex::Guard spiGuard;
+		if (spiGuard.isLocked()) {
+			applyDriverSettings(driver_fr);
+			applyDriverSettings(driver_fl);
+			applyDriverSettings(driver_br);
+			applyDriverSettings(driver_bl);
+			// Ensure no driver keeps MISO active after config.
+			setAllDriverChipSelectInactive();
+		} else {
+			error("movers", "Failed to acquire SPI mutex during initialization");
+		}
+	}
 
 	engine.init();
 	

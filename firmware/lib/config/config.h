@@ -93,10 +93,10 @@ namespace robot::config {
     constexpr uint8_t critical_batt_th = 1; // %
     constexpr uint8_t warning_batt_th = 25; // %
 
-    constexpr float cell_1_voltage_ratio = 1.679;
+    constexpr float cell_1_voltage_ratio = 1.681;
     constexpr float cell_2_voltage_ratio = 3.371;
-    constexpr float cell_3_voltage_ratio = 5.048;
-    constexpr float full_bat_voltage_ratio = 6.687;
+    constexpr float cell_3_voltage_ratio = 5.040;
+    constexpr float full_bat_voltage_ratio = 6.672;
 
     // I2C config
 
@@ -123,7 +123,7 @@ namespace robot::config {
     
     constexpr float tmc_rsense = 0.075f;
     constexpr uint16_t motor_microsteps = 8;
-    constexpr uint32_t motion_speed_hz = 9000;
+    constexpr uint32_t motion_speed_hz = 6300;
     constexpr uint32_t motion_accel = 22500;
     constexpr uint16_t motor_rms_current_ma = 2000; 
 

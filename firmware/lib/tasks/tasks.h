@@ -14,6 +14,8 @@ namespace robot::tasks {
     void battery_watch_task(void* parameter);
     void control_color_task(void* parameter);
     void control_leds_task(void* parameter);
+    void render_ui_task(void* parameter);
+    void watch_encoder(void* parameter);
 
     bool begin();
 };

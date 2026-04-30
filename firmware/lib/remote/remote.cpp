@@ -5,10 +5,10 @@
 #include <SPI.h>
 #include <cstring>
 #include <Logger.h>
+#include <spi_mutex.h>
 
 namespace {
 RF24 *radio = nullptr;
-SPIClass radioSpi(HSPI);
 constexpr uint32_t NO_RX_LOG_PERIOD_MS = 2000;
 constexpr uint32_t RF24_SPI_HZ = 2000000;
 
@@ -35,6 +35,12 @@ uint64_t rfAddressToUint64(const char* addr) {
 
 namespace robot::remote {
 	bool connect() {
+		robot::spi_mutex::Guard spiGuard;
+		if (!spiGuard.isLocked()) {
+			error("remote", "SPI mutex unavailable");
+			return false;
+		}
+
 		// Keep RF24 deselected while configuring the shared SPI bus.
 		pinMode(robot::config::rf_csn_pin, OUTPUT);
 		digitalWrite(robot::config::rf_csn_pin, HIGH);
@@ -51,13 +57,8 @@ namespace robot::remote {
 		radio->flush_tx();
 		radio->clearStatusFlags();
 
-		radioSpi.begin(robot::config::spi_sck_pin,
-		              robot::config::spi_miso_pin,
-		              robot::config::spi_mosi_pin);
-					  
-		radioSpi.setFrequency(RF24_SPI_HZ);
-		
-		const bool ready = radio->begin(&radioSpi);
+		// (SPI is initialized in buses::begin)
+		const bool ready = radio->begin(&SPI);
 		const bool chipConnected = radio->isChipConnected();
 		if (!ready) {
 			error("remote", "RF24 begin failed");
@@ -78,6 +79,11 @@ namespace robot::remote {
 	bool fetch(RemoteData& data) {
 		if (radio == nullptr) {
 			warn("remote", "fetch called before radio initialized");
+			return false;
+		}
+
+		robot::spi_mutex::Guard spiGuard;
+		if (!spiGuard.isLocked()) {
 			return false;
 		}
 

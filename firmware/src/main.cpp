@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <SPI.h>
 
 #include <freertos/FreeRTOS.h>
 #include <freertos/queue.h>
@@ -16,37 +17,44 @@
 #include <Logger.h>
 #include <screen.h>
 #include <actions_helpers.h>
+#include <encoder.h>
 
 namespace robot {}
 
 void setup() {
-    loggerSetup();
-    delay(1000); // Allow time for Serial to initialize
+    // FORCE global 'SPI' instance to become an HSPI object inside existing RAM.
+    // This allows TFT_eSPI, TMCStepper, RF24 etc. (which all hardcode "SPI")
+    // to seamlessly share the single HSPI hardware seamlessly.
+    SPI.end();
+    SPI.~SPIClass();
+    new (&SPI) SPIClass(HSPI);
 
+    delay(1000); // Allow time for Serial to initialize
+    
+    robot::logger::setup();
+    robot::queues::begin();  // Initialize queues BEFORE first logger call
+    
     info("main", "Setup started");
     
     robot::state::begin();
-    robot::queues::begin();
     robot::buses::begin();
     robot::ioexpander::begin();
+    robot::screen::begin();
     robot::movers::begin();
     robot::pwmcontroller::begin();
     robot::remote::connect();
     robot::i2cexpander::begin();
     robot::battery::begin();
     robot::color_sensors::begin();
-    robot::screen::begin();
-
-    delay(1000); // Allow time for peripherals to initialize
+    robot::encoder::begin();
 
     robot::tasks::begin();
-    
+    robot::encoder::begin();
+
     IOExpanderCommand cmd{};
     cmd.pin = 7;
     cmd.level = false;
-    xQueueSend(robot::queues::io_command_queue, &cmd, 0);
-
-    
+    xQueueSend(robot::queues::io_command_queue, &cmd, 0);    
 
     CommandBatch<PWMCommand> batch{};
 
