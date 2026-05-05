@@ -17,7 +17,7 @@ namespace robot::tasks {
         GlobalState lastState = robot::state::get();
 
         robot::screen::focus(robot::screen::Tab::DASHBOARD);
-        robot::screen::updateStatus("OPERATIONAL");
+        robot::screen::updateStatus("OPERATIONAL", 0x07E0);
         robot::screen::updateTeamColor(lastState.isYellowTeam);
         robot::screen::updateControl(lastState.action == Action::IDLE ? "MANUAL": "AUTO");
         robot::screen::updateRemoteFreq(0);
@@ -54,7 +54,7 @@ namespace robot::tasks {
                 robot::screen::focus(currentTab);
                 switch (currentTab) {
                     case robot::screen::Tab::DASHBOARD:
-                        robot::screen::updateStatus("OPERATIONAL");
+                        robot::screen::updateStatus("OPERATIONAL", 0x07E0);
                         robot::screen::updateControl(state.action == Action::IDLE ? "MANUAL": "AUTO");
                         robot::screen::updateTeamColor(state.isYellowTeam);
                         robot::screen::updateRemoteFreq(state.radioFrequency);
@@ -71,6 +71,9 @@ namespace robot::tasks {
 
             switch (currentTab) {
                 case robot::screen::Tab::DASHBOARD:
+                    if (state.criticalBattery != lastState.criticalBattery) {
+                        robot::screen::updateStatus(state.criticalBattery ? "STOPPED (BAT)" : "OPERATIONAL", state.criticalBattery ? 0xF800 : 0x07E0);
+                    }
                     if (state.action != lastState.action) {
                         robot::screen::updateControl(state.action == Action::IDLE ? "MANUAL": "AUTO");
                     }

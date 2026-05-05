@@ -13,7 +13,7 @@ namespace robot::screen {
 
     bool begin();
     bool focus(Tab tab);
-    void updateStatus(const char* status);
+    void updateStatus(const char* status, uint16_t color);
     void updateControl(const char* control);
     void updateRemoteFreq(uint8_t freq);
     void updateBatteryPercentage(uint8_t percentage);

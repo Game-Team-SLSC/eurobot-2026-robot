@@ -4,29 +4,17 @@
 
 namespace {
 SemaphoreHandle_t g_spiMutex = nullptr;
-portMUX_TYPE g_spiMutexInitMux = portMUX_INITIALIZER_UNLOCKED;
-
-void ensureInitialized() {
-    if (g_spiMutex != nullptr) {
-        return;
-    }
-
-    taskENTER_CRITICAL(&g_spiMutexInitMux);
-    if (g_spiMutex == nullptr) {
-        g_spiMutex = xSemaphoreCreateMutex();
-    }
-    taskEXIT_CRITICAL(&g_spiMutexInitMux);
-}
 } // namespace
 
 namespace robot::spi_mutex {
 
 void begin() {
-    ensureInitialized();
+    if (g_spiMutex == nullptr) {
+        g_spiMutex = xSemaphoreCreateMutex();
+    }
 }
 
 bool lock(TickType_t timeoutTicks) {
-    ensureInitialized();
     if (g_spiMutex == nullptr) {
         return false;
     }
