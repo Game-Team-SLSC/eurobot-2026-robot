@@ -78,12 +78,6 @@ namespace {
 
 namespace robot::screen {
     bool begin() {
-        robot::spi_mutex::Guard spiGuard;
-        if (!spiGuard.isLocked()) {
-            error("screen", "SPI mutex unavailable");
-            return false;
-        }
-
         IOExpanderCommand cmdb{};
         cmdb.pin = 7;
         cmdb.level = true;
@@ -96,7 +90,13 @@ namespace robot::screen {
         cmdz.level = false;
         xQueueSend(robot::queues::io_command_queue, &cmdz, 0);            
 
-        delay(100);
+        delay(10);
+
+        robot::spi_mutex::Guard spiGuard;
+        if (!spiGuard.isLocked()) {
+            error("screen", "SPI mutex unavailable");
+            return false;
+        }
 
         tft.begin();
         tft.setRotation(3);
@@ -182,55 +182,47 @@ namespace robot::screen {
         return true;
     }
 
-    void updateStatus(const char* status) {
-        robot::spi_mutex::Guard spiGuard;
-        if (!spiGuard.isLocked()) {
-            return;
-        }
-
+    void updateStatus(const char* status, uint16_t color) {
         statusBg.pushToSprite(&statusText, 0, 0);
-        statusText.setTextColor(TFT_GREEN);
+        statusText.setTextColor(color);
         statusText.setTextDatum(MC_DATUM);
         statusText.setFreeFont(&FreeSans12pt7b);
         statusText.drawString(status, (status_rect.x2 - status_rect.x1) / 2, (status_rect.y2 - status_rect.y1) / 2);
-        statusText.pushSprite(status_rect.x1, status_rect.y1, TFT_BLACK);
+        
+        robot::spi_mutex::Guard spiGuard;
+        if (spiGuard.isLocked()) {
+            statusText.pushSprite(status_rect.x1, status_rect.y1, TFT_BLACK);
+        }
     }
 
     void updateControl(const char* control) {
-        robot::spi_mutex::Guard spiGuard;
-        if (!spiGuard.isLocked()) {
-            return;
-        }
-
         controlBg.pushToSprite(&controlText, 0, 0);
         controlText.setTextColor(TFT_GREEN);
         controlText.setTextDatum(MC_DATUM);
         controlText.setFreeFont(&FreeSans9pt7b);
         controlText.drawString(control, (control_rect.x2 - control_rect.x1) / 2, (control_rect.y2 - control_rect.y1) / 2);
-        controlText.pushSprite(control_rect.x1, control_rect.y1, TFT_BLACK);
+        
+        robot::spi_mutex::Guard spiGuard;
+        if (spiGuard.isLocked()) {
+            controlText.pushSprite(control_rect.x1, control_rect.y1, TFT_BLACK);
+        }
     }
 
     void updateTeamColor(bool isYellow) {
-        robot::spi_mutex::Guard spiGuard;
-        if (!spiGuard.isLocked()) {
-            return;
-        }
-
         teamColorBg.pushToSprite(&teamColorImage, 0, 0);
         if (isYellow) {
             teamColorImage.pushImage(0, 0, 59, 59, robot::screen::res::yellow_team_icon);
         } else {
             teamColorImage.pushImage(0, 0, 59, 59, robot::screen::res::blue_team_icon);
         }
-        teamColorImage.pushSprite(team_color_rect.x1, team_color_rect.y1, TFT_BLACK);
+        
+        robot::spi_mutex::Guard spiGuard;
+        if (spiGuard.isLocked()) {
+            teamColorImage.pushSprite(team_color_rect.x1, team_color_rect.y1, TFT_BLACK);
+        }
     }
 
     void updateBatteryStatus(robot::battery::BatteryStatus &status) {
-        robot::spi_mutex::Guard spiGuard;
-        if (!spiGuard.isLocked()) {
-            return;
-        }
-
         batteryStatusBg.pushToSprite(&batteryStatusText, 0, 0);
 
         batteryStatusText.setTextColor(status.percentage <= 5 ? TFT_RED : TFT_WHITE);
@@ -256,6 +248,11 @@ namespace robot::screen {
             battery_status_rect.x2 - battery_status_rect.x1,
             battery_status_rect.y2 - battery_status_rect.y1
         );
+
+        robot::spi_mutex::Guard spiGuard;
+        if (!spiGuard.isLocked()) {
+            return;
+        }
 
         batteryStatusText.pushSprite(battery_status_rect.x1, battery_status_rect.y1);
 
@@ -340,31 +337,25 @@ namespace robot::screen {
     }
 
     void updateBatteryPercentage(uint8_t percentage) {
-        robot::spi_mutex::Guard spiGuard;
-        if (!spiGuard.isLocked()) {
-            return;
-        }
-
         battPrcBg.pushToSprite(&battPrcText, 0, 0);
         battPrcText.setTextColor(percentage <= 10 ? TFT_RED : TFT_WHITE);
         battPrcText.setTextDatum(MC_DATUM);
         battPrcText.setTextSize(2);
         battPrcText.drawString((std::to_string(percentage) + "%").c_str(), (batt_prc_rect.x2 - batt_prc_rect.x1) / 2, (batt_prc_rect.y2 - batt_prc_rect.y1) / 2);
-        battPrcText.pushSprite(batt_prc_rect.x1, batt_prc_rect.y1, TFT_BLACK);
-
+        
         uint8_t width = map(percentage, 0, 100, 0, 22);
 
         battFillBg.pushToSprite(&battFillImage, 0, 0);
         battFillImage.pushImage(0, 0, width, 9, robot::screen::res::batt_fill);
-        battFillImage.pushSprite(batt_fill_rect.x1, batt_fill_rect.y1, TFT_BLACK);
+        
+        robot::spi_mutex::Guard spiGuard;
+        if (spiGuard.isLocked()) {
+            battPrcText.pushSprite(batt_prc_rect.x1, batt_prc_rect.y1, TFT_BLACK);
+            battFillImage.pushSprite(batt_fill_rect.x1, batt_fill_rect.y1, TFT_BLACK);
+        }
     }
 
     void updateRemoteFreq(uint8_t freq) {
-        robot::spi_mutex::Guard spiGuard;
-        if (!spiGuard.isLocked()) {
-            return;
-        }
-
         uint8_t r,g,b;
 
         const uint8_t clampedFreq = min(freq, static_cast<uint8_t>(100));
@@ -377,7 +368,6 @@ namespace robot::screen {
         remoteFreqText.setTextDatum(MC_DATUM);
         remoteFreqText.setFreeFont(&FreeSans9pt7b);
         remoteFreqText.drawString(freq == 0 ? "N/A" : (std::to_string(freq) + "Hz").c_str(), (remote_freq_rect.x2 - remote_freq_rect.x1) / 2, (remote_freq_rect.y2 - remote_freq_rect.y1) / 2);
-        remoteFreqText.pushSprite(remote_freq_rect.x1, remote_freq_rect.y1, TFT_BLACK);
 
         connectedIconBg.pushToSprite(&connectedIconImage, 0, 0);
         if (freq > 0) {
@@ -386,7 +376,11 @@ namespace robot::screen {
             connectedIconImage.pushImage(0, 0, 13, 13, robot::screen::res::disconnected_icon);
         }
 
-        connectedIconImage.pushSprite(connected_icon_rect.x1, connected_icon_rect.y1, TFT_BLACK);
+        robot::spi_mutex::Guard spiGuard;
+        if (spiGuard.isLocked()) {
+            remoteFreqText.pushSprite(remote_freq_rect.x1, remote_freq_rect.y1, TFT_BLACK);
+            connectedIconImage.pushSprite(connected_icon_rect.x1, connected_icon_rect.y1, TFT_BLACK);
+        }
     }
 
     bool focus(Tab tab) {
