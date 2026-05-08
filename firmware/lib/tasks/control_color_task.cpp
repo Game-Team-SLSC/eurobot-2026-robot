@@ -9,14 +9,14 @@ namespace robot::tasks {
 void control_color_task(void* parameter) {
     (void)parameter;
 
-    info("control_color_task", "task started");
+    info("control_color_task", "Task started");
 
     while (true) {
         ColorCommand command;
         if ((robot::queues::color_command_queue != nullptr) &&
             (xQueueReceive(robot::queues::color_command_queue, &command, pdMS_TO_TICKS(100)) == pdPASS)) {
             if (!robot::color_sensors::apply(command)) {
-                warn("control_color_task", "Failed to apply color sensor command");
+                warn("control_color_task", "Failed to use color sensor");
             }
         }
 

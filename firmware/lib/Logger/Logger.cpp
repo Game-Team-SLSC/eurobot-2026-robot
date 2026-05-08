@@ -8,6 +8,29 @@ namespace robot::logger {
         printf_begin();
     }
 
+    static bool enqueueLogMessage(char* finalLog) {
+        if (robot::queues::logs_queue == nullptr) {
+            free(finalLog);
+            return false;
+        }
+
+        if (xQueueSend(robot::queues::logs_queue, &finalLog, 0) == pdPASS) {
+            return true;
+        }
+
+        char* droppedLog = nullptr;
+        if (xQueueReceive(robot::queues::logs_queue, &droppedLog, 0) == pdPASS && droppedLog != nullptr) {
+            free(droppedLog);
+        }
+
+        if (xQueueSend(robot::queues::logs_queue, &finalLog, 0) == pdPASS) {
+            return true;
+        }
+
+        free(finalLog);
+        return false;
+    }
+
     void pushToQueue(LogLevel level, const char* sender, const char* fmt, ...) {
         char messageBuffer[128];
         va_list args;
@@ -19,9 +42,7 @@ namespace robot::logger {
         
         if (finalLog) {
             snprintf(finalLog, 128, "%d[%s] %s", static_cast<int>(level), sender, messageBuffer);
-            if (xQueueSend(robot::queues::logs_queue, &finalLog, 0) != pdPASS) {
-                free(finalLog);
-            }
+            enqueueLogMessage(finalLog);
         }
     }
 }

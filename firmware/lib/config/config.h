@@ -81,12 +81,12 @@ struct TMCConfig {
     bool dirHighCountsUp = false;
 };
 
+}
+
 struct PWMControl {
     robot::config::PWMController controller;
     uint8_t pin;
 };
-}
-
 
 namespace robot::config {
     // Battery

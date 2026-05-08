@@ -67,14 +67,4 @@ namespace robot::pwmcontroller {
         bool ok = pwm->setPWM(command.pin, 0, command.value);
         return ok;
     }
-
-    bool apply(const CommandBatch<PWMCommand>& batch) {
-        bool success = true;
-        for (uint8_t i = 0; i < batch.count; ++i) {
-            if (!robot::pwmcontroller::apply(batch.commands[i])) {
-                success = false;
-            }
-        }
-        return success;
-    }
 }

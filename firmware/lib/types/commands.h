@@ -5,24 +5,6 @@
 
 constexpr uint8_t MAX_CMD = 8;
 
-template <typename TCommand>
-struct CommandBatch {
-    TCommand commands[MAX_CMD]{};
-    uint8_t count = 0;
-
-    bool add(const TCommand& command) {
-        if (count >= MAX_CMD) {
-            return false;
-        }
-        commands[count++] = command;
-        return true;
-    }
-
-    void clear() {
-        count = 0;
-    }
-};
-
 struct MotionCommand {
     float forward = 0;
     float strafe = 0;

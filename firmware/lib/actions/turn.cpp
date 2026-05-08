@@ -8,24 +8,7 @@
 
 namespace robot::actions {
 void turn() {
-    CommandBatch<PWMCommand> pwmBatch;
-
-    PWMCommand cmd;
-    cmd.controller = robot::config::front_grabber_left.controller;
-    cmd.pin = robot::config::front_grabber_left.pin;
-    cmd.value = robot::actions::detail::angleToPWMValue(68);
-
-    pwmBatch.add(cmd);
-
-    PWMCommand cmd2;
-
-    cmd2.controller = robot::config::front_right_grabber.controller;
-    cmd2.pin = robot::config::front_right_grabber.pin;
-    cmd2.value = robot::actions::detail::angleToPWMValue(75);
-
-    pwmBatch.add(cmd2);
-
-    xQueueSend(robot::queues::pwm_command_queue, &pwmBatch, 0);
+    action_helpers::unfold_grabber(true);
 
     GlobalState state = robot::state::get();
 
@@ -62,64 +45,54 @@ void turn() {
         // put the right mask on pumps
         uint8_t pumpsMask = 0;
         bool noneMustBeTurned = true;
-        if (erOk && detail::mustBeTurned(erColorResp)) {
+        if (erOk && action_helpers::mustBeTurned(erColorResp)) {
             pumpsMask |= 1 << 0;
             noneMustBeTurned = false;
         }
-        if (irOk && detail::mustBeTurned(irColorResp)) {
+        if (irOk && action_helpers::mustBeTurned(irColorResp)) {
             pumpsMask |= 1 << 1;
             noneMustBeTurned = false;
         }
-        if (elOk && detail::mustBeTurned(elColorResp)) {
+        if (elOk && action_helpers::mustBeTurned(elColorResp)) {
             pumpsMask |= 1 << 2;
             noneMustBeTurned = false;
         }
-        if (ilOk && detail::mustBeTurned(ilColorResp)) {
+        if (ilOk && action_helpers::mustBeTurned(ilColorResp)) {
             pumpsMask |= 1 << 3;
             noneMustBeTurned = false;
         }
-        bool allMustBeTurned = detail::mustBeTurned(erColorResp) && detail::mustBeTurned(irColorResp) && detail::mustBeTurned(elColorResp) && detail::mustBeTurned(ilColorResp);
+        bool allMustBeTurned = action_helpers::mustBeTurned(erColorResp) && action_helpers::mustBeTurned(irColorResp) && action_helpers::mustBeTurned(elColorResp) && action_helpers::mustBeTurned(ilColorResp);
 
-        detail::togglePumps(pumpsMask);
+        action_helpers::togglePumps(pumpsMask);
 
         if (allMustBeTurned) {
             vTaskDelay(pdMS_TO_TICKS(300));
-            detail::togglePumps(0b0000);
-            pwmBatch.clear();
-            detail::angleTurn(pwmBatch, 15);
-            xQueueSend(robot::queues::pwm_command_queue, &pwmBatch, 0);
+            action_helpers::togglePumps(0b0000);
+            action_helpers::angleTurn(15);
         } else {
             vTaskDelay(pdMS_TO_TICKS(200));
             // go to 140 with angle turn
-            pwmBatch.clear();
-            detail::angleTurn(pwmBatch,  140);
-            xQueueSend(robot::queues::pwm_command_queue, &pwmBatch, 0);
+            action_helpers::angleTurn(140);
             // wait 500 ms
             vTaskDelay(pdMS_TO_TICKS(400));
             // go to 15 with angle turn
-            pwmBatch.clear();
-            detail::angleTurn(pwmBatch,  15);
-            xQueueSend(robot::queues::pwm_command_queue, &pwmBatch, 0);
+            action_helpers::angleTurn(15);
         }
 
         if (noneMustBeTurned) {
             vTaskDelay(pdMS_TO_TICKS(300));
-            detail::togglePumps(0b0000);
-            pwmBatch.clear();
-            detail::angleTurn(pwmBatch, 15);
-            xQueueSend(robot::queues::pwm_command_queue, &pwmBatch, 0);
+            action_helpers::togglePumps(0b0000);
+            action_helpers::angleTurn(15);
         } else {
-            detail::togglePumps(pumpsMask);
+            action_helpers::togglePumps(pumpsMask);
     
             vTaskDelay(pdMS_TO_TICKS(100));
     
-            pwmBatch.clear();
-            detail::angleTurn(pwmBatch, 15);
-            xQueueSend(robot::queues::pwm_command_queue, &pwmBatch, 0);
+            action_helpers::angleTurn(15);
             
             vTaskDelay(pdMS_TO_TICKS(400));
     
-            detail::togglePumps(0b0000);
+            action_helpers::togglePumps(0b0000);
     
             vTaskDelay(pdMS_TO_TICKS(300));
             MotionCommand recule;
@@ -143,9 +116,7 @@ void turn() {
 
         vTaskDelay(pdMS_TO_TICKS(300));
 
-        detail::angleTurn(pwmBatch,  155);
-
-        xQueueSend(robot::queues::pwm_command_queue, &pwmBatch, 0);
+        action_helpers::angleTurn(155);
 
         vTaskDelay(pdMS_TO_TICKS(500));
 
@@ -179,40 +150,37 @@ void turn() {
 
         bool noneMustBeTurned = true;
         uint8_t pumpsMask = 0;
-        if (erOk && detail::mustBeTurned(erColorResp)) {
+        if (erOk && action_helpers::mustBeTurned(erColorResp)) {
             pumpsMask |= 1 << 0;
             noneMustBeTurned = false;
         }
-        if (irOk && detail::mustBeTurned(irColorResp)) {
+        if (irOk && action_helpers::mustBeTurned(irColorResp)) {
             pumpsMask |= 1 << 1;
             noneMustBeTurned = false;
         }
-        if (elOk && detail::mustBeTurned(elColorResp)) {
+        if (elOk && action_helpers::mustBeTurned(elColorResp)) {
             pumpsMask |= 1 << 2;
             noneMustBeTurned = false;
         }
-        if (ilOk && detail::mustBeTurned(ilColorResp)) {
+        if (ilOk && action_helpers::mustBeTurned(ilColorResp)) {
             pumpsMask |= 1 << 3;
             noneMustBeTurned = false;
         }
 
         if (noneMustBeTurned) {
-            detail::togglePumps(0b0000);
-            pwmBatch.clear();
-            detail::angleTurn(pwmBatch, 15);
-            xQueueSend(robot::queues::pwm_command_queue, &pwmBatch, 0);
+            action_helpers::togglePumps(0b0000);
+
+            action_helpers::angleTurn(15);
         } else {
-            detail::togglePumps(pumpsMask);
+            action_helpers::togglePumps(pumpsMask);
     
             vTaskDelay(pdMS_TO_TICKS(100));
     
-            pwmBatch.clear();
-            detail::angleTurn(pwmBatch, 15);
-            xQueueSend(robot::queues::pwm_command_queue, &pwmBatch, 0);
+            action_helpers::angleTurn(15);
             
             vTaskDelay(pdMS_TO_TICKS(400));
     
-            detail::togglePumps(0b0000);
+            action_helpers::togglePumps(0b0000);
     
             vTaskDelay(pdMS_TO_TICKS(300));
             MotionCommand recule;
@@ -229,7 +197,6 @@ void turn() {
 
     robot::state::setStocking(StockingState::EMPTY);
 
-    const Action idleAction = Action::IDLE;
-    xQueueSend(robot::queues::action_command_queue, &idleAction, 0);
+    action_helpers::endAction();
 }
 }

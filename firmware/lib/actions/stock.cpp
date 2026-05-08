@@ -9,8 +9,6 @@
 
 namespace robot::actions {
 void stock() {
-    CommandBatch<PWMCommand> pwmBatch;
-
     MotionCommand mcmd;
 
     mcmd.target = {-15, 0, 0};
@@ -19,36 +17,18 @@ void stock() {
 
     vTaskDelay(pdMS_TO_TICKS(300));
 
-    PWMCommand cmd;
-    cmd.controller = robot::config::front_grabber_left.controller;
-    cmd.pin = robot::config::front_grabber_left.pin;
-    cmd.value = robot::actions::detail::angleToPWMValue(68);
-
-    pwmBatch.add(cmd);
-
-    PWMCommand cmd2;
-
-    cmd2.controller = robot::config::front_right_grabber.controller;
-    cmd2.pin = robot::config::front_right_grabber.pin;
-    cmd2.value = robot::actions::detail::angleToPWMValue(75);
-
-    pwmBatch.add(cmd2);
+    action_helpers::unfold_grabber(true);
 
     robot::state::setStocking(StockingState::FULL);
 
-    detail::angleTurn(pwmBatch, 155);
-    
-    xQueueSend(robot::queues::pwm_command_queue, &pwmBatch, 0);
+    action_helpers::angleTurn(155);
 
-    detail::togglePumps(0b1111);
+    action_helpers::togglePumps(0b1111);
 
     vTaskDelay(pdMS_TO_TICKS(500));
 
-    pwmBatch.clear();
-    detail::angleTurn(pwmBatch, 15);
-    xQueueSend(robot::queues::pwm_command_queue, &pwmBatch, 0);
+    action_helpers::angleTurn(15);
 
-    const Action idleAction = Action::IDLE;
-    xQueueSend(robot::queues::action_command_queue, &idleAction, 0);
+    action_helpers::endAction();
 }
 }

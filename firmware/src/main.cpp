@@ -54,40 +54,10 @@ void setup() {
     IOExpanderCommand cmd{};
     cmd.pin = 7;
     cmd.level = false;
-    xQueueSend(robot::queues::io_command_queue, &cmd, 0);    
+    xQueueSend(robot::queues::io_command_queue, &cmd, 0);
 
-    CommandBatch<PWMCommand> batch{};
-
-    PWMCommand pwmCmd{};
-    pwmCmd.controller = robot::config::front_left_turner.controller;
-    pwmCmd.pin = robot::config::front_left_turner.pin;
-    pwmCmd.value = robot::actions::detail::angleToPWMValue(17);
-
-    PWMCommand cmd3;
-    cmd3.controller = robot::config::front_right_turner.controller;
-    cmd3.pin = robot::config::front_right_turner.pin;
-    cmd3.value = robot::actions::detail::angleToPWMValue(163);
-    batch.add(cmd3);
-
-    PWMCommand cmdala;
-    cmdala.controller = robot::config::front_grabber_left.controller;
-    cmdala.pin = robot::config::front_grabber_left.pin;
-    cmdala.value = robot::actions::detail::angleToPWMValue(68);
-
-    batch.add(cmdala);
-
-    PWMCommand cmd2a;
-
-    cmd2a.controller = robot::config::front_right_grabber.controller;
-    cmd2a.pin = robot::config::front_right_grabber.pin;
-    cmd2a.value = robot::actions::detail::angleToPWMValue(75);
-
-    batch.add(cmd2a);
-    
-    batch.add(pwmCmd);
-    
-    xQueueSend(robot::queues::pwm_command_queue, &batch, 0);
-
+    robot::actions::action_helpers::angleTurn(17);
+    robot::actions::action_helpers::unfold_grabber(true);
 }
 
 void loop() {

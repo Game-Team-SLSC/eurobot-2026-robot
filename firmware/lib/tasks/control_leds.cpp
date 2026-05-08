@@ -24,7 +24,7 @@ namespace robot::tasks {
 void control_leds_task(void* parameter) {
     (void)parameter;
 
-    info("control_leds_task", "task started");
+    info("control_leds_task", "Task started");
 
     uint16_t current_red = 0, current_green = 0, current_blue = 0;
     uint16_t target_red = 0, target_green = 0, target_blue = 0;
@@ -50,17 +50,14 @@ void control_leds_task(void* parameter) {
         current_green = step_toward(current_green, target_green, fade_step);
         current_blue = step_toward(current_blue, target_blue, fade_step);
 
-        CommandBatch<PWMCommand> pwmBatch;
-
         PWMCommand red{.controller = robot::config::led_left_r.controller, .pin = robot::config::led_left_r.pin, .value = current_red};
         PWMCommand green{.controller = robot::config::led_left_g.controller, .pin = robot::config::led_left_g.pin, .value = current_green};
         PWMCommand blue{.controller = robot::config::led_left_b.controller, .pin = robot::config::led_left_b.pin, .value = current_blue};
 
-        pwmBatch.add(red);
-        pwmBatch.add(green);
-        pwmBatch.add(blue);
+        xQueueSend(robot::queues::pwm_command_queue, &red, 0);
+        xQueueSend(robot::queues::pwm_command_queue, &green, 0);
+        xQueueSend(robot::queues::pwm_command_queue, &blue, 0);
 
-        xQueueSend(robot::queues::pwm_command_queue, &pwmBatch, 0);
         vTaskDelay(pdMS_TO_TICKS(update_period_ms));
     }
 }

@@ -23,14 +23,14 @@ namespace robot::tasks {
         robot::screen::updateRemoteFreq(0);
         robot::screen::updateBatteryPercentage(100);
 
-        char logHistory[10][128];
+        char logHistory[10][128] = {};
         uint8_t nextIndex = 0;
         uint8_t totalLogs = 0;
         bool logsUpdated = false;
 
         while (true) {
             char* logMsg;
-            if (xQueueReceive(robot::queues::logs_queue, &logMsg, 0) == pdPASS) {
+            while (xQueueReceive(robot::queues::logs_queue, &logMsg, 0) == pdPASS) {
                 // copy
                 strncpy(logHistory[nextIndex], logMsg, sizeof(logHistory[nextIndex]) - 1);
                 logHistory[nextIndex][sizeof(logHistory[nextIndex]) - 1] = '\0';
@@ -66,7 +66,7 @@ namespace robot::tasks {
                         robot::screen::updateBatteryPercentage(state.batteryStatus.percentage);
                         break;
                     case robot::screen::Tab::LOGS:
-                        robot::screen::updateLogs(logHistory);
+                        robot::screen::updateLogs(logHistory, totalLogs, nextIndex);
                         break;
                     case robot::screen::Tab::BATTERY:
                         robot::screen::updateBatteryStatus(state.batteryStatus);
@@ -97,7 +97,7 @@ namespace robot::tasks {
                     break;
                 case robot::screen::Tab::LOGS:
                     if (logsUpdated) {
-                        robot::screen::updateLogs(logHistory);
+                        robot::screen::updateLogs(logHistory, totalLogs, nextIndex);
                         logsUpdated = false;
                     }
                     break;

@@ -14,7 +14,7 @@ namespace robot::queues {
     void begin() {
         io_command_queue = xQueueCreate(16, sizeof(IOExpanderCommand));
         motion_command_queue = xQueueCreate(16, sizeof(MotionCommand));
-        pwm_command_queue = xQueueCreate(16, sizeof(CommandBatch<PWMCommand>));
+        pwm_command_queue = xQueueCreate(30, sizeof(PWMCommand));
         action_command_queue = xQueueCreate(1, sizeof(Action));
         color_command_queue = xQueueCreate(16, sizeof(ColorCommand));
         color_response_queue = xQueueCreate(1, sizeof(ColorResponse));

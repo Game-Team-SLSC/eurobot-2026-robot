@@ -21,5 +21,5 @@ namespace robot::screen {
 
     void updateBatteryStatus(robot::battery::BatteryStatus &status);
 
-    void updateLogs(const char logs[10][128]);
+    void updateLogs(const char logs[10][128], uint8_t totalLogs, uint8_t nextIndex);
 }

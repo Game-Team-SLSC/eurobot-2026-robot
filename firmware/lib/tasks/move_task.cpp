@@ -85,7 +85,7 @@ namespace robot::tasks {
         TickType_t xLastWakeTime = xTaskGetTickCount();
         const TickType_t xPeriode = pdMS_TO_TICKS(5);
 
-        info("move_task", "task started");
+        info("move_task", "Task started");
         
         while (true) {
             vTaskDelayUntil(&xLastWakeTime, xPeriode);

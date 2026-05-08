@@ -24,20 +24,23 @@ void control_action_task(void* parameter) {
 
             switch (action) {
                 case Action::TURN:
-                    info("control_action_task", "Handling action command: TURN");
+                    info("control_action_task", "Starting TURN action");
                     robot::actions::turn();
                     break;
                 case Action::STOCK:
-                    info("control_action_task", "Handling action command: STOCK");
+                    info("control_action_task", "Starting STOCK action");
                     robot::actions::stock();
                     break;
                 case Action::RELEASE:
-                    info("control_action_task", "Handling action command: RELEASE");
+                    info("control_action_task", "Starting RELEASE action");
                     robot::actions::release();
                     break;
                 case Action::TURN_TWO:
-                    info("control_action_task", "Handling action command: TURN_TWO");
+                    info("control_action_task", "Starting TURN_TWO action");
                     robot::actions::turn_two();
+                    break;
+                case Action::IDLE:
+                    info("control_action_task", "Going back to IDLE state");
                     break;
                 default:
                     warn("control_action_task", "Unknown action command received");

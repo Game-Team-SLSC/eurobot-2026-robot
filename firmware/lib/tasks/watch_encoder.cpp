@@ -8,7 +8,7 @@ namespace robot::tasks {
     void watch_encoder(void* parameter) {
         (void)parameter;
 
-        info("watch_encoder", "task started");
+        info("watch_encoder", "Task started");
 
         robot::encoder::Position previousState = robot::encoder::Position::A_LOW_B_LOW;
         int16_t rawPosition = 0;

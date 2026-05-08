@@ -403,7 +403,7 @@ namespace robot::screen {
         return true;
     }
 
-    void updateLogs(const char logs[10][128]) {
+    void updateLogs(const char logs[10][128], uint8_t totalLogs, uint8_t nextIndex) {
         robot::spi_mutex::Guard spiGuard;
         if (!spiGuard.isLocked()) {
             return;
@@ -418,14 +418,18 @@ namespace robot::screen {
         tft.setTextDatum(TL_DATUM);
         tft.setTextFont(1);
         tft.setTextSize(1);
+
+        const uint8_t startIndex = totalLogs < 10 ? 0 : nextIndex;
         
-        for (int i = 9; i >= 0; i--) {
-            if (logs[i][0] == '\0') {
+        for (uint8_t i = 0; i < totalLogs; i++) {
+            const uint8_t sourceIndex = (startIndex + i) % 10;
+
+            if (logs[sourceIndex][0] == '\0') {
                 break;
             }
             
             // Determine color based on first character: 0=blue, 1=yellow, 2=red
-            char colorCode = logs[i][0];
+            char colorCode = logs[sourceIndex][0];
             uint16_t color = TFT_WHITE; // default
             
             if (colorCode == '0') {
@@ -439,7 +443,7 @@ namespace robot::screen {
             tft.setTextColor(color);
             
             // Draw from second character onwards (skip the color code)
-            tft.drawString(logs[i] + 1, 5, 5 + i * 18);
+            tft.drawString(logs[sourceIndex] + 1, 5, 5 + i * 18);
         }
 
         tft.resetViewport();

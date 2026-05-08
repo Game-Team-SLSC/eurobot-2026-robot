@@ -9,7 +9,17 @@ namespace {
 constexpr uint8_t PUMPS_ALL_MASK = 0b1111;
 }
 
-namespace robot::actions::detail {
+namespace robot::actions::action_helpers {
+void togglePWM(const PWMControl& actuator_info, bool on) {
+    PWMCommand cmd;
+
+    cmd.controller = actuator_info.controller;
+    cmd.pin = actuator_info.pin;
+    cmd.value = on ? 4095 : 0;
+
+    xQueueSend(robot::queues::pwm_command_queue, &cmd, 0);
+}
+
 void togglePumps(uint8_t state) {
     if (state == 0b0000) {
         robot::state::setPumpsStatus(false);
@@ -38,35 +48,10 @@ void togglePumps(uint8_t state) {
     cmd5.pin = 12;
     cmd5.level = (state & (1 << 2)) != 0;
 
-    CommandBatch<PWMCommand> batch{};
-
-    PWMCommand cmd6;
-    cmd6.controller = robot::config::front_interior_left_ev.controller;
-    cmd6.pin = robot::config::front_interior_left_ev.pin;
-    cmd6.value = (state & (1 << 0)) != 0 ? 4095 : 0;
-    
-    PWMCommand cmd7;
-    cmd7.controller = robot::config::front_interior_right_ev.controller;
-    cmd7.pin = robot::config::front_interior_right_ev.pin;
-    cmd7.value = (state & (1 << 1)) != 0 ? 4095 : 0;
-    
-    PWMCommand cmd8;
-    cmd8.controller = robot::config::front_exterior_left_ev.controller;
-    cmd8.pin = robot::config::front_exterior_left_ev.pin;
-    cmd8.value = (state & (1 << 2)) != 0 ? 4095 : 0;
-    
-    PWMCommand cmd9;
-    cmd9.controller = robot::config::front_exterior_right_ev.controller;
-    cmd9.pin = robot::config::front_exterior_right_ev.pin;
-    cmd9.value = (state & (1 << 3)) != 0 ? 4095 : 0;
-
-    batch.add(cmd6);
-    batch.add(cmd7);
-    batch.add(cmd8);
-    batch.add(cmd9);
-
-    xQueueSend(robot::queues::pwm_command_queue, &batch, 0);
-
+    togglePWM(robot::config::front_interior_left_ev, (state & (1 << 0)) != 0);
+    togglePWM(robot::config::front_interior_right_ev, (state & (1 << 1)) != 0);
+    togglePWM(robot::config::front_exterior_left_ev, (state & (1 << 2)) != 0);
+    togglePWM(robot::config::front_exterior_right_ev, (state & (1 << 3)) != 0);
 
     xQueueSend(robot::queues::io_command_queue, &cmd2, 0);
     xQueueSend(robot::queues::io_command_queue, &cmd3, 0);
@@ -74,22 +59,37 @@ void togglePumps(uint8_t state) {
     xQueueSend(robot::queues::io_command_queue, &cmd5, 0);
 }
 
-void angleTurn(CommandBatch<PWMCommand>& batch, uint8_t angle) {
+void performRotation(const PWMControl& actuator_info, uint8_t angle) {
     PWMCommand cmd;
-    cmd.controller = robot::config::front_left_turner.controller;
-    cmd.pin = robot::config::front_left_turner.pin;
-    cmd.value = robot::actions::detail::angleToPWMValue(angle);
-    batch.add(cmd);
 
-    PWMCommand cmd2;
-    cmd2.controller = robot::config::front_right_turner.controller;
-    cmd2.pin = robot::config::front_right_turner.pin;
-    cmd2.value = robot::actions::detail::angleToPWMValue(180 - angle + 3);
-    batch.add(cmd2);
+    cmd.controller = actuator_info.controller;
+    cmd.pin = actuator_info.pin;
+    cmd.value = robot::actions::action_helpers::angleToPWMValue(angle);
+
+    xQueueSend(robot::queues::pwm_command_queue, &cmd, 0);
+}
+
+void angleTurn(uint8_t angle) {
+    performRotation(robot::config::front_left_turner, angle);
+    performRotation(robot::config::front_right_turner, 180 - angle + 3);
+}
+
+void unfold_grabber(bool unfolded) {
+    if (unfolded) {
+        performRotation(robot::config::front_grabber_left, 68);
+        performRotation(robot::config::front_right_grabber, 75);
+    } else {
+        performRotation(robot::config::front_grabber_left, 133);
+        performRotation(robot::config::front_right_grabber, 10);
+    }
+}
+
+void endAction() {
+    const Action idleAction = Action::IDLE;
+    xQueueSend(robot::queues::action_command_queue, &idleAction, 0);
 }
 
 uint16_t angleToPWMValue(uint8_t angle) {
-    // Map 0-180 to 115-545
     return map(angle, 0, 180, 115, 545);
 }
 

@@ -213,8 +213,6 @@ void goToTarget(const MotionCommand& cmd) {
 	const int32_t strafeTargetSteps = targetAxisMmToSteps(cmd.target.strafe);
 	const int32_t rotateTargetSteps = targetAxisMmToSteps(map(cmd.target.rotate,-180, 180, -PI*209, PI*209));
 
-	Serial.printf("steps : %d\n", rotateTargetSteps);
-
 
 	fr_target = forwardTargetSteps + strafeTargetSteps + rotateTargetSteps;
 	fl_target = forwardTargetSteps - strafeTargetSteps - rotateTargetSteps;

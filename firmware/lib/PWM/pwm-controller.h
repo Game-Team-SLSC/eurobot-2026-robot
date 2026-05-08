@@ -9,5 +9,4 @@ namespace robot::pwmcontroller {
 
     bool begin();
     bool apply(const PWMCommand& command);
-    bool apply(const CommandBatch<PWMCommand>& batch);
 }
