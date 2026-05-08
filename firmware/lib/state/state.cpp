@@ -101,12 +101,23 @@ namespace robot::state {
         return true;
     }
 
-    bool setStocking(StockingState stockingState) {
+    bool setFrontStocking(StockingState stockingState) {
         if (!xSemaphoreTake(mutex, portMAX_DELAY)) {
             return false;
         }
 
-        globalState.stockingState = stockingState;
+        globalState.front_stocking_state = stockingState;
+        xSemaphoreGive(mutex);
+        
+        return true;
+    }
+
+    bool setBackStocking(StockingState stockingState) {
+        if (!xSemaphoreTake(mutex, portMAX_DELAY)) {
+            return false;
+        }
+
+        globalState.back_stocking_state = stockingState;
         xSemaphoreGive(mutex);
         
         return true;

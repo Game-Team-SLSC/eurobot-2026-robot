@@ -7,8 +7,8 @@
 #include <Logger.h>
 
 namespace {
-TCA9555 logic_mux(robot::config::tca9555_logic_i2c_config.address, robot::buses::get(robot::config::tca9555_logic_i2c_config.busId));
-TCA9555 kinetic_mux(robot::config::tca9555_kinetic_i2c_config.address, robot::buses::get(robot::config::tca9555_kinetic_i2c_config.busId));
+TCA9555 logic_mux(robot::config::tca9555_logic_i2c_config.address, robot::buses::get(robot::config::tca9555_logic_i2c_config.bus_id));
+TCA9555 kinetic_mux(robot::config::tca9555_kinetic_i2c_config.address, robot::buses::get(robot::config::tca9555_kinetic_i2c_config.bus_id));
 } // namespace
 
 namespace robot::ioexpander {

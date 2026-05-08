@@ -33,7 +33,12 @@ namespace robot::config {
         FEL,
         FIL,
         FIR,
-        FER
+        FER,
+
+        BEL,
+        BIL,
+        BIR,
+        BER
     };
 
     enum class Button: uint8_t {
@@ -54,13 +59,13 @@ namespace robot::config {
     };
 
 struct I2CBusConfig {
-    uint8_t sdaPin;
-    uint8_t sclPin;
+    uint8_t sda_pin;
+    uint8_t scl_pin;
 };
 
 struct I2CDeviceConfig {
     uint8_t address;
-    robot::config::I2CBusId busId;
+    robot::config::I2CBusId bus_id;
 };
 
 struct SubI2CDeviceConfig {
@@ -69,15 +74,15 @@ struct SubI2CDeviceConfig {
 };
 
 struct SPIBusConfig {
-    uint8_t sckPin;
-    uint8_t misoPin;
-    uint8_t mosiPin;
+    uint8_t sck_pin;
+    uint8_t miso_pin;
+    uint8_t mosi_pin;
 };
 
 struct TMCConfig {
-    uint8_t csPin;
-    uint8_t stepPin;
-    uint8_t dirPin;
+    uint8_t cs_pin;
+    uint8_t step_pin;
+    uint8_t dir_pin;
     bool dirHighCountsUp = false;
 };
 
@@ -154,20 +159,25 @@ namespace robot::config {
 
     // Servo config
 
-    constexpr PWMControl back_left_turner = {robot::config::PWMController::LEFT, 8};
+    constexpr PWMControl back_left_turner = {robot::config::PWMController::LEFT, 9};
     constexpr PWMControl front_left_turner = {robot::config::PWMController::LEFT, 8};
-    constexpr PWMControl back_right_turner = {robot::config::PWMController::RIGHT, 8};
+    constexpr PWMControl back_right_turner = {robot::config::PWMController::RIGHT, 9};
     constexpr PWMControl front_right_turner = {robot::config::PWMController::RIGHT, 8};
 
-    constexpr PWMControl back_left_grabber = {robot::config::PWMController::LEFT, 6};
+    constexpr PWMControl back_right_grabber = {robot::config::PWMController::LEFT, 6};
     constexpr PWMControl front_right_grabber = {robot::config::PWMController::LEFT, 7};
-    constexpr PWMControl back_right_grabber = {robot::config::PWMController::RIGHT, 6};
-    constexpr PWMControl front_grabber_left = {robot::config::PWMController::RIGHT, 7};
+    constexpr PWMControl back_left_grabber = {robot::config::PWMController::RIGHT, 6};
+    constexpr PWMControl front_left_grabber = {robot::config::PWMController::RIGHT, 7};
 
     constexpr PWMControl front_interior_right_ev = {robot::config::PWMController::LEFT, 10};
     constexpr PWMControl front_interior_left_ev = {robot::config::PWMController::LEFT, 11};
     constexpr PWMControl front_exterior_right_ev = {robot::config::PWMController::LEFT, 13};
     constexpr PWMControl front_exterior_left_ev = {robot::config::PWMController::LEFT, 14};
+
+    constexpr PWMControl back_interior_right_ev = {robot::config::PWMController::RIGHT, 10};
+    constexpr PWMControl back_interior_left_ev = {robot::config::PWMController::RIGHT, 11};
+    constexpr PWMControl back_exterior_right_ev = {robot::config::PWMController::RIGHT, 13};
+    constexpr PWMControl back_exterior_left_ev = {robot::config::PWMController::RIGHT, 14};
 
     constexpr PWMControl led_left_b = {robot::config::PWMController::LEFT, 0};
     constexpr PWMControl led_left_g = {robot::config::PWMController::LEFT, 1};
@@ -175,10 +185,15 @@ namespace robot::config {
 
     // Color config
 
-    constexpr SubI2CDeviceConfig FEL_CAPTOR = {3, I2CController::TCA9548_LOGIC};
-    constexpr SubI2CDeviceConfig FIL_CAPTOR = {2, I2CController::TCA9548_LOGIC};
-    constexpr SubI2CDeviceConfig FIR_CAPTOR = {1, I2CController::TCA9548_LOGIC};
-    constexpr SubI2CDeviceConfig FER_CAPTOR = {0, I2CController::TCA9548_LOGIC};
+    constexpr SubI2CDeviceConfig fel_sensor = {3, I2CController::TCA9548_LOGIC};
+    constexpr SubI2CDeviceConfig fil_sensor = {2, I2CController::TCA9548_LOGIC};
+    constexpr SubI2CDeviceConfig fir_sensor = {1, I2CController::TCA9548_LOGIC};
+    constexpr SubI2CDeviceConfig fer_sensor = {0, I2CController::TCA9548_LOGIC};
+
+    constexpr SubI2CDeviceConfig bel_sensor = {4, I2CController::TCA9548_LOGIC};
+    constexpr SubI2CDeviceConfig bil_sensor = {5, I2CController::TCA9548_LOGIC};
+    constexpr SubI2CDeviceConfig bir_sensor = {6, I2CController::TCA9548_LOGIC};
+    constexpr SubI2CDeviceConfig ber_sensor = {7, I2CController::TCA9548_LOGIC};
 
     // Diag LEDs
 
@@ -195,9 +210,11 @@ namespace robot::config {
     constexpr robot::config::Button stock_action_front_btn = robot::config::Button::LSIDE_R_BTN;
     constexpr robot::config::Button turn_two_action_front_btn = robot::config::Button::LSIDE_L_BTN;
     constexpr robot::config::Button toggle_front_grabber_btn = robot::config::Button::LSIDE_D_BTN;
-    
-    //constexpr robot::config::Button release_action_front_btn = robot::config::Button::LSIDE_D_BTN;
-    //constexpr robot::config::Button toggle_back_grabber_btn = robot::config::Button::DOUBLE_D_BTN;
+
+    constexpr robot::config::Button turn_action_back_btn = robot::config::Button::RSIDE_U_BTN;
+    constexpr robot::config::Button stock_action_back_btn = robot::config::Button::RSIDE_R_BTN;
+    constexpr robot::config::Button turn_two_action_back_btn = robot::config::Button::RSIDE_L_BTN;
+    constexpr robot::config::Button toggle_back_grabber_btn = robot::config::Button::RSIDE_D_BTN;
 
     constexpr robot::config::Button toggle_low_speed_btn = robot::config::Button::DOUBLE_U_BTN;
     // down reserved for teams

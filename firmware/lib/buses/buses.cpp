@@ -13,8 +13,8 @@ namespace robot::buses {
 
         SPI.begin(robot::config::spi_sck_pin, robot::config::spi_miso_pin, robot::config::spi_mosi_pin);
 
-        bool ok = i2c_actuation.begin(robot::config::i2c_actuation_config.sdaPin, robot::config::i2c_actuation_config.sclPin) &&
-        i2c_sensors.begin(robot::config::i2c_sensors_config.sdaPin, robot::config::i2c_sensors_config.sclPin);
+        bool ok = i2c_actuation.begin(robot::config::i2c_actuation_config.sda_pin, robot::config::i2c_actuation_config.scl_pin) &&
+        i2c_sensors.begin(robot::config::i2c_sensors_config.sda_pin, robot::config::i2c_sensors_config.scl_pin);
 
         if (!ok) {
             error("buses", "Initialization failed");

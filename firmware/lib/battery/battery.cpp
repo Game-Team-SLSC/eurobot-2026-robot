@@ -3,7 +3,7 @@
 #include <buses.h>
 #include <Logger.h>
 
-ADS1015 adc(robot::config::ads1015_i2c_config.address, robot::buses::get(robot::config::ads1015_i2c_config.busId));
+ADS1015 adc(robot::config::ads1015_i2c_config.address, robot::buses::get(robot::config::ads1015_i2c_config.bus_id));
 
 namespace robot::battery {
 

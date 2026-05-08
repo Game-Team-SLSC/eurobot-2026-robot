@@ -51,13 +51,15 @@ void setup() {
     robot::tasks::begin();
     robot::encoder::begin();
 
+    // enable movers
     IOExpanderCommand cmd{};
+    cmd.expander = robot::config::IOExpander::LOGIC;
     cmd.pin = 7;
     cmd.level = false;
     xQueueSend(robot::queues::io_command_queue, &cmd, 0);
 
-    robot::actions::action_helpers::angleTurn(17);
-    robot::actions::action_helpers::unfold_grabber(true);
+    robot::actions::action_helpers::rotate_turner_front(17);
+    robot::actions::action_helpers::rotate_grabber_front(true);
 }
 
 void loop() {

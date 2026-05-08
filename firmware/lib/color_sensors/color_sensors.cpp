@@ -14,6 +14,11 @@ namespace {
     DFRobot_TCS34725 firSensor(robot::buses::get(robot::config::I2CBusId::SENSORS));
     DFRobot_TCS34725 filSensor(robot::buses::get(robot::config::I2CBusId::SENSORS));
     DFRobot_TCS34725 felSensor(robot::buses::get(robot::config::I2CBusId::SENSORS));
+
+    DFRobot_TCS34725 berSensor(robot::buses::get(robot::config::I2CBusId::SENSORS));
+    DFRobot_TCS34725 birSensor(robot::buses::get(robot::config::I2CBusId::SENSORS));
+    DFRobot_TCS34725 bilSensor(robot::buses::get(robot::config::I2CBusId::SENSORS));
+    DFRobot_TCS34725 belSensor(robot::buses::get(robot::config::I2CBusId::SENSORS));
 }
 
 struct HSV {
@@ -87,23 +92,43 @@ namespace robot::color_sensors {
 bool begin() {
     bool ok = true;
 
-    focusI2COnTarget(robot::config::FER_CAPTOR);
+    focusI2COnTarget(robot::config::fer_sensor);
     if (!beginTarget(ferSensor)) {
         ok = false;
     }
 
-        focusI2COnTarget(robot::config::FIR_CAPTOR);
+        focusI2COnTarget(robot::config::fir_sensor);
     if (!beginTarget(firSensor)) {
         ok = false;
     }
 
-    focusI2COnTarget(robot::config::FIL_CAPTOR);
+    focusI2COnTarget(robot::config::fil_sensor);
     if (!beginTarget(filSensor)) {
         ok = false;
     }
 
-    focusI2COnTarget(robot::config::FEL_CAPTOR);
+    focusI2COnTarget(robot::config::fel_sensor);
     if (!beginTarget(felSensor)) {
+        ok = false;
+    }
+
+    focusI2COnTarget(robot::config::ber_sensor);
+    if (!beginTarget(berSensor)) {
+        ok = false;
+    }
+
+    focusI2COnTarget(robot::config::bir_sensor);
+    if (!beginTarget(birSensor)) {
+        ok = false;
+    }
+
+    focusI2COnTarget(robot::config::bil_sensor);
+    if (!beginTarget(bilSensor)) {
+        ok = false;
+    }
+
+    focusI2COnTarget(robot::config::bel_sensor);
+    if (!beginTarget(belSensor)) {
         ok = false;
     }
 
@@ -122,10 +147,14 @@ bool apply(const ColorCommand& command) {
     const robot::config::SubI2CDeviceConfig* cfg = nullptr;
 
     switch (command.sensor) {
-        case robot::config::ColorSensor::FER: cfg = &robot::config::FER_CAPTOR; target = &ferSensor; break;
-        case robot::config::ColorSensor::FIR: cfg = &robot::config::FIR_CAPTOR; target = &firSensor; break;
-        case robot::config::ColorSensor::FIL: cfg = &robot::config::FIL_CAPTOR; target = &filSensor; break;
-        case robot::config::ColorSensor::FEL: cfg = &robot::config::FEL_CAPTOR; target = &felSensor; break;
+        case robot::config::ColorSensor::FER: cfg = &robot::config::fer_sensor; target = &ferSensor; break;
+        case robot::config::ColorSensor::FIR: cfg = &robot::config::fir_sensor; target = &firSensor; break;
+        case robot::config::ColorSensor::FIL: cfg = &robot::config::fil_sensor; target = &filSensor; break;
+        case robot::config::ColorSensor::FEL: cfg = &robot::config::fel_sensor; target = &felSensor; break;
+        case robot::config::ColorSensor::BER: cfg = &robot::config::ber_sensor; target = &berSensor; break;
+        case robot::config::ColorSensor::BIR: cfg = &robot::config::bir_sensor; target = &birSensor; break;
+        case robot::config::ColorSensor::BIL: cfg = &robot::config::bil_sensor; target = &bilSensor; break;
+        case robot::config::ColorSensor::BEL: cfg = &robot::config::bel_sensor; target = &belSensor; break;
         default:
             error("color_sensors", "Invalid color sensor : %u", static_cast<unsigned int>(command.sensor));
             return false;

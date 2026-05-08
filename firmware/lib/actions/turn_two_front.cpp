@@ -8,12 +8,12 @@
 #include <actions_helpers.h>
 
 namespace robot::actions {
-void turn_two() {
-    action_helpers::unfold_grabber(true);
+void turn_two_front() {
+    action_helpers::rotate_grabber_front(true);
 
     GlobalState state = robot::state::get();
 
-    if (state.stockingState == StockingState::HALF) {
+    if (state.front_stocking_state == StockingState::HALF) {
         // check colors
         ColorCommand erColorCmd;
         erColorCmd.sensor = robot::config::ColorSensor::FER;
@@ -58,23 +58,23 @@ void turn_two() {
             pumpsMask &= ~(1 << 3);
         }
 
-        action_helpers::togglePumps(pumpsMask);
+        action_helpers::toggle_pumps_front(pumpsMask);
 
         vTaskDelay(pdMS_TO_TICKS(200));
         
-        action_helpers::angleTurn(140);
+        action_helpers::rotate_turner_front(140);
 
         vTaskDelay(pdMS_TO_TICKS(500));
         
-        action_helpers::angleTurn(15);
+        action_helpers::rotate_turner_front(15);
 
         // release pumps
 
         vTaskDelay(pdMS_TO_TICKS(300));
         
-        action_helpers::togglePumps(0b0000);
-        robot::state::setStocking(StockingState::EMPTY);
-    } else if (state.stockingState == StockingState::FULL) {
+        action_helpers::toggle_pumps_front(0b0000);
+        robot::state::setFrontStocking(StockingState::EMPTY);
+    } else if (state.front_stocking_state == StockingState::FULL) {
         // check colors on right side only
         ColorCommand erColorCmd;
         erColorCmd.sensor = robot::config::ColorSensor::FER;
@@ -99,20 +99,20 @@ void turn_two() {
             pumpsMask &= ~(1 << 1);
         }
 
-        action_helpers::togglePumps(pumpsMask);
+        action_helpers::toggle_pumps_front(pumpsMask);
 
         vTaskDelay(pdMS_TO_TICKS(200));
 
-        action_helpers::angleTurn(140);
+        action_helpers::rotate_turner_front(140);
         
         vTaskDelay(pdMS_TO_TICKS(500));
         
-        action_helpers::angleTurn(15);
+        action_helpers::rotate_turner_front(15);
 
         vTaskDelay(pdMS_TO_TICKS(300));
         
-        action_helpers::togglePumps(0b1100);
-        robot::state::setStocking(StockingState::HALF);
+        action_helpers::toggle_pumps_front(0b1100);
+        robot::state::setFrontStocking(StockingState::HALF);
     } else {
         MotionCommand mcmd;
 
@@ -122,7 +122,7 @@ void turn_two() {
 
         vTaskDelay(pdMS_TO_TICKS(300));
 
-        action_helpers::angleTurn(155);
+        action_helpers::rotate_turner_front(155);
 
         vTaskDelay(pdMS_TO_TICKS(500));
 
@@ -162,21 +162,21 @@ void turn_two() {
             pumpsMask &= ~(1 << 1);  // Efface le bit 1 si ce n'est PAS notre équipe
         }
 
-        action_helpers::togglePumps(pumpsMask);
+        action_helpers::toggle_pumps_front(pumpsMask);
 
         vTaskDelay(pdMS_TO_TICKS(300));
 
-        action_helpers::angleTurn(15);
+        action_helpers::rotate_turner_front(15);
 
         vTaskDelay(pdMS_TO_TICKS(600));
 
-        robot::state::setStocking(StockingState::HALF);
+        robot::state::setFrontStocking(StockingState::HALF);
 
         pumpsMask = 0b1100;
 
-        action_helpers::togglePumps(pumpsMask);
+        action_helpers::toggle_pumps_front(pumpsMask);
 
-        action_helpers::angleTurn(15);
+        action_helpers::rotate_turner_front(15);
 
         vTaskDelay(pdMS_TO_TICKS(300));
         MotionCommand recule;

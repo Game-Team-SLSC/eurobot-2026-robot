@@ -21,7 +21,7 @@ void comm_task(void* parameter) {
 
     uint32_t frameCount = 0;
     uint32_t lastRetryTime = 0;
-    bool back_grabber_folded, front_left_grabber_folded = false;
+    bool back_grabber_folded = false, front_left_grabber_folded = false;
     
     TickType_t lastLogTime = xTaskGetTickCount();
 
@@ -47,9 +47,9 @@ void comm_task(void* parameter) {
                         continue;
                     }
 
-                    if (currentState.action == Action::TURN) continue;
+                    if (currentState.action == Action::TURN_FRONT) continue;
 
-                    const Action action = Action::TURN;
+                    const Action action = Action::TURN_FRONT;
                     currentState.action = action;
                     xQueueSend(robot::queues::action_command_queue, &action, 0);
                 }
@@ -59,9 +59,9 @@ void comm_task(void* parameter) {
                         continue;
                     }
 
-                    if (currentState.action == Action::STOCK) continue;
+                    if (currentState.action == Action::STOCK_FRONT) continue;
 
-                    const Action action = Action::STOCK;
+                    const Action action = Action::STOCK_FRONT;
                     currentState.action = action;
                     xQueueSend(robot::queues::action_command_queue, &action, 0);
                 }
@@ -71,9 +71,45 @@ void comm_task(void* parameter) {
                         continue;
                     }
 
-                    if (currentState.action == Action::TURN_TWO) continue;
+                    if (currentState.action == Action::TURN_TWO_FRONT) continue;
 
-                    const Action action = Action::TURN_TWO;
+                    const Action action = Action::TURN_TWO_FRONT;
+                    currentState.action = action;
+                    xQueueSend(robot::queues::action_command_queue, &action, 0);
+                }
+
+                if (btnIdx == static_cast<uint8_t>(robot::config::turn_action_back_btn)) {
+                    if (!data.buttons[btnIdx]) {
+                        continue;
+                    }
+
+                    if (currentState.action == Action::TURN_BACK) continue;
+
+                    const Action action = Action::TURN_BACK;
+                    currentState.action = action;
+                    xQueueSend(robot::queues::action_command_queue, &action, 0);
+                }
+
+                if (btnIdx == static_cast<uint8_t>(robot::config::stock_action_back_btn)) {
+                    if (!data.buttons[btnIdx]) {
+                        continue;
+                    }
+
+                    if (currentState.action == Action::STOCK_BACK) continue;
+
+                    const Action action = Action::STOCK_BACK;
+                    currentState.action = action;
+                    xQueueSend(robot::queues::action_command_queue, &action, 0);
+                }
+
+                if (btnIdx == static_cast<uint8_t>(robot::config::turn_two_action_back_btn)) {
+                    if (!data.buttons[btnIdx]) {
+                        continue;
+                    }
+
+                    if (currentState.action == Action::TURN_TWO_BACK) continue;
+
+                    const Action action = Action::TURN_TWO_BACK;
                     currentState.action = action;
                     xQueueSend(robot::queues::action_command_queue, &action, 0);
                 }
@@ -91,9 +127,24 @@ void comm_task(void* parameter) {
 
                     // Use action_helpers to perform rotations for the front grabbers
                     if (front_left_grabber_folded) {
-                        robot::actions::action_helpers::unfold_grabber(false);
+                        robot::actions::action_helpers::rotate_grabber_front(false);
                     } else {
-                        robot::actions::action_helpers::unfold_grabber(true);
+                        robot::actions::action_helpers::rotate_grabber_front(true);
+                    }
+                }
+
+                if (btnIdx == static_cast<uint8_t>(robot::config::toggle_back_grabber_btn)) {
+                    if (!data.buttons[btnIdx]) {
+                        continue;
+                    }
+
+                    back_grabber_folded = !back_grabber_folded;
+
+                    // Use action_helpers to perform rotations for the back grabbers
+                    if (back_grabber_folded) {
+                        robot::actions::action_helpers::rotate_grabber_back(false);
+                    } else {
+                        robot::actions::action_helpers::rotate_grabber_back(true);
                     }
                 }
             }

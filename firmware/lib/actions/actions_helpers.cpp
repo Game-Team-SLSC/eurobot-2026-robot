@@ -5,8 +5,11 @@
 #include <queues.h>
 #include <state.h>
 
+// note : pumps function use state to determine if pumps should be on or off
 namespace {
 constexpr uint8_t PUMPS_ALL_MASK = 0b1111;
+bool frontPumpsActive = false;
+bool backPumpsActive = false;
 }
 
 namespace robot::actions::action_helpers {
@@ -20,11 +23,19 @@ void togglePWM(const PWMControl& actuator_info, bool on) {
     xQueueSend(robot::queues::pwm_command_queue, &cmd, 0);
 }
 
-void togglePumps(uint8_t state) {
+void toggle_pumps_front(uint8_t state) {
     if (state == 0b0000) {
         robot::state::setPumpsStatus(false);
+        frontPumpsActive = false;
     } else {
         robot::state::setPumpsStatus(true);
+        frontPumpsActive = true;
+    }
+
+    if (frontPumpsActive || backPumpsActive) {
+        robot::state::setPumpsStatus(true);
+    } else {
+        robot::state::setPumpsStatus(false);
     }
     state &= PUMPS_ALL_MASK;
 
@@ -59,6 +70,48 @@ void togglePumps(uint8_t state) {
     xQueueSend(robot::queues::io_command_queue, &cmd5, 0);
 }
 
+void toggle_pumps_back(uint8_t state) {
+    if (state == 0b0000) {
+        robot::state::setPumpsStatus(false);
+        backPumpsActive = false;
+    } else {
+        robot::state::setPumpsStatus(true);
+        backPumpsActive = true;
+    }
+
+    state &= PUMPS_ALL_MASK;
+    
+    IOExpanderCommand cmd2;
+    cmd2.expander = robot::config::IOExpander::KINETIC;
+    cmd2.pin = 5;
+    cmd2.level = (state & (1 << 1)) != 0;
+
+    IOExpanderCommand cmd3;
+    cmd3.expander = robot::config::IOExpander::KINETIC;
+    cmd3.pin = 4;
+    cmd3.level = (state & (1 << 0)) != 0;
+
+    IOExpanderCommand cmd4;
+    cmd4.expander = robot::config::IOExpander::KINETIC;
+    cmd4.pin = 15;
+    cmd4.level = (state & (1 << 3)) != 0;
+
+    IOExpanderCommand cmd5;
+    cmd5.expander = robot::config::IOExpander::KINETIC;
+    cmd5.pin = 14;
+    cmd5.level = (state & (1 << 2)) != 0;
+
+    togglePWM(robot::config::back_interior_left_ev, (state & (1 << 0)) != 0);
+    togglePWM(robot::config::back_interior_right_ev, (state & (1 << 1)) != 0);
+    togglePWM(robot::config::back_exterior_left_ev, (state & (1 << 2)) != 0);
+    togglePWM(robot::config::back_exterior_right_ev, (state & (1 << 3)) != 0);
+
+    xQueueSend(robot::queues::io_command_queue, &cmd2, 0);
+    xQueueSend(robot::queues::io_command_queue, &cmd3, 0);
+    xQueueSend(robot::queues::io_command_queue, &cmd4, 0);
+    xQueueSend(robot::queues::io_command_queue, &cmd5, 0);
+}
+
 void performRotation(const PWMControl& actuator_info, uint8_t angle) {
     PWMCommand cmd;
 
@@ -69,18 +122,39 @@ void performRotation(const PWMControl& actuator_info, uint8_t angle) {
     xQueueSend(robot::queues::pwm_command_queue, &cmd, 0);
 }
 
-void angleTurn(uint8_t angle) {
+void rotate_turner_front(uint8_t angle) {
+    if (angle > 100) {
+        rotate_grabber_back(false);
+    }
     performRotation(robot::config::front_left_turner, angle);
     performRotation(robot::config::front_right_turner, 180 - angle + 3);
 }
 
-void unfold_grabber(bool unfolded) {
+void rotate_turner_back(uint8_t angle) {
+    if (angle > 100) {
+        rotate_grabber_front(false);
+    }
+    performRotation(robot::config::back_left_turner, angle);
+    performRotation(robot::config::back_right_turner, 180 - angle + 3);
+}
+
+void rotate_grabber_front(bool unfolded) {
     if (unfolded) {
-        performRotation(robot::config::front_grabber_left, 68);
+        performRotation(robot::config::front_left_grabber, 68);
         performRotation(robot::config::front_right_grabber, 75);
     } else {
-        performRotation(robot::config::front_grabber_left, 133);
+        performRotation(robot::config::front_left_grabber, 133);
         performRotation(robot::config::front_right_grabber, 10);
+    }
+}
+
+void rotate_grabber_back(bool unfolded) {
+    if (unfolded) {
+        performRotation(robot::config::back_left_grabber, 133);
+        performRotation(robot::config::back_right_grabber, 10);
+    } else {
+        performRotation(robot::config::back_left_grabber, 68);
+        performRotation(robot::config::back_right_grabber, 75);
     }
 }
 

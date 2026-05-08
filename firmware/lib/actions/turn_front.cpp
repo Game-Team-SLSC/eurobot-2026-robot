@@ -7,12 +7,12 @@
 #include <state.h>
 
 namespace robot::actions {
-void turn() {
-    action_helpers::unfold_grabber(true);
+void turn_front() {
+    action_helpers::rotate_grabber_front(true);
 
     GlobalState state = robot::state::get();
 
-    if (state.stockingState == StockingState::FULL || state.stockingState == StockingState::HALF) {
+    if (state.front_stocking_state == StockingState::FULL || state.front_stocking_state == StockingState::HALF) {
         // check colors
         ColorCommand erColorCmd;
         erColorCmd.sensor = robot::config::ColorSensor::FER;
@@ -63,36 +63,36 @@ void turn() {
         }
         bool allMustBeTurned = action_helpers::mustBeTurned(erColorResp) && action_helpers::mustBeTurned(irColorResp) && action_helpers::mustBeTurned(elColorResp) && action_helpers::mustBeTurned(ilColorResp);
 
-        action_helpers::togglePumps(pumpsMask);
+        action_helpers::toggle_pumps_front(pumpsMask);
 
         if (allMustBeTurned) {
             vTaskDelay(pdMS_TO_TICKS(300));
-            action_helpers::togglePumps(0b0000);
-            action_helpers::angleTurn(15);
+            action_helpers::toggle_pumps_front(0b0000);
+            action_helpers::rotate_turner_front(15);
         } else {
             vTaskDelay(pdMS_TO_TICKS(200));
             // go to 140 with angle turn
-            action_helpers::angleTurn(140);
+            action_helpers::rotate_turner_front(140);
             // wait 500 ms
             vTaskDelay(pdMS_TO_TICKS(400));
             // go to 15 with angle turn
-            action_helpers::angleTurn(15);
+            action_helpers::rotate_turner_front(15);
         }
 
         if (noneMustBeTurned) {
             vTaskDelay(pdMS_TO_TICKS(300));
-            action_helpers::togglePumps(0b0000);
-            action_helpers::angleTurn(15);
+            action_helpers::toggle_pumps_front(0b0000);
+            action_helpers::rotate_turner_front(15);
         } else {
-            action_helpers::togglePumps(pumpsMask);
+            action_helpers::toggle_pumps_front(pumpsMask);
     
             vTaskDelay(pdMS_TO_TICKS(100));
     
-            action_helpers::angleTurn(15);
+            action_helpers::rotate_turner_front(15);
             
             vTaskDelay(pdMS_TO_TICKS(400));
     
-            action_helpers::togglePumps(0b0000);
+            action_helpers::toggle_pumps_front(0b0000);
     
             vTaskDelay(pdMS_TO_TICKS(300));
             MotionCommand recule;
@@ -116,7 +116,7 @@ void turn() {
 
         vTaskDelay(pdMS_TO_TICKS(300));
 
-        action_helpers::angleTurn(155);
+        action_helpers::rotate_turner_front(155);
 
         vTaskDelay(pdMS_TO_TICKS(500));
 
@@ -168,19 +168,19 @@ void turn() {
         }
 
         if (noneMustBeTurned) {
-            action_helpers::togglePumps(0b0000);
+            action_helpers::toggle_pumps_front(0b0000);
 
-            action_helpers::angleTurn(15);
+            action_helpers::rotate_turner_front(15);
         } else {
-            action_helpers::togglePumps(pumpsMask);
+            action_helpers::toggle_pumps_front(pumpsMask);
     
             vTaskDelay(pdMS_TO_TICKS(100));
     
-            action_helpers::angleTurn(15);
+            action_helpers::rotate_turner_front(15);
             
             vTaskDelay(pdMS_TO_TICKS(400));
     
-            action_helpers::togglePumps(0b0000);
+            action_helpers::toggle_pumps_front(0b0000);
     
             vTaskDelay(pdMS_TO_TICKS(300));
             MotionCommand recule;
@@ -195,7 +195,7 @@ void turn() {
         }
     }
 
-    robot::state::setStocking(StockingState::EMPTY);
+    robot::state::setFrontStocking(StockingState::EMPTY);
 
     action_helpers::endAction();
 }

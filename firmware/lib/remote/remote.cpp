@@ -13,14 +13,14 @@ constexpr uint32_t NO_RX_LOG_PERIOD_MS = 2000;
 constexpr uint32_t RF24_SPI_HZ = 2000000;
 
 void setAllTmcChipSelectInactive() {
-	pinMode(robot::config::tmc_fr_config.csPin, OUTPUT);
-	digitalWrite(robot::config::tmc_fr_config.csPin, HIGH);
-	pinMode(robot::config::tmc_fl_config.csPin, OUTPUT);
-	digitalWrite(robot::config::tmc_fl_config.csPin, HIGH);
-	pinMode(robot::config::tmc_br_config.csPin, OUTPUT);
-	digitalWrite(robot::config::tmc_br_config.csPin, HIGH);
-	pinMode(robot::config::tmc_bl_config.csPin, OUTPUT);
-	digitalWrite(robot::config::tmc_bl_config.csPin, HIGH);
+	pinMode(robot::config::tmc_fr_config.cs_pin, OUTPUT);
+	digitalWrite(robot::config::tmc_fr_config.cs_pin, HIGH);
+	pinMode(robot::config::tmc_fl_config.cs_pin, OUTPUT);
+	digitalWrite(robot::config::tmc_fl_config.cs_pin, HIGH);
+	pinMode(robot::config::tmc_br_config.cs_pin, OUTPUT);
+	digitalWrite(robot::config::tmc_br_config.cs_pin, HIGH);
+	pinMode(robot::config::tmc_bl_config.cs_pin, OUTPUT);
+	digitalWrite(robot::config::tmc_bl_config.cs_pin, HIGH);
 }
 
 uint64_t rfAddressToUint64(const char* addr) {

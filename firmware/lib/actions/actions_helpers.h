@@ -11,9 +11,14 @@ namespace robot::actions::action_helpers {
     void togglePWM(const PWMControl& actuator_info, bool on);
 
     // specific actions helpers
-    void togglePumps(uint8_t state);
-    void angleTurn(uint8_t angle);
-    void unfold_grabber(bool unfolded);
+    void toggle_pumps_front(uint8_t state);
+    void toggle_pumps_back(uint8_t state);
+    
+    void rotate_turner_front(uint8_t angle);
+    void rotate_turner_back(uint8_t angle);
+
+    void rotate_grabber_front(bool unfolded);
+    void rotate_grabber_back(bool unfolded);
 
     // misc
     bool mustBeTurned(const ColorResponse& color);

@@ -8,7 +8,7 @@
 #include <Logger.h>
 
 namespace {
-    TCA9548 logicMux(robot::config::tca9548_logic_i2c_config.address, robot::buses::get(robot::config::tca9548_logic_i2c_config.busId));
+    TCA9548 logicMux(robot::config::tca9548_logic_i2c_config.address, robot::buses::get(robot::config::tca9548_logic_i2c_config.bus_id));
 }
 
 TCA9548* getCtrl(robot::config::I2CController ctrl) {

@@ -23,21 +23,37 @@ void control_action_task(void* parameter) {
             xQueueSend(robot::queues::motion_command_queue, &stopCmd, 0);
 
             switch (action) {
-                case Action::TURN:
+                case Action::TURN_FRONT:
                     info("control_action_task", "Starting TURN action");
-                    robot::actions::turn();
+                    robot::actions::turn_front();
                     break;
-                case Action::STOCK:
+                case Action::STOCK_FRONT:
                     info("control_action_task", "Starting STOCK action");
-                    robot::actions::stock();
+                    robot::actions::stock_front();
                     break;
-                case Action::RELEASE:
+                case Action::RELEASE_FRONT:
                     info("control_action_task", "Starting RELEASE action");
-                    robot::actions::release();
+                    robot::actions::release_front();
                     break;
-                case Action::TURN_TWO:
+                case Action::TURN_TWO_FRONT:
                     info("control_action_task", "Starting TURN_TWO action");
-                    robot::actions::turn_two();
+                    robot::actions::turn_two_front();
+                    break;
+                case Action::TURN_BACK:
+                    info("control_action_task", "Starting TURN_BACK action");
+                    robot::actions::turn_back();
+                    break;
+                case Action::STOCK_BACK:
+                    info("control_action_task", "Starting STOCK_BACK action");
+                    robot::actions::stock_back();
+                    break;
+                case Action::RELEASE_BACK:
+                    info("control_action_task", "Starting RELEASE_BACK action");
+                    robot::actions::release_back();
+                    break;
+                case Action::TURN_TWO_BACK:
+                    info("control_action_task", "Starting TURN_TWO_BACK action");
+                    robot::actions::turn_two_back();
                     break;
                 case Action::IDLE:
                     info("control_action_task", "Going back to IDLE state");

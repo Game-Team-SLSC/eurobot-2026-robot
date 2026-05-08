@@ -5,9 +5,9 @@
 #include <Logger.h>
 
 namespace {
-    Adafruit_PWMServoDriver leftPWM(robot::config::pca9685_left_i2c_config.address, *robot::buses::get(robot::config::pca9685_left_i2c_config.busId));
-    Adafruit_PWMServoDriver rightPWM(robot::config::pca9685_right_i2c_config.address, *robot::buses::get(robot::config::pca9685_right_i2c_config.busId));
-    Adafruit_PWMServoDriver miscPWM(robot::config::pca9685_misc_i2c_config.address, *(robot::buses::get(robot::config::pca9685_misc_i2c_config.busId)));
+    Adafruit_PWMServoDriver leftPWM(robot::config::pca9685_left_i2c_config.address, *robot::buses::get(robot::config::pca9685_left_i2c_config.bus_id));
+    Adafruit_PWMServoDriver rightPWM(robot::config::pca9685_right_i2c_config.address, *robot::buses::get(robot::config::pca9685_right_i2c_config.bus_id));
+    Adafruit_PWMServoDriver miscPWM(robot::config::pca9685_misc_i2c_config.address, *(robot::buses::get(robot::config::pca9685_misc_i2c_config.bus_id)));
 
     bool leftReady = false;
     bool rightReady = false;

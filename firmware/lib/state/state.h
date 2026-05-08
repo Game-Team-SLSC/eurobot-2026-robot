@@ -30,7 +30,9 @@ struct GlobalState {
 
     bool lowSpeedMode = false;
     bool isYellowTeam = false;
-    StockingState stockingState = StockingState::EMPTY;
+
+    StockingState front_stocking_state = StockingState::EMPTY;
+    StockingState back_stocking_state = StockingState::EMPTY;
 
     int16_t encoderPosition = 0;
 };
@@ -49,7 +51,8 @@ namespace robot::state {
     bool setAction(Action action);
     bool setLowSpeedMode(bool lowSpeed);
     bool setIsYellow(bool isYellow);
-    bool setStocking(StockingState stockingState);
+    bool setFrontStocking(StockingState stockingState);
+    bool setBackStocking(StockingState stockingState);
     bool setSpeedGain(float gain);
     bool setCriticalBattery(bool critical);
     bool setEncoder(int16_t value);

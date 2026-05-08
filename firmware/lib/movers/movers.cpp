@@ -18,13 +18,13 @@ FastAccelStepper* stepper_bl = nullptr;
 FastAccelStepper* stepper_fr = nullptr;
 FastAccelStepper* stepper_fl = nullptr;
 
-TMC5160Stepper driver_fr(robot::config::tmc_fr_config.csPin,
+TMC5160Stepper driver_fr(robot::config::tmc_fr_config.cs_pin,
 						 robot::config::tmc_rsense);
-TMC5160Stepper driver_fl(robot::config::tmc_fl_config.csPin,
+TMC5160Stepper driver_fl(robot::config::tmc_fl_config.cs_pin,
 						 robot::config::tmc_rsense);
-TMC5160Stepper driver_br(robot::config::tmc_br_config.csPin,
+TMC5160Stepper driver_br(robot::config::tmc_br_config.cs_pin,
 						 robot::config::tmc_rsense);
-TMC5160Stepper driver_bl(robot::config::tmc_bl_config.csPin,
+TMC5160Stepper driver_bl(robot::config::tmc_bl_config.cs_pin,
 						 robot::config::tmc_rsense);
 
 int32_t fr_target = 0;
@@ -102,10 +102,10 @@ void prepareStepperForPositionMove(FastAccelStepper* stepper) {
 }
 
 void setAllDriverChipSelectInactive() {
-	digitalWrite(robot::config::tmc_bl_config.csPin, HIGH);
-	digitalWrite(robot::config::tmc_fl_config.csPin, HIGH);
-	digitalWrite(robot::config::tmc_br_config.csPin, HIGH);
-	digitalWrite(robot::config::tmc_fr_config.csPin, HIGH);
+	digitalWrite(robot::config::tmc_bl_config.cs_pin, HIGH);
+	digitalWrite(robot::config::tmc_fl_config.cs_pin, HIGH);
+	digitalWrite(robot::config::tmc_br_config.cs_pin, HIGH);
+	digitalWrite(robot::config::tmc_fr_config.cs_pin, HIGH);
 }
 
 void applyDriverSettings(TMC5160Stepper& drv) {
@@ -125,7 +125,7 @@ void applyStepperSettings(FastAccelStepper* stepper, const robot::config::TMCCon
 		return;
 	}
 
-	stepper->setDirectionPin(axisConfig.dirPin, axisConfig.dirHighCountsUp);
+	stepper->setDirectionPin(axisConfig.dir_pin, axisConfig.dirHighCountsUp);
 	stepper->setSpeedInHz(robot::config::motion_speed_hz);
     stepper->setAcceleration(robot::config::motion_accel);
     stepper->forceStopAndNewPosition(0);
@@ -135,10 +135,10 @@ void applyStepperSettings(FastAccelStepper* stepper, const robot::config::TMCCon
 namespace robot::movers {
 
 bool begin() {
-	pinMode(robot::config::tmc_bl_config.csPin, OUTPUT);
-    pinMode(robot::config::tmc_br_config.csPin, OUTPUT);
-    pinMode(robot::config::tmc_fl_config.csPin, OUTPUT);
-    pinMode(robot::config::tmc_fr_config.csPin, OUTPUT);
+	pinMode(robot::config::tmc_bl_config.cs_pin, OUTPUT);
+    pinMode(robot::config::tmc_br_config.cs_pin, OUTPUT);
+    pinMode(robot::config::tmc_fl_config.cs_pin, OUTPUT);
+    pinMode(robot::config::tmc_fr_config.cs_pin, OUTPUT);
     
 	setAllDriverChipSelectInactive();
 
@@ -158,10 +158,10 @@ bool begin() {
 
 	engine.init();
 	
-	stepper_fr = engine.stepperConnectToPin(robot::config::tmc_fr_config.stepPin);
-	stepper_fl = engine.stepperConnectToPin(robot::config::tmc_fl_config.stepPin);
-	stepper_br = engine.stepperConnectToPin(robot::config::tmc_br_config.stepPin);
-	stepper_bl = engine.stepperConnectToPin(robot::config::tmc_bl_config.stepPin);
+	stepper_fr = engine.stepperConnectToPin(robot::config::tmc_fr_config.step_pin);
+	stepper_fl = engine.stepperConnectToPin(robot::config::tmc_fl_config.step_pin);
+	stepper_br = engine.stepperConnectToPin(robot::config::tmc_br_config.step_pin);
+	stepper_bl = engine.stepperConnectToPin(robot::config::tmc_bl_config.step_pin);
 
 	applyStepperSettings(stepper_fr, robot::config::tmc_fr_config);
     applyStepperSettings(stepper_fl, robot::config::tmc_fl_config);
