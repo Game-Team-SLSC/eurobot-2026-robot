@@ -25,6 +25,7 @@ struct GlobalState {
 
     robot::battery::BatteryStatus batteryStatus{};
 
+    bool pumpsOn = false;
     bool criticalBattery = false;
 
     bool lowSpeedMode = false;
@@ -54,4 +55,5 @@ namespace robot::state {
     bool setEncoder(int16_t value);
     bool setRadioFrequency(uint8_t frequency);
     bool setBatteryStatus(robot::battery::BatteryStatus status);
+    bool setPumpsStatus(bool enabled);
 }

@@ -160,9 +160,9 @@ namespace robot::config {
     constexpr PWMControl front_right_turner = {robot::config::PWMController::RIGHT, 8};
 
     constexpr PWMControl back_left_grabber = {robot::config::PWMController::LEFT, 6};
-    constexpr PWMControl front_left_grabber = {robot::config::PWMController::LEFT, 7};
+    constexpr PWMControl front_right_grabber = {robot::config::PWMController::LEFT, 7};
     constexpr PWMControl back_right_grabber = {robot::config::PWMController::RIGHT, 6};
-    constexpr PWMControl front_right_grabber = {robot::config::PWMController::RIGHT, 7};
+    constexpr PWMControl front_grabber_left = {robot::config::PWMController::RIGHT, 7};
 
     constexpr PWMControl front_interior_right_ev = {robot::config::PWMController::LEFT, 10};
     constexpr PWMControl front_interior_left_ev = {robot::config::PWMController::LEFT, 11};
@@ -191,14 +191,14 @@ namespace robot::config {
 
     // Actions config
 
-    constexpr robot::config::Button turn_action_btn = robot::config::Button::LSIDE_U_BTN;
-    constexpr robot::config::Button stock_action_btn = robot::config::Button::LSIDE_R_BTN;
-    constexpr robot::config::Button release_action_btn = robot::config::Button::LSIDE_D_BTN;
-    constexpr robot::config::Button turn_two_action_btn = robot::config::Button::LSIDE_L_BTN;
+    constexpr robot::config::Button turn_action_front_btn = robot::config::Button::LSIDE_U_BTN;
+    constexpr robot::config::Button stock_action_front_btn = robot::config::Button::LSIDE_R_BTN;
+    constexpr robot::config::Button turn_two_action_front_btn = robot::config::Button::LSIDE_L_BTN;
+    constexpr robot::config::Button toggle_front_grabber_btn = robot::config::Button::LSIDE_D_BTN;
     
-    constexpr robot::config::Button toggle_front_grabber_btn = robot::config::Button::RSIDE_R_BTN;
-    constexpr robot::config::Button toggle_back_grabber_btn = robot::config::Button::DOUBLE_D_BTN;
+    //constexpr robot::config::Button release_action_front_btn = robot::config::Button::LSIDE_D_BTN;
+    //constexpr robot::config::Button toggle_back_grabber_btn = robot::config::Button::DOUBLE_D_BTN;
 
-    constexpr robot::config::Button yellow_mode_btn = robot::config::Button::RSIDE_U_BTN;
-    constexpr robot::config::Button blue_mode_btn = robot::config::Button::RSIDE_L_BTN;
+    constexpr robot::config::Button toggle_low_speed_btn = robot::config::Button::DOUBLE_U_BTN;
+    // down reserved for teams
 }

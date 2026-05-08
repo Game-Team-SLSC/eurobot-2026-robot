@@ -21,7 +21,7 @@ void comm_task(void* parameter) {
 
     uint32_t frameCount = 0;
     uint32_t lastRetryTime = 0;
-    bool back_grabber_folded, front_grabber_folded = false;
+    bool back_grabber_folded, front_left_grabber = false;
     
     TickType_t lastLogTime = xTaskGetTickCount();
 
@@ -42,7 +42,7 @@ void comm_task(void* parameter) {
                     continue;
                 }
 
-                if (btnIdx == static_cast<uint8_t>(robot::config::turn_action_btn)) {
+                if (btnIdx == static_cast<uint8_t>(robot::config::turn_action_front_btn)) {
                     if (!data.buttons[btnIdx]) {
                         continue;
                     }
@@ -54,7 +54,7 @@ void comm_task(void* parameter) {
                     xQueueSend(robot::queues::action_command_queue, &action, 0);
                 }
 
-                if (btnIdx == static_cast<uint8_t>(robot::config::stock_action_btn)) {
+                if (btnIdx == static_cast<uint8_t>(robot::config::stock_action_front_btn)) {
                     if (!data.buttons[btnIdx]) {
                         continue;
                     }
@@ -66,7 +66,7 @@ void comm_task(void* parameter) {
                     xQueueSend(robot::queues::action_command_queue, &action, 0);
                 }
 
-                if (btnIdx == static_cast<uint8_t>(robot::config::turn_two_action_btn)) {
+                if (btnIdx == static_cast<uint8_t>(robot::config::turn_two_action_front_btn)) {
                     if (!data.buttons[btnIdx]) {
                         continue;
                     }
@@ -78,47 +78,47 @@ void comm_task(void* parameter) {
                     xQueueSend(robot::queues::action_command_queue, &action, 0);
                 }
 
-                if (btnIdx == static_cast<uint8_t>(robot::config::release_action_btn)) {
-                    if (!data.buttons[btnIdx]) {
-                        continue;
-                    }
+                // if (btnIdx == static_cast<uint8_t>(robot::config::release_action_front_btn)) {
+                //     if (!data.buttons[btnIdx]) {
+                //         continue;
+                //     }
 
-                    if (currentState.action == Action::RELEASE) continue;
+                //     if (currentState.action == Action::RELEASE) continue;
 
-                    const Action action = Action::RELEASE;
-                    currentState.action = action;
-                    xQueueSend(robot::queues::action_command_queue, &action, 0);
-                }
+                //     const Action action = Action::RELEASE;
+                //     currentState.action = action;
+                //     xQueueSend(robot::queues::action_command_queue, &action, 0);
+                // } DISABLED
 
-                if (btnIdx == static_cast<uint8_t>(robot::config::toggle_back_grabber_btn)) {
-                    if (!data.buttons[btnIdx]) {
-                        continue;
-                    }
+                // if (btnIdx == static_cast<uint8_t>(robot::config::toggle_back_grabber_btn)) {
+                //     if (!data.buttons[btnIdx]) {
+                //         continue;
+                //     }
 
-                    back_grabber_folded = !back_grabber_folded;
+                //     back_grabber_folded = !back_grabber_folded;
 
-                    info("comm", "Back grabber %s", back_grabber_folded ? "deployed" : "retracted");
+                //     info("comm", "Back grabber %s", back_grabber_folded ? "deployed" : "retracted");
 
-                    CommandBatch<PWMCommand> pwmBatch;
+                //     CommandBatch<PWMCommand> pwmBatch;
 
-                    PWMCommand cmd;
-                    cmd.controller = robot::config::back_right_grabber.controller;
-                    cmd.pin = robot::config::back_right_grabber.pin;
-                    cmd.value = back_grabber_folded ? robot::actions::detail::angleToPWMValue(112) : robot::actions::detail::angleToPWMValue(150);
+                //     PWMCommand cmd;
+                //     cmd.controller = robot::config::back_right_grabber.controller;
+                //     cmd.pin = robot::config::back_right_grabber.pin;
+                //     cmd.value = back_grabber_folded ? robot::actions::detail::angleToPWMValue(112) : robot::actions::detail::angleToPWMValue(150);
 
-                    pwmBatch.add(cmd);
+                //     pwmBatch.add(cmd);
 
-                    PWMCommand cmd2;
-                    cmd2.controller = robot::config::back_left_grabber.controller;
-                    cmd2.pin = robot::config::back_left_grabber.pin;
-                    cmd2.value = back_grabber_folded ? robot::actions::detail::angleToPWMValue(48) : robot::actions::detail::angleToPWMValue(10);
+                //     PWMCommand cmd2;
+                //     cmd2.controller = robot::config::back_left_grabber.controller;
+                //     cmd2.pin = robot::config::back_left_grabber.pin;
+                //     cmd2.value = back_grabber_folded ? robot::actions::detail::angleToPWMValue(48) : robot::actions::detail::angleToPWMValue(10);
 
-                    pwmBatch.add(cmd2);
+                //     pwmBatch.add(cmd2);
 
-                    xQueueSend(robot::queues::pwm_command_queue, &pwmBatch, 0);
-                }
+                //     xQueueSend(robot::queues::pwm_command_queue, &pwmBatch, 0);
+                // } DISABLED
 
-                if (btnIdx == static_cast<uint8_t>(robot::config::Button::DOUBLE_U_BTN)) {
+                if (btnIdx == static_cast<uint8_t>(robot::config::toggle_low_speed_btn)) {
                     state::setLowSpeedMode(data.buttons[btnIdx]);
                 }
 
@@ -127,21 +127,21 @@ void comm_task(void* parameter) {
                         continue;
                     }
 
-                    front_grabber_folded = !front_grabber_folded;
+                    front_left_grabber = !front_left_grabber;
 
                     CommandBatch<PWMCommand> pwmBatch;
 
                     PWMCommand cmd;
-                    cmd.controller = robot::config::front_right_grabber.controller;
-                    cmd.pin = robot::config::front_right_grabber.pin;
-                    cmd.value = front_grabber_folded ? robot::actions::detail::angleToPWMValue(97) : robot::actions::detail::angleToPWMValue(150);
+                    cmd.controller = robot::config::front_grabber_left.controller;
+                    cmd.pin = robot::config::front_grabber_left.pin;
+                    cmd.value = front_left_grabber ? robot::actions::detail::angleToPWMValue(133) : robot::actions::detail::angleToPWMValue(68);
 
                     pwmBatch.add(cmd);
 
                     PWMCommand cmd2;
-                    cmd2.controller = robot::config::front_left_grabber.controller;
-                    cmd2.pin = robot::config::front_left_grabber.pin;
-                    cmd2.value = front_grabber_folded ? robot::actions::detail::angleToPWMValue(75) : robot::actions::detail::angleToPWMValue(10);
+                    cmd2.controller = robot::config::front_right_grabber.controller;
+                    cmd2.pin = robot::config::front_right_grabber.pin;
+                    cmd2.value = front_left_grabber ? robot::actions::detail::angleToPWMValue(10) : robot::actions::detail::angleToPWMValue(75);
 
                     pwmBatch.add(cmd2);
 

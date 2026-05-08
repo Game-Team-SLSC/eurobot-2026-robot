@@ -11,16 +11,16 @@ void turn() {
     CommandBatch<PWMCommand> pwmBatch;
 
     PWMCommand cmd;
-    cmd.controller = robot::config::front_right_grabber.controller;
-    cmd.pin = robot::config::front_right_grabber.pin;
-    cmd.value = robot::actions::detail::angleToPWMValue(97);
+    cmd.controller = robot::config::front_grabber_left.controller;
+    cmd.pin = robot::config::front_grabber_left.pin;
+    cmd.value = robot::actions::detail::angleToPWMValue(68);
 
     pwmBatch.add(cmd);
 
     PWMCommand cmd2;
 
-    cmd2.controller = robot::config::front_left_grabber.controller;
-    cmd2.pin = robot::config::front_left_grabber.pin;
+    cmd2.controller = robot::config::front_right_grabber.controller;
+    cmd2.pin = robot::config::front_right_grabber.pin;
     cmd2.value = robot::actions::detail::angleToPWMValue(75);
 
     pwmBatch.add(cmd2);
@@ -80,8 +80,6 @@ void turn() {
         }
         bool allMustBeTurned = detail::mustBeTurned(erColorResp) && detail::mustBeTurned(irColorResp) && detail::mustBeTurned(elColorResp) && detail::mustBeTurned(ilColorResp);
 
-        Serial.printf("h : %f, s : %f, v : %f", erColorResp.h, erColorResp.s, erColorResp.v);
-
         detail::togglePumps(pumpsMask);
 
         if (allMustBeTurned) {
@@ -119,7 +117,7 @@ void turn() {
             detail::angleTurn(pwmBatch, 15);
             xQueueSend(robot::queues::pwm_command_queue, &pwmBatch, 0);
             
-            vTaskDelay(pdMS_TO_TICKS(600));
+            vTaskDelay(pdMS_TO_TICKS(400));
     
             detail::togglePumps(0b0000);
     
@@ -137,8 +135,6 @@ void turn() {
 
         // now add the code
     } else {
-        Serial.println("Not stocking, just turning");
-
         MotionCommand mcmd;
 
         mcmd.target = {-15, 0, 0};
@@ -214,7 +210,7 @@ void turn() {
             detail::angleTurn(pwmBatch, 15);
             xQueueSend(robot::queues::pwm_command_queue, &pwmBatch, 0);
             
-            vTaskDelay(pdMS_TO_TICKS(600));
+            vTaskDelay(pdMS_TO_TICKS(400));
     
             detail::togglePumps(0b0000);
     

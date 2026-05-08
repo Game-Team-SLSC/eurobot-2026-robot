@@ -11,6 +11,11 @@ constexpr uint8_t PUMPS_ALL_MASK = 0b1111;
 
 namespace robot::actions::detail {
 void togglePumps(uint8_t state) {
+    if (state == 0b0000) {
+        robot::state::setPumpsStatus(false);
+    } else {
+        robot::state::setPumpsStatus(true);
+    }
     state &= PUMPS_ALL_MASK;
 
     IOExpanderCommand cmd2;

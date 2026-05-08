@@ -12,16 +12,16 @@ void turn_two() {
     CommandBatch<PWMCommand> pwmBatch;
 
     PWMCommand cmd;
-    cmd.controller = robot::config::front_right_grabber.controller;
-    cmd.pin = robot::config::front_right_grabber.pin;
+    cmd.controller = robot::config::front_grabber_left.controller;
+    cmd.pin = robot::config::front_grabber_left.pin;
     cmd.value = robot::actions::detail::angleToPWMValue(97);
 
     pwmBatch.add(cmd);
 
     PWMCommand cmd2;
 
-    cmd2.controller = robot::config::front_left_grabber.controller;
-    cmd2.pin = robot::config::front_left_grabber.pin;
+    cmd2.controller = robot::config::front_right_grabber.controller;
+    cmd2.pin = robot::config::front_right_grabber.pin;
     cmd2.value = robot::actions::detail::angleToPWMValue(75);
 
     pwmBatch.add(cmd2);

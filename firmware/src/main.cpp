@@ -70,16 +70,16 @@ void setup() {
     batch.add(cmd3);
 
     PWMCommand cmdala;
-    cmdala.controller = robot::config::front_right_grabber.controller;
-    cmdala.pin = robot::config::front_right_grabber.pin;
-    cmdala.value = robot::actions::detail::angleToPWMValue(97);
+    cmdala.controller = robot::config::front_grabber_left.controller;
+    cmdala.pin = robot::config::front_grabber_left.pin;
+    cmdala.value = robot::actions::detail::angleToPWMValue(68);
 
     batch.add(cmdala);
 
     PWMCommand cmd2a;
 
-    cmd2a.controller = robot::config::front_left_grabber.controller;
-    cmd2a.pin = robot::config::front_left_grabber.pin;
+    cmd2a.controller = robot::config::front_right_grabber.controller;
+    cmd2a.pin = robot::config::front_right_grabber.pin;
     cmd2a.value = robot::actions::detail::angleToPWMValue(75);
 
     batch.add(cmd2a);

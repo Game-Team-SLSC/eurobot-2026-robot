@@ -27,16 +27,16 @@ namespace robot::battery {
         status.cell_3_voltage_mv = adc.readADC(2) * 2.f * robot::config::cell_3_voltage_ratio - status.cell_2_voltage_mv - status.cell_1_voltage_mv; // Convert to mV
         status.cell_4_voltage_mv = adc.readADC(3) * 2.f * robot::config::full_bat_voltage_ratio - status.cell_3_voltage_mv - status.cell_2_voltage_mv - status.cell_1_voltage_mv; // Convert to mV
 
-        status.cell_1_percentage = constrain(map(status.cell_1_voltage_mv, 3500, 4200, 0, 100), 0, 100);
-        status.cell_2_percentage = constrain(map(status.cell_2_voltage_mv, 3500, 4200, 0, 100), 0, 100);
-        status.cell_3_percentage = constrain(map(status.cell_3_voltage_mv, 3500, 4200, 0, 100), 0, 100);
-        status.cell_4_percentage = constrain(map(status.cell_4_voltage_mv, 3500, 4200, 0, 100), 0, 100);
+        status.cell_1_percentage = constrain(map(status.cell_1_voltage_mv, 3375, 4200, 0, 100), 0, 100);
+        status.cell_2_percentage = constrain(map(status.cell_2_voltage_mv, 3375, 4200, 0, 100), 0, 100);
+        status.cell_3_percentage = constrain(map(status.cell_3_voltage_mv, 3375, 4200, 0, 100), 0, 100);
+        status.cell_4_percentage = constrain(map(status.cell_4_voltage_mv, 3375, 4200, 0, 100), 0, 100);
 
         status.voltage_mv = adc.readADC(3) * 2.f * robot::config::full_bat_voltage_ratio; // Convert to mV
 
         // prints general voltage
 
-        status.percentage = constrain(map(status.voltage_mv, 14000, 16800, 0, 100), 0, 100);
+        status.percentage = constrain(map(status.voltage_mv, 13500, 16800, 0, 100), 0, 100);
 
         return status;
     }

@@ -439,7 +439,7 @@ namespace robot::screen {
             tft.setTextColor(color);
             
             // Draw from second character onwards (skip the color code)
-            tft.drawString(logs[i] + 1, 5, 5 + (9-i) * 18);
+            tft.drawString(logs[i] + 1, 5, 5 + i * 18);
         }
 
         tft.resetViewport();

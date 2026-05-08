@@ -57,6 +57,17 @@ namespace robot::state {
         return true;
     }
 
+    bool setPumpsStatus(bool enabled) {
+        if (!xSemaphoreTake(mutex, portMAX_DELAY)) {
+            return false;
+        }
+
+        globalState.pumpsOn = enabled;
+        xSemaphoreGive(mutex);
+        
+        return true;
+    }
+
     bool setAction(Action action) {
         if (!xSemaphoreTake(mutex, portMAX_DELAY)) {
             return false;

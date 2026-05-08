@@ -44,6 +44,11 @@ namespace robot::tasks {
             }
             GlobalState state = robot::state::get();
 
+            if (state.pumpsOn) {
+                vTaskDelay(pdMS_TO_TICKS(100));
+                continue;
+            }
+
             uint8_t currentTabIndex = ((state.encoderPosition % 3) >= 0)? (state.encoderPosition % 3) : (3 + (state.encoderPosition % 3));
             uint8_t lastTabIndex = ((lastState.encoderPosition % 3) >= 0)? (lastState.encoderPosition % 3) : (3 + (lastState.encoderPosition % 3));
 
