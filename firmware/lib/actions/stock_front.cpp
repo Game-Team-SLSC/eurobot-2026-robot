@@ -21,13 +21,13 @@ void stock_front() {
 
     robot::state::setFrontStocking(StockingState::FULL);
 
-    action_helpers::rotate_turner_front(155);
+    action_helpers::rotate_turner_front(ArmState::TAKING);
 
     action_helpers::toggle_pumps_front(0b1111);
 
     vTaskDelay(pdMS_TO_TICKS(500));
 
-    action_helpers::rotate_turner_front(15);
+    action_helpers::rotate_turner_front(ArmState::IDLE);
 
     action_helpers::endAction();
 }

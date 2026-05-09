@@ -58,7 +58,9 @@ void setup() {
     cmd.level = false;
     xQueueSend(robot::queues::io_command_queue, &cmd, 0);
 
-    robot::actions::action_helpers::rotate_turner_front(17);
+    robot::actions::action_helpers::rotate_turner_front(ArmState::IDLE);
+    robot::actions::action_helpers::rotate_turner_back(ArmState::IDLE);
+    
     robot::actions::action_helpers::rotate_grabber_front(true);
 }
 

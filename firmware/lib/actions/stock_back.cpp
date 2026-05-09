@@ -21,13 +21,13 @@ void stock_back() {
 
     robot::state::setBackStocking(StockingState::FULL);
 
-    action_helpers::rotate_turner_back(155);
+    action_helpers::rotate_turner_back(ArmState::TAKING);
 
     action_helpers::toggle_pumps_back(0b1111);
 
     vTaskDelay(pdMS_TO_TICKS(500));
 
-    action_helpers::rotate_turner_back(15);
+    action_helpers::rotate_turner_back(ArmState::IDLE);
 
     action_helpers::endAction();
 }

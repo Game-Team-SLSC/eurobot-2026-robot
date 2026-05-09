@@ -68,27 +68,27 @@ void turn_front() {
         if (allMustBeTurned) {
             vTaskDelay(pdMS_TO_TICKS(300));
             action_helpers::toggle_pumps_front(0b0000);
-            action_helpers::rotate_turner_front(15);
+            action_helpers::rotate_turner_front(ArmState::TURNING);
         } else {
             vTaskDelay(pdMS_TO_TICKS(200));
             // go to 140 with angle turn
-            action_helpers::rotate_turner_front(140);
+            action_helpers::rotate_turner_front(ArmState::TAKING);
             // wait 500 ms
             vTaskDelay(pdMS_TO_TICKS(400));
             // go to 15 with angle turn
-            action_helpers::rotate_turner_front(15);
+            action_helpers::rotate_turner_front(ArmState::TURNING);
         }
 
         if (noneMustBeTurned) {
             vTaskDelay(pdMS_TO_TICKS(300));
             action_helpers::toggle_pumps_front(0b0000);
-            action_helpers::rotate_turner_front(15);
+            action_helpers::rotate_turner_front(ArmState::TURNING);
         } else {
             action_helpers::toggle_pumps_front(pumpsMask);
     
             vTaskDelay(pdMS_TO_TICKS(100));
     
-            action_helpers::rotate_turner_front(15);
+            action_helpers::rotate_turner_front(ArmState::TURNING);
             
             vTaskDelay(pdMS_TO_TICKS(400));
     
@@ -116,7 +116,7 @@ void turn_front() {
 
         vTaskDelay(pdMS_TO_TICKS(300));
 
-        action_helpers::rotate_turner_front(155);
+        action_helpers::rotate_turner_front(ArmState::TAKING);
 
         vTaskDelay(pdMS_TO_TICKS(500));
 
@@ -170,13 +170,13 @@ void turn_front() {
         if (noneMustBeTurned) {
             action_helpers::toggle_pumps_front(0b0000);
 
-            action_helpers::rotate_turner_front(15);
+            action_helpers::rotate_turner_front(ArmState::TURNING);
         } else {
             action_helpers::toggle_pumps_front(pumpsMask);
     
             vTaskDelay(pdMS_TO_TICKS(100));
     
-            action_helpers::rotate_turner_front(15);
+            action_helpers::rotate_turner_front(ArmState::TURNING);
             
             vTaskDelay(pdMS_TO_TICKS(400));
     
@@ -196,6 +196,7 @@ void turn_front() {
     }
 
     robot::state::setFrontStocking(StockingState::EMPTY);
+    action_helpers::rotate_turner_front(ArmState::IDLE);
 
     action_helpers::endAction();
 }

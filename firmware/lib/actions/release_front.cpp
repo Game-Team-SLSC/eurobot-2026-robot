@@ -9,7 +9,7 @@
 namespace robot::actions {
 void release_front() {
     robot::state::setFrontStocking(StockingState::EMPTY);
-    action_helpers::rotate_turner_front(140);
+    action_helpers::rotate_turner_front(ArmState::TAKING);
 
     vTaskDelay(pdMS_TO_TICKS(700));
     
@@ -17,7 +17,7 @@ void release_front() {
 
     vTaskDelay(pdMS_TO_TICKS(200));
 
-    action_helpers::rotate_turner_front(25);
+    action_helpers::rotate_turner_front(ArmState::IDLE);
 
     action_helpers::endAction();
 }

@@ -159,9 +159,9 @@ namespace robot::config {
 
     // Servo config
 
-    constexpr PWMControl back_left_turner = {robot::config::PWMController::LEFT, 9};
+    constexpr PWMControl back_left_turner = {robot::config::PWMController::RIGHT, 9};
     constexpr PWMControl front_left_turner = {robot::config::PWMController::LEFT, 8};
-    constexpr PWMControl back_right_turner = {robot::config::PWMController::RIGHT, 9};
+    constexpr PWMControl back_right_turner = {robot::config::PWMController::MISC, 2};
     constexpr PWMControl front_right_turner = {robot::config::PWMController::RIGHT, 8};
 
     constexpr PWMControl back_right_grabber = {robot::config::PWMController::LEFT, 6};

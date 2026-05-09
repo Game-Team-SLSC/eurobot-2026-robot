@@ -62,11 +62,11 @@ void turn_two_front() {
 
         vTaskDelay(pdMS_TO_TICKS(200));
         
-        action_helpers::rotate_turner_front(140);
+        action_helpers::rotate_turner_front(ArmState::TAKING);
 
         vTaskDelay(pdMS_TO_TICKS(500));
         
-        action_helpers::rotate_turner_front(15);
+        action_helpers::rotate_turner_front(ArmState::TURNING);
 
         // release pumps
 
@@ -103,11 +103,11 @@ void turn_two_front() {
 
         vTaskDelay(pdMS_TO_TICKS(200));
 
-        action_helpers::rotate_turner_front(140);
+        action_helpers::rotate_turner_front(ArmState::TAKING);
         
         vTaskDelay(pdMS_TO_TICKS(500));
         
-        action_helpers::rotate_turner_front(15);
+        action_helpers::rotate_turner_front(ArmState::TURNING);
 
         vTaskDelay(pdMS_TO_TICKS(300));
         
@@ -122,7 +122,7 @@ void turn_two_front() {
 
         vTaskDelay(pdMS_TO_TICKS(300));
 
-        action_helpers::rotate_turner_front(155);
+        action_helpers::rotate_turner_front(ArmState::TAKING);
 
         vTaskDelay(pdMS_TO_TICKS(500));
 
@@ -166,7 +166,7 @@ void turn_two_front() {
 
         vTaskDelay(pdMS_TO_TICKS(300));
 
-        action_helpers::rotate_turner_front(15);
+        action_helpers::rotate_turner_front(ArmState::TURNING);
 
         vTaskDelay(pdMS_TO_TICKS(600));
 
@@ -176,7 +176,7 @@ void turn_two_front() {
 
         action_helpers::toggle_pumps_front(pumpsMask);
 
-        action_helpers::rotate_turner_front(15);
+        action_helpers::rotate_turner_front(ArmState::TURNING);
 
         vTaskDelay(pdMS_TO_TICKS(300));
         MotionCommand recule;
@@ -190,6 +190,7 @@ void turn_two_front() {
         xQueueSend(robot::queues::motion_command_queue, &ravance, 0);
     }
 
+    action_helpers::rotate_turner_front(ArmState::IDLE);
 
     action_helpers::endAction();
 }

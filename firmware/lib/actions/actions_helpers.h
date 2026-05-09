@@ -5,6 +5,12 @@
 
 #include <commands.h>
 
+enum class ArmState: uint8_t {
+    IDLE,
+    TAKING,
+    TURNING,
+};
+
 namespace robot::actions::action_helpers {
     // command helpers
     void performRotation(const PWMControl& actuator_info, uint8_t angle);
@@ -14,8 +20,8 @@ namespace robot::actions::action_helpers {
     void toggle_pumps_front(uint8_t state);
     void toggle_pumps_back(uint8_t state);
     
-    void rotate_turner_front(uint8_t angle);
-    void rotate_turner_back(uint8_t angle);
+    void rotate_turner_front(ArmState state);
+    void rotate_turner_back(ArmState state);
 
     void rotate_grabber_front(bool unfolded);
     void rotate_grabber_back(bool unfolded);

@@ -122,7 +122,19 @@ void performRotation(const PWMControl& actuator_info, uint8_t angle) {
     xQueueSend(robot::queues::pwm_command_queue, &cmd, 0);
 }
 
-void rotate_turner_front(uint8_t angle) {
+void rotate_turner_front(ArmState state) {
+    uint8_t angle = 0;
+    switch (state) {
+        case ArmState::IDLE:
+            angle = 50;
+            break;
+        case ArmState::TAKING:
+            angle = 155;
+            break;
+        case ArmState::TURNING:
+            angle = 15;
+            break;
+    }
     if (angle > 100) {
         rotate_grabber_back(false);
     }
@@ -130,9 +142,18 @@ void rotate_turner_front(uint8_t angle) {
     performRotation(robot::config::front_right_turner, 180 - angle + 3);
 }
 
-void rotate_turner_back(uint8_t angle) {
-    if (angle > 100) {
-        rotate_grabber_front(false);
+void rotate_turner_back(ArmState state) {
+    uint8_t angle = 0;
+    switch (state) {
+        case ArmState::IDLE:
+            angle = 50;
+            break;
+        case ArmState::TAKING:
+            angle = 155;
+            break;
+        case ArmState::TURNING:
+            angle = 15;
+            break;
     }
     performRotation(robot::config::back_left_turner, angle);
     performRotation(robot::config::back_right_turner, 180 - angle + 3);
