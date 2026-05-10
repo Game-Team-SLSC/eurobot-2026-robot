@@ -5,6 +5,7 @@
 #include <commands.h>
 #include <queues.h>
 #include <state.h>
+#include <Logger.h>
 
 namespace robot::actions {
 void turn_back() {
@@ -54,11 +55,11 @@ void turn_back() {
             noneMustBeTurned = false;
         }
         if (elOk && action_helpers::mustBeTurned(elColorResp)) {
-            pumpsMask |= 1 << 2;
+            pumpsMask |= 1 << 3;
             noneMustBeTurned = false;
         }
         if (ilOk && action_helpers::mustBeTurned(ilColorResp)) {
-            pumpsMask |= 1 << 3;
+            pumpsMask |= 1 << 2;
             noneMustBeTurned = false;
         }
         bool allMustBeTurned = action_helpers::mustBeTurned(erColorResp) && action_helpers::mustBeTurned(irColorResp) && action_helpers::mustBeTurned(elColorResp) && action_helpers::mustBeTurned(ilColorResp);
@@ -110,7 +111,7 @@ void turn_back() {
     } else {
         MotionCommand mcmd;
 
-        mcmd.target = {-15, 0, 0};
+        mcmd.target = {15, 0, 0};
 
         xQueueSend(robot::queues::motion_command_queue, &mcmd, 0);
 
@@ -121,28 +122,28 @@ void turn_back() {
         vTaskDelay(pdMS_TO_TICKS(500));
 
         ColorCommand erColorCmd;
-        erColorCmd.sensor = robot::config::ColorSensor::FER;
+        erColorCmd.sensor = robot::config::ColorSensor::BER;
         xQueueSend(robot::queues::color_command_queue, &erColorCmd, 0);
 
         ColorResponse erColorResp{};
         const bool erOk = xQueueReceive(robot::queues::color_response_queue, &erColorResp, pdMS_TO_TICKS(1500)) == pdPASS;
 
         ColorCommand irColorCmd;
-        irColorCmd.sensor = robot::config::ColorSensor::FIR;
+        irColorCmd.sensor = robot::config::ColorSensor::BIR;
         xQueueSend(robot::queues::color_command_queue, &irColorCmd, 0);
 
         ColorResponse irColorResp{};
         const bool irOk = xQueueReceive(robot::queues::color_response_queue, &irColorResp, pdMS_TO_TICKS(1500)) == pdPASS;
 
         ColorCommand elColorCmd;
-        elColorCmd.sensor = robot::config::ColorSensor::FEL;
+        elColorCmd.sensor = robot::config::ColorSensor::BEL;
         xQueueSend(robot::queues::color_command_queue, &elColorCmd, 0);
 
         ColorResponse elColorResp{};
         const bool elOk = xQueueReceive(robot::queues::color_response_queue, &elColorResp, pdMS_TO_TICKS(1500)) == pdPASS;
 
         ColorCommand ilColorCmd;
-        ilColorCmd.sensor = robot::config::ColorSensor::FIL;
+        ilColorCmd.sensor = robot::config::ColorSensor::BIL;
         xQueueSend(robot::queues::color_command_queue, &ilColorCmd, 0);
 
         ColorResponse ilColorResp{};
@@ -165,6 +166,20 @@ void turn_back() {
         if (ilOk && action_helpers::mustBeTurned(ilColorResp)) {
             pumpsMask |= 1 << 3;
             noneMustBeTurned = false;
+        }
+
+        // prints which sensor has detected a color that must be turned
+        if (erOk) {
+            info("turn_back", "ER color: h=%.1f s=%.1f v=%.1f -> %s", erColorResp.h, erColorResp.s, erColorResp.v, action_helpers::mustBeTurned(erColorResp) ? "TURN" : "NO TURN");
+        }
+        if (irOk) {
+            info("turn_back", "IR color: h=%.1f s=%.1f v=%.1f -> %s", irColorResp.h, irColorResp.s, irColorResp.v, action_helpers::mustBeTurned(irColorResp) ? "TURN" : "NO TURN");
+        }
+        if (elOk) {
+            info("turn_back", "EL color: h=%.1f s=%.1f v=%.1f -> %s", elColorResp.h, elColorResp.s, elColorResp.v, action_helpers::mustBeTurned(elColorResp) ? "TURN" : "NO TURN");
+        }
+        if (ilOk) {
+            info("turn_back", "IL color: h=%.1f s=%.1f v=%.1f -> %s", ilColorResp.h, ilColorResp.s, ilColorResp.v, action_helpers::mustBeTurned(ilColorResp) ? "TURN" : "NO TURN");
         }
 
         if (noneMustBeTurned) {
@@ -194,8 +209,6 @@ void turn_back() {
             xQueueSend(robot::queues::motion_command_queue, &ravance, 0);
         }
     }
-
-    action_helpers::rotate_turner_back(ArmState::IDLE);
 
     robot::state::setBackStocking(StockingState::EMPTY);
 

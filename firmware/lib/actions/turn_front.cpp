@@ -196,7 +196,6 @@ void turn_front() {
     }
 
     robot::state::setFrontStocking(StockingState::EMPTY);
-    action_helpers::rotate_turner_front(ArmState::IDLE);
 
     action_helpers::endAction();
 }

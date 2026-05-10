@@ -176,8 +176,8 @@ namespace robot::config {
 
     constexpr PWMControl back_interior_right_ev = {robot::config::PWMController::RIGHT, 10};
     constexpr PWMControl back_interior_left_ev = {robot::config::PWMController::RIGHT, 11};
-    constexpr PWMControl back_exterior_right_ev = {robot::config::PWMController::RIGHT, 13};
-    constexpr PWMControl back_exterior_left_ev = {robot::config::PWMController::RIGHT, 14};
+    constexpr PWMControl back_exterior_right_ev = {robot::config::PWMController::RIGHT, 14};
+    constexpr PWMControl back_exterior_left_ev = {robot::config::PWMController::RIGHT, 13};
 
     constexpr PWMControl led_left_b = {robot::config::PWMController::LEFT, 0};
     constexpr PWMControl led_left_g = {robot::config::PWMController::LEFT, 1};

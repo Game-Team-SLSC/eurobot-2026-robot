@@ -83,28 +83,28 @@ void toggle_pumps_back(uint8_t state) {
     
     IOExpanderCommand cmd2;
     cmd2.expander = robot::config::IOExpander::KINETIC;
-    cmd2.pin = 5;
-    cmd2.level = (state & (1 << 1)) != 0;
+    cmd2.pin = 14;
+    cmd2.level = (state & (1 << 0)) != 0;
 
     IOExpanderCommand cmd3;
     cmd3.expander = robot::config::IOExpander::KINETIC;
-    cmd3.pin = 4;
-    cmd3.level = (state & (1 << 0)) != 0;
+    cmd3.pin = 15;
+    cmd3.level = (state & (1 << 1)) != 0;
 
     IOExpanderCommand cmd4;
     cmd4.expander = robot::config::IOExpander::KINETIC;
-    cmd4.pin = 15;
-    cmd4.level = (state & (1 << 3)) != 0;
+    cmd4.pin = 5;
+    cmd4.level = (state & (1 << 2)) != 0;
 
     IOExpanderCommand cmd5;
     cmd5.expander = robot::config::IOExpander::KINETIC;
-    cmd5.pin = 14;
-    cmd5.level = (state & (1 << 2)) != 0;
+    cmd5.pin = 4;
+    cmd5.level = (state & (1 << 3)) != 0;
 
-    togglePWM(robot::config::back_interior_left_ev, (state & (1 << 0)) != 0);
+    togglePWM(robot::config::back_exterior_right_ev, (state & (1 << 0)) != 0);
     togglePWM(robot::config::back_interior_right_ev, (state & (1 << 1)) != 0);
     togglePWM(robot::config::back_exterior_left_ev, (state & (1 << 2)) != 0);
-    togglePWM(robot::config::back_exterior_right_ev, (state & (1 << 3)) != 0);
+    togglePWM(robot::config::back_interior_left_ev, (state & (1 << 3)) != 0);
 
     xQueueSend(robot::queues::io_command_queue, &cmd2, 0);
     xQueueSend(robot::queues::io_command_queue, &cmd3, 0);
@@ -132,7 +132,8 @@ void rotate_turner_front(ArmState state) {
             angle = 155;
             break;
         case ArmState::TURNING:
-            angle = 15;
+            action_helpers::rotate_turner_back(ArmState::IDLE);
+            angle = 15; 
             break;
     }
     if (angle > 100) {
@@ -152,6 +153,7 @@ void rotate_turner_back(ArmState state) {
             angle = 155;
             break;
         case ArmState::TURNING:
+            action_helpers::rotate_turner_front(ArmState::IDLE);
             angle = 15;
             break;
     }

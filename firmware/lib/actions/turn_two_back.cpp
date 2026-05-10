@@ -116,7 +116,7 @@ void turn_two_back() {
     } else {
         MotionCommand mcmd;
 
-        mcmd.target = {-15, 0, 0};
+        mcmd.target = {15, 0, 0};
 
         xQueueSend(robot::queues::motion_command_queue, &mcmd, 0);
 
@@ -180,18 +180,18 @@ void turn_two_back() {
 
         vTaskDelay(pdMS_TO_TICKS(300));
         MotionCommand recule;
-        recule.target = {-50, 0, 0};
+        recule.target = {50, 0, 0};
         xQueueSend(robot::queues::motion_command_queue, &recule, 0);
 
         vTaskDelay(pdMS_TO_TICKS(400));
 
         MotionCommand ravance;
-        ravance.target = {50, 0, 0};
+        ravance.target = {-50, 0, 0};
         xQueueSend(robot::queues::motion_command_queue, &ravance, 0);
     }
 
 
-    action_helpers::rotate_turner_back(ArmState::IDLE);
+    action_helpers::rotate_turner_back(ArmState::TURNING);
     action_helpers::endAction();
 }
 }
