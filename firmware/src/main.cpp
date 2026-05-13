@@ -60,8 +60,9 @@ void setup() {
 
     robot::actions::action_helpers::rotate_turner_front(ArmState::IDLE);
     robot::actions::action_helpers::rotate_turner_back(ArmState::IDLE);
-    
-    robot::actions::action_helpers::rotate_grabber_front(true);
+
+    robot::actions::action_helpers::rotate_grabber_front(false);
+    robot::actions::action_helpers::rotate_grabber_back(false);
 }
 
 void loop() {

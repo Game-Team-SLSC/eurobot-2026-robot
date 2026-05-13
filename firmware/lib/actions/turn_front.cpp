@@ -44,65 +44,56 @@ void turn_front() {
         
         // put the right mask on pumps
         uint8_t pumpsMask = 0;
-        bool noneMustBeTurned = true;
+        
         if (erOk && action_helpers::mustBeTurned(erColorResp)) {
             pumpsMask |= 1 << 0;
-            noneMustBeTurned = false;
         }
         if (irOk && action_helpers::mustBeTurned(irColorResp)) {
             pumpsMask |= 1 << 1;
-            noneMustBeTurned = false;
         }
         if (elOk && action_helpers::mustBeTurned(elColorResp)) {
             pumpsMask |= 1 << 2;
-            noneMustBeTurned = false;
         }
         if (ilOk && action_helpers::mustBeTurned(ilColorResp)) {
             pumpsMask |= 1 << 3;
-            noneMustBeTurned = false;
         }
-        bool allMustBeTurned = action_helpers::mustBeTurned(erColorResp) && action_helpers::mustBeTurned(irColorResp) && action_helpers::mustBeTurned(elColorResp) && action_helpers::mustBeTurned(ilColorResp);
+        uint8_t countToTurn = action_helpers::mustBeTurned(erColorResp) + action_helpers::mustBeTurned(irColorResp) + action_helpers::mustBeTurned(elColorResp) + action_helpers::mustBeTurned(ilColorResp);
 
-        action_helpers::toggle_pumps_front(pumpsMask);
-
-        if (allMustBeTurned) {
-            vTaskDelay(pdMS_TO_TICKS(300));
-            action_helpers::toggle_pumps_front(0b0000);
+        
+        if (countToTurn == 4) {
+            // tout tourner
             action_helpers::rotate_turner_front(ArmState::TURNING);
-        } else {
-            vTaskDelay(pdMS_TO_TICKS(200));
-            // go to 140 with angle turn
+            vTaskDelay(pdMS_TO_TICKS(50));
+            action_helpers::toggle_pumps_front(0b0000);
+            vTaskDelay(50);
+        } else if (countToTurn == 0) {
+            // ne rien tourner
             action_helpers::rotate_turner_front(ArmState::TAKING);
-            // wait 500 ms
-            vTaskDelay(pdMS_TO_TICKS(400));
-            // go to 15 with angle turn
+            vTaskDelay(250);
+            action_helpers::toggle_pumps_front(0b0000);
+            vTaskDelay(100);
+            action_helpers::rotate_turner_front(ArmState::IDLE);
+        } else {
+            //
+            action_helpers::rotate_turner_front(ArmState::TAKING);
+            vTaskDelay(pdMS_TO_TICKS(50));
+            action_helpers::toggle_pumps_front(pumpsMask);
+            vTaskDelay(pdMS_TO_TICKS(250));
             action_helpers::rotate_turner_front(ArmState::TURNING);
+            vTaskDelay(400);
+            action_helpers::toggle_pumps_front(0b0000);
         }
 
-        if (noneMustBeTurned) {
-            vTaskDelay(pdMS_TO_TICKS(300));
-            action_helpers::toggle_pumps_front(0b0000);
-            action_helpers::rotate_turner_front(ArmState::TURNING);
-        } else {
-            action_helpers::toggle_pumps_front(pumpsMask);
-    
-            vTaskDelay(pdMS_TO_TICKS(100));
-    
-            action_helpers::rotate_turner_front(ArmState::TURNING);
-            
+        if (countToTurn != 0) {
             vTaskDelay(pdMS_TO_TICKS(400));
-    
-            action_helpers::toggle_pumps_front(0b0000);
-    
-            vTaskDelay(pdMS_TO_TICKS(300));
             MotionCommand recule;
-            recule.target = {-50, 0, 0};
+            recule.target = {-75, 0, 0};
             xQueueSend(robot::queues::motion_command_queue, &recule, 0);
 
             vTaskDelay(pdMS_TO_TICKS(400));
 
             MotionCommand ravance;
-            ravance.target = {50, 0, 0};
+            ravance.target = {75, 0, 0};
             xQueueSend(robot::queues::motion_command_queue, &ravance, 0);
         }
 
@@ -178,7 +169,7 @@ void turn_front() {
     
             action_helpers::rotate_turner_front(ArmState::TURNING);
             
-            vTaskDelay(pdMS_TO_TICKS(400));
+            vTaskDelay(pdMS_TO_TICKS(750));
     
             action_helpers::toggle_pumps_front(0b0000);
     

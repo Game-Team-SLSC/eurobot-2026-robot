@@ -101,10 +101,12 @@ void toggle_pumps_back(uint8_t state) {
     cmd5.pin = 4;
     cmd5.level = (state & (1 << 3)) != 0;
 
-    togglePWM(robot::config::back_exterior_right_ev, (state & (1 << 0)) != 0);
-    togglePWM(robot::config::back_interior_right_ev, (state & (1 << 1)) != 0);
-    togglePWM(robot::config::back_exterior_left_ev, (state & (1 << 2)) != 0);
-    togglePWM(robot::config::back_interior_left_ev, (state & (1 << 3)) != 0);
+    Serial.println(state, BIN);
+
+    togglePWM(robot::config::back_exterior_left_ev, (state & (1 << 3)) == 0);
+    togglePWM(robot::config::back_interior_left_ev, (state & (1 << 2)) == 0);
+    togglePWM(robot::config::back_interior_right_ev, (state & (1 << 0)) == 0);
+    togglePWM(robot::config::back_exterior_right_ev, (state & (1 << 1)) == 0);
 
     xQueueSend(robot::queues::io_command_queue, &cmd2, 0);
     xQueueSend(robot::queues::io_command_queue, &cmd3, 0);
@@ -126,7 +128,7 @@ void rotate_turner_front(ArmState state) {
     uint8_t angle = 0;
     switch (state) {
         case ArmState::IDLE:
-            angle = 50;
+            angle = 75;
             break;
         case ArmState::TAKING:
             angle = 155;
@@ -136,9 +138,6 @@ void rotate_turner_front(ArmState state) {
             angle = 15; 
             break;
     }
-    if (angle > 100) {
-        rotate_grabber_back(false);
-    }
     performRotation(robot::config::front_left_turner, angle);
     performRotation(robot::config::front_right_turner, 180 - angle + 3);
 }
@@ -147,7 +146,7 @@ void rotate_turner_back(ArmState state) {
     uint8_t angle = 0;
     switch (state) {
         case ArmState::IDLE:
-            angle = 50;
+            angle = 75;
             break;
         case ArmState::TAKING:
             angle = 155;
@@ -174,7 +173,7 @@ void rotate_grabber_front(bool unfolded) {
 void rotate_grabber_back(bool unfolded) {
     if (unfolded) {
         performRotation(robot::config::back_left_grabber, 133);
-        performRotation(robot::config::back_right_grabber, 10);
+        performRotation(robot::config::back_right_grabber, 5);
     } else {
         performRotation(robot::config::back_left_grabber, 68);
         performRotation(robot::config::back_right_grabber, 75);
@@ -191,7 +190,7 @@ uint16_t angleToPWMValue(uint8_t angle) {
 }
 
 bool mustBeTurned(const ColorResponse& color) {
-    if (color.s < 0.2f) {
+    if (color.s < 0.1f) {
         return false;
     }
 

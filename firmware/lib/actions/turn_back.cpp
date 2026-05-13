@@ -64,38 +64,32 @@ void turn_back() {
         }
         bool allMustBeTurned = action_helpers::mustBeTurned(erColorResp) && action_helpers::mustBeTurned(irColorResp) && action_helpers::mustBeTurned(elColorResp) && action_helpers::mustBeTurned(ilColorResp);
 
-        action_helpers::toggle_pumps_back(pumpsMask);
-
         if (allMustBeTurned) {
-            vTaskDelay(pdMS_TO_TICKS(300));
+            action_helpers::rotate_turner_back(ArmState::TURNING);
+            vTaskDelay(pdMS_TO_TICKS(50));
             action_helpers::toggle_pumps_back(0b0000);
+            vTaskDelay(50);
+        } else if (noneMustBeTurned) {
+            action_helpers::rotate_turner_back(ArmState::TAKING);
+            vTaskDelay(250);
+            action_helpers::toggle_pumps_back(0b0000);
+            vTaskDelay(100);
             action_helpers::rotate_turner_back(ArmState::TURNING);
         } else {
-            vTaskDelay(pdMS_TO_TICKS(200));
-            // go to 140 with angle turn
             action_helpers::rotate_turner_back(ArmState::TAKING);
+            vTaskDelay(pdMS_TO_TICKS(50));
+            action_helpers::toggle_pumps_back(pumpsMask);
+            vTaskDelay(pdMS_TO_TICKS(450));
+            // go to 140 with angle turn
             // wait 500 ms
-            vTaskDelay(pdMS_TO_TICKS(400));
             // go to 15 with angle turn
             action_helpers::rotate_turner_back(ArmState::TURNING);
+            vTaskDelay(400);
+            action_helpers::toggle_pumps_back(0b0000);
         }
 
-        if (noneMustBeTurned) {
-            vTaskDelay(pdMS_TO_TICKS(300));
-            action_helpers::toggle_pumps_back(0b0000);
-            action_helpers::rotate_turner_back(ArmState::TURNING);
-        } else {
-            action_helpers::toggle_pumps_back(pumpsMask);
-    
-            vTaskDelay(pdMS_TO_TICKS(100));
-    
-            action_helpers::rotate_turner_back(ArmState::TURNING);
-            
+        if (!noneMustBeTurned) {
             vTaskDelay(pdMS_TO_TICKS(400));
-    
-            action_helpers::toggle_pumps_back(0b0000);
-    
-            vTaskDelay(pdMS_TO_TICKS(300));
             MotionCommand recule;
             recule.target = {50, 0, 0};
             xQueueSend(robot::queues::motion_command_queue, &recule, 0);
@@ -189,11 +183,11 @@ void turn_back() {
         } else {
             action_helpers::toggle_pumps_back(pumpsMask);
     
-            vTaskDelay(pdMS_TO_TICKS(100));
+            vTaskDelay(pdMS_TO_TICKS(250));
     
             action_helpers::rotate_turner_back(ArmState::TURNING);
             
-            vTaskDelay(pdMS_TO_TICKS(400));
+            vTaskDelay(pdMS_TO_TICKS(750));
     
             action_helpers::toggle_pumps_back(0b0000);
     

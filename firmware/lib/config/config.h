@@ -212,8 +212,8 @@ namespace robot::config {
     constexpr robot::config::Button toggle_front_grabber_btn = robot::config::Button::LSIDE_D_BTN;
 
     constexpr robot::config::Button turn_action_back_btn = robot::config::Button::RSIDE_U_BTN;
-    constexpr robot::config::Button stock_action_back_btn = robot::config::Button::RSIDE_R_BTN;
-    constexpr robot::config::Button turn_two_action_back_btn = robot::config::Button::RSIDE_L_BTN;
+    constexpr robot::config::Button stock_action_back_btn = robot::config::Button::RSIDE_L_BTN;
+    constexpr robot::config::Button turn_two_action_back_btn = robot::config::Button::RSIDE_R_BTN;
     constexpr robot::config::Button toggle_back_grabber_btn = robot::config::Button::RSIDE_D_BTN;
 
     constexpr robot::config::Button toggle_low_speed_btn = robot::config::Button::DOUBLE_U_BTN;
