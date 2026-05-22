@@ -142,18 +142,21 @@ bool begin() {
     
 	setAllDriverChipSelectInactive();
 
-	{
-		robot::spi_mutex::Guard spiGuard;
-		if (spiGuard.isLocked()) {
-			applyDriverSettings(driver_fr);
-			applyDriverSettings(driver_fl);
-			applyDriverSettings(driver_br);
-			applyDriverSettings(driver_bl);
-			// Ensure no driver keeps MISO active after config.
-			setAllDriverChipSelectInactive();
-		} else {
-			error("movers", "Failed to acquire SPI mutex during initialization");
-		}
+	
+	robot::spi_mutex::Guard spiGuard;
+	if (spiGuard.isLocked()) {
+		applyDriverSettings(driver_fr);
+		delay(50);
+		applyDriverSettings(driver_fl);
+		delay(50);
+		applyDriverSettings(driver_br);
+		delay(50);
+		applyDriverSettings(driver_bl);
+		delay(50);
+		// Ensure no driver keeps MISO active after config.
+		setAllDriverChipSelectInactive();
+	} else {
+		error("movers", "Failed to acquire SPI mutex during initialization");
 	}
 
 	engine.init();
@@ -175,6 +178,30 @@ bool begin() {
 	return true;
 }
 
+void resetDrivers() {
+	pinMode(robot::config::tmc_bl_config.cs_pin, OUTPUT);
+    pinMode(robot::config::tmc_br_config.cs_pin, OUTPUT);
+    pinMode(robot::config::tmc_fl_config.cs_pin, OUTPUT);
+    pinMode(robot::config::tmc_fr_config.cs_pin, OUTPUT);
+    
+	setAllDriverChipSelectInactive();
+
+	robot::spi_mutex::Guard spiGuard;
+	if (spiGuard.isLocked()) {
+		applyDriverSettings(driver_fr);
+		delay(50);
+		applyDriverSettings(driver_fl);
+		delay(50);
+		applyDriverSettings(driver_br);
+		delay(50);
+		applyDriverSettings(driver_bl);
+		delay(50);
+		// Ensure no driver keeps MISO active after config.
+		setAllDriverChipSelectInactive();
+	} else {
+		error("movers", "Failed to acquire SPI mutex during initialization");
+	}
+}
 void drive(MotionCommand& cmd) {
 	if (!g_moversReady || (stepper_fr == nullptr) || (stepper_fl == nullptr) ||
 		(stepper_br == nullptr) || (stepper_bl == nullptr)) {

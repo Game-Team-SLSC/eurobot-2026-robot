@@ -68,14 +68,14 @@ void turn_front() {
             vTaskDelay(50);
         } else if (countToTurn == 0) {
             // ne rien tourner
-            action_helpers::rotate_turner_front(ArmState::TAKING);
+            action_helpers::rotate_turner_front(ArmState::DROPPING);
             vTaskDelay(250);
             action_helpers::toggle_pumps_front(0b0000);
             vTaskDelay(100);
             action_helpers::rotate_turner_front(ArmState::IDLE);
         } else {
             //
-            action_helpers::rotate_turner_front(ArmState::TAKING);
+            action_helpers::rotate_turner_front(ArmState::DROPPING);
             vTaskDelay(pdMS_TO_TICKS(50));
             action_helpers::toggle_pumps_front(pumpsMask);
             vTaskDelay(pdMS_TO_TICKS(250));
@@ -101,7 +101,7 @@ void turn_front() {
     } else {
         MotionCommand mcmd;
 
-        mcmd.target = {-15, 0, 0};
+        mcmd.target = {-9, 0, 0};
 
         xQueueSend(robot::queues::motion_command_queue, &mcmd, 0);
 
@@ -165,7 +165,7 @@ void turn_front() {
         } else {
             action_helpers::toggle_pumps_front(pumpsMask);
     
-            vTaskDelay(pdMS_TO_TICKS(100));
+            vTaskDelay(pdMS_TO_TICKS(250));
     
             action_helpers::rotate_turner_front(ArmState::TURNING);
             

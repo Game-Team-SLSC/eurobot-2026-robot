@@ -9,6 +9,7 @@ enum class ArmState: uint8_t {
     IDLE,
     TAKING,
     TURNING,
+    DROPPING
 };
 
 namespace robot::actions::action_helpers {

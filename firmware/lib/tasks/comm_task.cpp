@@ -21,7 +21,9 @@ void comm_task(void* parameter) {
 
     uint32_t frameCount = 0;
     uint32_t lastRetryTime = 0;
-    bool back_grabber_folded = false, front_left_grabber_folded = false;
+    bool back_grabber_folded = true, front_left_grabber_folded = true;
+    uint32_t restart_btn_hold_start = 0;
+    bool motorsHadBeenReset = false;
     
     TickType_t lastLogTime = xTaskGetTickCount();
 
@@ -115,7 +117,23 @@ void comm_task(void* parameter) {
                 }
 
                 if (btnIdx == static_cast<uint8_t>(robot::config::toggle_low_speed_btn)) {
-                    state::setLowSpeedMode(data.buttons[btnIdx]);
+                    if (!data.buttons[btnIdx]) {
+                        motorsHadBeenReset = false;
+                        restart_btn_hold_start = 0;
+                    }
+
+                    if (restart_btn_hold_start == 0) {
+                        restart_btn_hold_start = millis();
+                    }
+
+                    if (!motorsHadBeenReset) {
+                        robot::movers::resetDrivers();
+                        motorsHadBeenReset = true;
+                    }
+
+                    if (millis() - restart_btn_hold_start > 2000) {
+                        ESP.restart();
+                    }
                 }
 
                 if (btnIdx == static_cast<uint8_t>(robot::config::toggle_front_grabber_btn)) {

@@ -55,28 +55,28 @@ void turn_back() {
             noneMustBeTurned = false;
         }
         if (elOk && action_helpers::mustBeTurned(elColorResp)) {
-            pumpsMask |= 1 << 3;
+            pumpsMask |= 1 << 2;
             noneMustBeTurned = false;
         }
         if (ilOk && action_helpers::mustBeTurned(ilColorResp)) {
-            pumpsMask |= 1 << 2;
+            pumpsMask |= 1 << 3;
             noneMustBeTurned = false;
         }
         bool allMustBeTurned = action_helpers::mustBeTurned(erColorResp) && action_helpers::mustBeTurned(irColorResp) && action_helpers::mustBeTurned(elColorResp) && action_helpers::mustBeTurned(ilColorResp);
 
         if (allMustBeTurned) {
             action_helpers::rotate_turner_back(ArmState::TURNING);
-            vTaskDelay(pdMS_TO_TICKS(50));
+            vTaskDelay(pdMS_TO_TICKS(250));
             action_helpers::toggle_pumps_back(0b0000);
             vTaskDelay(50);
         } else if (noneMustBeTurned) {
-            action_helpers::rotate_turner_back(ArmState::TAKING);
+            action_helpers::rotate_turner_back(ArmState::DROPPING);
             vTaskDelay(250);
             action_helpers::toggle_pumps_back(0b0000);
             vTaskDelay(100);
             action_helpers::rotate_turner_back(ArmState::TURNING);
         } else {
-            action_helpers::rotate_turner_back(ArmState::TAKING);
+            action_helpers::rotate_turner_back(ArmState::DROPPING);
             vTaskDelay(pdMS_TO_TICKS(50));
             action_helpers::toggle_pumps_back(pumpsMask);
             vTaskDelay(pdMS_TO_TICKS(450));
@@ -84,7 +84,7 @@ void turn_back() {
             // wait 500 ms
             // go to 15 with angle turn
             action_helpers::rotate_turner_back(ArmState::TURNING);
-            vTaskDelay(400);
+            vTaskDelay(500);
             action_helpers::toggle_pumps_back(0b0000);
         }
 
@@ -105,7 +105,7 @@ void turn_back() {
     } else {
         MotionCommand mcmd;
 
-        mcmd.target = {15, 0, 0};
+        mcmd.target = {8, 0, 0};
 
         xQueueSend(robot::queues::motion_command_queue, &mcmd, 0);
 

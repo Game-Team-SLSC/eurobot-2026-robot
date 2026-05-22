@@ -11,7 +11,7 @@ namespace robot::actions {
 void stock_back() {
     MotionCommand mcmd;
 
-    mcmd.target = {15, 0, 0};
+    mcmd.target = {8, 0, 0};
 
     xQueueSend(robot::queues::motion_command_queue, &mcmd, 0);
 

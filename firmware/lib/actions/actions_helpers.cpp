@@ -137,6 +137,10 @@ void rotate_turner_front(ArmState state) {
             action_helpers::rotate_turner_back(ArmState::IDLE);
             angle = 15; 
             break;
+        case ArmState::DROPPING:
+            action_helpers::rotate_turner_back(ArmState::IDLE);
+            angle = 140;
+            break; 
     }
     performRotation(robot::config::front_left_turner, angle);
     performRotation(robot::config::front_right_turner, 180 - angle + 3);
@@ -154,6 +158,10 @@ void rotate_turner_back(ArmState state) {
         case ArmState::TURNING:
             action_helpers::rotate_turner_front(ArmState::IDLE);
             angle = 15;
+            break;
+        case ArmState::DROPPING:
+            action_helpers::rotate_turner_front(ArmState::IDLE);
+            angle = 140;
             break;
     }
     performRotation(robot::config::back_left_turner, angle);

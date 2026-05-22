@@ -116,7 +116,7 @@ void turn_two_front() {
     } else {
         MotionCommand mcmd;
 
-        mcmd.target = {-15, 0, 0};
+        mcmd.target = {-9, 0, 0};
 
         xQueueSend(robot::queues::motion_command_queue, &mcmd, 0);
 
@@ -154,43 +154,52 @@ void turn_two_front() {
         ColorResponse ilColorResp{};
         const bool ilOk = xQueueReceive(robot::queues::color_response_queue, &ilColorResp, pdMS_TO_TICKS(1500)) == pdPASS;
 
-        uint8_t pumpsMask = 0b1111;
-        if (erOk && !(action_helpers::mustBeTurned(erColorResp))) {
-            pumpsMask &= ~(1 << 0);  // Efface le bit 0 si ce n'est PAS notre équipe
+        uint8_t pumpsMask = 0b1100;
+        bool none_must_be_turned = true;
+        if (erOk && action_helpers::mustBeTurned(erColorResp)) {
+            none_must_be_turned = false;
+            pumpsMask |= 1 << 0;  
         }
-        if (irOk && !(action_helpers::mustBeTurned(irColorResp))) {
-            pumpsMask &= ~(1 << 1);  // Efface le bit 1 si ce n'est PAS notre équipe
+        if (irOk && action_helpers::mustBeTurned(irColorResp)) {
+            none_must_be_turned = false;
+            pumpsMask |= 1 << 1;  
         }
 
-        action_helpers::toggle_pumps_front(pumpsMask);
+        if (none_must_be_turned) {
+            action_helpers::toggle_pumps_front(pumpsMask);
 
-        vTaskDelay(pdMS_TO_TICKS(300));
+            vTaskDelay(pdMS_TO_TICKS(250));
 
-        action_helpers::rotate_turner_front(ArmState::TURNING);
+            action_helpers::rotate_turner_front(ArmState::TURNING);
+        } else {
+            action_helpers::toggle_pumps_front(pumpsMask);
 
-        vTaskDelay(pdMS_TO_TICKS(600));
+            vTaskDelay(pdMS_TO_TICKS(250));
 
-        robot::state::setFrontStocking(StockingState::HALF);
+            action_helpers::rotate_turner_front(ArmState::TURNING);
+            
+            vTaskDelay(pdMS_TO_TICKS(750));
 
-        pumpsMask = 0b1100;
+            
+            robot::state::setFrontStocking(StockingState::HALF);
+            
+            pumpsMask = 0b1100;
+            
+            action_helpers::toggle_pumps_front(pumpsMask);
+            
+            vTaskDelay(pdMS_TO_TICKS(300));
 
-        action_helpers::toggle_pumps_front(pumpsMask);
-
-        action_helpers::rotate_turner_front(ArmState::TURNING);
-
-        vTaskDelay(pdMS_TO_TICKS(300));
-        MotionCommand recule;
-        recule.target = {-50, 0, 0};
-        xQueueSend(robot::queues::motion_command_queue, &recule, 0);
-
-        vTaskDelay(pdMS_TO_TICKS(400));
-
-        MotionCommand ravance;
-        ravance.target = {50, 0, 0};
-        xQueueSend(robot::queues::motion_command_queue, &ravance, 0);
+            MotionCommand recule;
+            recule.target = {-50, 0, 0};
+            xQueueSend(robot::queues::motion_command_queue, &recule, 0);
+    
+            vTaskDelay(pdMS_TO_TICKS(400));
+    
+            MotionCommand ravance;
+            ravance.target = {50, 0, 0};
+            xQueueSend(robot::queues::motion_command_queue, &ravance, 0);
+        }
     }
-
-    action_helpers::rotate_turner_front(ArmState::IDLE);
 
     action_helpers::endAction();
 }

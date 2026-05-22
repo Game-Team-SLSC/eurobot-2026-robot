@@ -6,6 +6,7 @@
 
 namespace robot::movers {
     bool begin();
+    void resetDrivers();
     void drive(MotionCommand& cmd);
     void goToTarget(const MotionCommand& cmd);
     Vec3 getCurrentVelocity();
