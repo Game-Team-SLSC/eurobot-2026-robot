@@ -61,8 +61,8 @@ void setup() {
     robot::actions::action_helpers::rotate_turner_front(ArmState::IDLE);
     robot::actions::action_helpers::rotate_turner_back(ArmState::IDLE);
 
-    robot::actions::action_helpers::rotate_grabber_front(false);
-    robot::actions::action_helpers::rotate_grabber_back(false);
+    robot::actions::action_helpers::rotate_grabber_front(GrabberState::FOLDED);
+    robot::actions::action_helpers::rotate_grabber_back(GrabberState::FOLDED);
 }
 
 void loop() {

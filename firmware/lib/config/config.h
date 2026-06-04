@@ -127,9 +127,9 @@ namespace robot::config {
     constexpr TMCConfig tmc_bl_config = {8, 16, 17};
     
     constexpr float tmc_rsense = 0.075f;
-    constexpr uint16_t motor_microsteps = 8;
-    constexpr uint32_t motion_speed_hz = 6300;
-    constexpr uint32_t motion_accel = 22500;
+    constexpr uint16_t motor_microsteps = 4;
+    constexpr uint32_t motion_speed_hz = 3000;
+    constexpr uint32_t motion_accel = 12000;
     constexpr uint16_t motor_rms_current_ma = 2000; 
 
     constexpr float wheel_radius_mm = 30.0f;

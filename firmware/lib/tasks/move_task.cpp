@@ -135,16 +135,6 @@ namespace robot::tasks {
                 const int16_t velForward = velocitySignDeadzone(currentVel.forward);
                 const int16_t velStrafe = velocitySignDeadzone(currentVel.strafe);
                 const int16_t velRotate = velocitySignDeadzone(currentVel.rotate);
-        
-                // if (hasOppositeSign(cmd.forward, velForward)) {
-                //     cmd.forward = 0;
-                // }
-                // if (hasOppositeSign(cmd.strafe, velStrafe)) {
-                //     cmd.strafe = 0;
-                // }
-                // if (hasOppositeSign(cmd.rotate, velRotate)) {
-                //     cmd.rotate = 0;
-                // }
 
 
                 robot::movers::drive(cmd);   

@@ -8,7 +8,7 @@
 
 namespace robot::actions {
 void release_back() {
-    robot::state::setFrontStocking(StockingState::EMPTY);
+    robot::state::setBackStocking(StockingState::EMPTY);
     action_helpers::rotate_turner_back(ArmState::TAKING);
 
     vTaskDelay(pdMS_TO_TICKS(700));

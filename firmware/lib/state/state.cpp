@@ -155,4 +155,26 @@ namespace robot::state {
         
         return true;
     }
+
+    bool setFrontGrabberState(GrabberState state) {
+        if (!xSemaphoreTake(mutex, portMAX_DELAY)) {
+            return false;
+        }
+
+        globalState.front_grabber_state = state;
+        xSemaphoreGive(mutex);
+        
+        return true;
+    }
+
+    bool setBackGrabberState(GrabberState state) {
+        if (!xSemaphoreTake(mutex, portMAX_DELAY)) {
+            return false;
+        }
+
+        globalState.back_grabber_state = state;
+        xSemaphoreGive(mutex);
+        
+        return true;
+    }
 }

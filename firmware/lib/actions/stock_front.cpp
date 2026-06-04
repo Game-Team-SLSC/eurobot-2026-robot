@@ -9,26 +9,32 @@
 
 namespace robot::actions {
 void stock_front() {
-    MotionCommand mcmd;
+    GlobalState state = robot::state::get();
+    
+    if (state.front_grabber_state == GrabberState::CATCHING) {
+        action_helpers::rotate_grabber_front(GrabberState::UNFOLDED);
+    }
 
-    mcmd.target = {-15, 0, 0};
-
-    xQueueSend(robot::queues::motion_command_queue, &mcmd, 0);
-
+    // move to grab position
+    
+    action_helpers::move(-15, 0, 0);
     vTaskDelay(pdMS_TO_TICKS(300));
-
-    action_helpers::rotate_grabber_front(true);
-
-    robot::state::setFrontStocking(StockingState::FULL);
+    
+    // grab stack
 
     action_helpers::rotate_turner_front(ArmState::TAKING);
-
     action_helpers::toggle_pumps_front(0b1111);
-
+    robot::state::setFrontStocking(StockingState::FULL);
     vTaskDelay(pdMS_TO_TICKS(500));
 
-    action_helpers::rotate_turner_front(ArmState::IDLE);
+    // retract arm
 
+    action_helpers::rotate_turner_front(ArmState::IDLE);
+    vTaskDelay(pdMS_TO_TICKS(200));
+    
+    // retract grabber
+    action_helpers::rotate_grabber_front(GrabberState::FOLDED);
+    
     action_helpers::endAction();
 }
 }

@@ -74,16 +74,27 @@ void applyWheelCommand(FastAccelStepper* stepper, int32_t cmd) {
 	const int32_t signedSpeedHz =
 		(static_cast<int32_t>(robot::config::motion_speed_hz) * cmd) / JOYSTICK_MAX_ABS;
 	uint32_t speedHz = static_cast<uint32_t>((signedSpeedHz < 0) ? -signedSpeedHz : signedSpeedHz);
-	stepper->setSpeedInHz(speedHz);
+	
+	if (speedHz > 0) {
+		stepper->setSpeedInHz(speedHz);
+	}
+
+	int32_t currentSpeed = getStepperSpeedMilliHz(stepper);
 
 	if (cmd == 0) {
 		stepper->stopMove();
-	} else
-
-	if (cmd > 0) {
-		stepper->runForward();
+	} else if (cmd > 0) {
+		if (currentSpeed < 0) {
+			stepper->stopMove();
+		} else {
+			stepper->runForward();
+		}
 	} else {
-		stepper->runBackward();
+		if (currentSpeed > 0) {
+			stepper->stopMove();
+		} else {
+			stepper->runBackward();
+		}
 	}
 
 	stepper->applySpeedAcceleration();
@@ -208,10 +219,10 @@ void drive(MotionCommand& cmd) {
 		return;
 	}
 
-	int32_t frCmd = static_cast<int32_t>(cmd.forward) + static_cast<int32_t>(cmd.strafe) * 0.7 + static_cast<int32_t>(cmd.rotate);
-	int32_t flCmd = static_cast<int32_t>(cmd.forward) - static_cast<int32_t>(cmd.strafe) * 0.7 - static_cast<int32_t>(cmd.rotate);
-	int32_t brCmd = static_cast<int32_t>(cmd.forward) - static_cast<int32_t>(cmd.strafe) * 0.7 + static_cast<int32_t>(cmd.rotate);
-	int32_t blCmd = static_cast<int32_t>(cmd.forward) + static_cast<int32_t>(cmd.strafe) * 0.7 - static_cast<int32_t>(cmd.rotate);
+	int32_t frCmd = static_cast<int32_t>(cmd.forward) + static_cast<int32_t>(cmd.strafe) * 1. + static_cast<int32_t>(cmd.rotate);
+	int32_t flCmd = static_cast<int32_t>(cmd.forward) - static_cast<int32_t>(cmd.strafe) * 1. - static_cast<int32_t>(cmd.rotate);
+	int32_t brCmd = static_cast<int32_t>(cmd.forward) - static_cast<int32_t>(cmd.strafe) * 1. + static_cast<int32_t>(cmd.rotate);
+	int32_t blCmd = static_cast<int32_t>(cmd.forward) + static_cast<int32_t>(cmd.strafe) * 1. - static_cast<int32_t>(cmd.rotate);
 
 	int32_t maxMagnitude = abs(frCmd);
 	maxMagnitude = max(maxMagnitude, abs(flCmd));

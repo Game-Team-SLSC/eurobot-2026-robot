@@ -4,6 +4,7 @@
 #include <config.h>
 #include <queues.h>
 #include <state.h>
+#include <Logger.h>
 
 // note : pumps function use state to determine if pumps should be on or off
 namespace {
@@ -168,23 +169,42 @@ void rotate_turner_back(ArmState state) {
     performRotation(robot::config::back_right_turner, 180 - angle + 3);
 }
 
-void rotate_grabber_front(bool unfolded) {
-    if (unfolded) {
-        performRotation(robot::config::front_left_grabber, 68);
-        performRotation(robot::config::front_right_grabber, 75);
-    } else {
-        performRotation(robot::config::front_left_grabber, 133);
-        performRotation(robot::config::front_right_grabber, 10);
+void rotate_grabber_front(GrabberState state) {
+    robot::state::setFrontGrabberState(state);
+    switch (state) {
+        case GrabberState::CATCHING:
+            performRotation(robot::config::front_left_grabber, 137);
+            performRotation(robot::config::front_right_grabber, 30);
+            break;
+        case GrabberState::UNFOLDED:
+            performRotation(robot::config::front_left_grabber, 65);
+            performRotation(robot::config::front_right_grabber, 106);
+            break;
+        case GrabberState::FOLDED:
+            performRotation(robot::config::front_left_grabber, 161);
+            performRotation(robot::config::front_right_grabber, 10);
+            break;
     }
 }
 
-void rotate_grabber_back(bool unfolded) {
-    if (unfolded) {
-        performRotation(robot::config::back_left_grabber, 133);
-        performRotation(robot::config::back_right_grabber, 5);
-    } else {
-        performRotation(robot::config::back_left_grabber, 68);
-        performRotation(robot::config::back_right_grabber, 75);
+void rotate_grabber_back(GrabberState state) {
+    robot::state::setBackGrabberState(state);
+    switch (state) {
+        case GrabberState::UNFOLDED:
+        info("e", "unfolded");
+            performRotation(robot::config::back_left_grabber, 137);
+            performRotation(robot::config::back_right_grabber, 30);
+            break;
+        case GrabberState::CATCHING:
+        info("e", "catchy");
+            performRotation(robot::config::back_left_grabber, 65);
+            performRotation(robot::config::back_right_grabber, 106);
+            break;
+        case GrabberState::FOLDED:
+            info("e", "folded");
+            performRotation(robot::config::back_left_grabber, 41);
+            performRotation(robot::config::back_right_grabber, 130);
+            break;
     }
 }
 
@@ -195,6 +215,25 @@ void endAction() {
 
 uint16_t angleToPWMValue(uint8_t angle) {
     return map(angle, 0, 180, 115, 545);
+}
+
+bool readColor(robot::config::ColorSensor sensor, ColorResponse& response) {
+    ColorCommand colorCmd;
+    colorCmd.sensor = sensor;
+    xQueueSend(robot::queues::color_command_queue, &colorCmd, 0);
+
+    ColorResponse colorResp{};
+    const BaseType_t result = xQueueReceive(robot::queues::color_response_queue, &colorResp, pdMS_TO_TICKS(1500));
+    response = colorResp;
+    return result == pdPASS;
+}
+
+bool move(float fwd, float strafe, float rotate) {
+    MotionCommand cmd;
+    cmd.forward = fwd;
+    cmd.strafe = strafe;
+    cmd.rotate = rotate;
+    return xQueueSend(robot::queues::motion_command_queue, &cmd, 0) == pdPASS;
 }
 
 bool mustBeTurned(const ColorResponse& color) {

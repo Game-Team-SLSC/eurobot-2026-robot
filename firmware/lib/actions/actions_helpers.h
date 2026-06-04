@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <config.h>
+#include <state.h>
 
 #include <commands.h>
 
@@ -24,11 +25,14 @@ namespace robot::actions::action_helpers {
     void rotate_turner_front(ArmState state);
     void rotate_turner_back(ArmState state);
 
-    void rotate_grabber_front(bool unfolded);
-    void rotate_grabber_back(bool unfolded);
+    void rotate_grabber_front(GrabberState state);
+    void rotate_grabber_back(GrabberState state);
 
     // misc
     bool mustBeTurned(const ColorResponse& color);
     void endAction();
     uint16_t angleToPWMValue(uint8_t angle);
+
+    bool readColor(robot::config::ColorSensor sensor, ColorResponse& response);
+    bool move(float fwd, float strafe, float rotate);
 }

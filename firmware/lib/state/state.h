@@ -13,6 +13,12 @@ enum class StockingState: uint8_t {
     FULL
 };
 
+enum class GrabberState: uint8_t {
+    FOLDED,
+    UNFOLDED,
+    CATCHING
+};
+
 struct GlobalState {
     RemoteData remoteData{};
     bool radioConnected = false;
@@ -33,6 +39,9 @@ struct GlobalState {
 
     StockingState front_stocking_state = StockingState::EMPTY;
     StockingState back_stocking_state = StockingState::EMPTY;
+
+    GrabberState front_grabber_state = GrabberState::FOLDED;
+    GrabberState back_grabber_state = GrabberState::FOLDED;
 
     int16_t encoderPosition = 0;
 };
@@ -59,4 +68,6 @@ namespace robot::state {
     bool setRadioFrequency(uint8_t frequency);
     bool setBatteryStatus(robot::battery::BatteryStatus status);
     bool setPumpsStatus(bool enabled);
+    bool setFrontGrabberState(GrabberState state);
+    bool setBackGrabberState(GrabberState state);
 }

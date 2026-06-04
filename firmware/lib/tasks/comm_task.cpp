@@ -21,7 +21,6 @@ void comm_task(void* parameter) {
 
     uint32_t frameCount = 0;
     uint32_t lastRetryTime = 0;
-    bool back_grabber_folded = true, front_left_grabber_folded = true;
     uint32_t restart_btn_hold_start = 0;
     bool motorsHadBeenReset = false;
     
@@ -30,7 +29,7 @@ void comm_task(void* parameter) {
     while (true) {
         RemoteData data;
         GlobalState currentState = state::get();
-        if (robot::remote::fetch(data)) {
+        while (robot::remote::fetch(data)) {
             frameCount++;
 
             state::setRadio(data);
@@ -141,13 +140,11 @@ void comm_task(void* parameter) {
                         continue;
                     }
 
-                    front_left_grabber_folded = !front_left_grabber_folded;
-
                     // Use action_helpers to perform rotations for the front grabbers
-                    if (front_left_grabber_folded) {
-                        robot::actions::action_helpers::rotate_grabber_front(false);
+                    if (currentState.front_grabber_state == GrabberState::UNFOLDED) {
+                        robot::actions::action_helpers::rotate_grabber_front(GrabberState::CATCHING);
                     } else {
-                        robot::actions::action_helpers::rotate_grabber_front(true);
+                        robot::actions::action_helpers::rotate_grabber_front(GrabberState::UNFOLDED);
                     }
                 }
 
@@ -156,13 +153,11 @@ void comm_task(void* parameter) {
                         continue;
                     }
 
-                    back_grabber_folded = !back_grabber_folded;
-
                     // Use action_helpers to perform rotations for the back grabbers
-                    if (back_grabber_folded) {
-                        robot::actions::action_helpers::rotate_grabber_back(false);
+                    if (currentState.back_grabber_state == GrabberState::UNFOLDED) {
+                        robot::actions::action_helpers::rotate_grabber_back(GrabberState::CATCHING);
                     } else {
-                        robot::actions::action_helpers::rotate_grabber_back(true);
+                        robot::actions::action_helpers::rotate_grabber_back(GrabberState::UNFOLDED);
                     }
                 }
             }
