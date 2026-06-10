@@ -29,6 +29,7 @@ void comm_task(void* parameter) {
     while (true) {
         RemoteData data;
         GlobalState currentState = state::get();
+
         while (robot::remote::fetch(data)) {
             frameCount++;
 
@@ -161,6 +162,7 @@ void comm_task(void* parameter) {
                     }
                 }
             }
+            vTaskDelay(pdMS_TO_TICKS(0.1));
         }
 
         // Log frame rate every second
@@ -171,6 +173,9 @@ void comm_task(void* parameter) {
             lastLogTime = currentTime;
         }
 
+        if (millis() - currentState.lastFrameReceivedAt > robot::config::rf_timeout_ms) {
+            robot::state::markRadioDisconnected();
+        }
         vTaskDelay(pdMS_TO_TICKS(5));
     }
 }

@@ -154,8 +154,7 @@ namespace robot::config {
 
     constexpr uint8_t rf_ce_pin = 48;
     constexpr uint8_t rf_csn_pin = 38;
-    constexpr uint8_t rf_frequency = 50; // Hz
-    constexpr uint16_t rf_timeout_ms = 400;
+    constexpr uint16_t rf_timeout_ms = 700;
 
     // Servo config
 
@@ -199,8 +198,8 @@ namespace robot::config {
 
     // TCA9555 pin indices are 0..15:
     // P14=12, P15=13, P16=14, P17=15.
-    constexpr uint8_t led_1_tca_pin = 15; // P17
-    constexpr uint8_t led_2_tca_pin = 14; // P16
+    constexpr uint8_t run_led_pin = 15; // P17
+    constexpr uint8_t led_batt_pin = 14; // P16
     constexpr uint8_t led_3_tca_pin = 13; // P15
     constexpr uint8_t led_4_tca_pin = 12; // P14
 

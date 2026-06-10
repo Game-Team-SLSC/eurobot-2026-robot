@@ -22,6 +22,17 @@ namespace robot::state {
         return copy;
     }
 
+    bool markRadioDisconnected() {
+        if (!xSemaphoreTake(mutex, portMAX_DELAY)) {
+            return false;
+        }
+
+        globalState.radioConnected = false;
+        xSemaphoreGive(mutex);
+        
+        return true;
+    }
+
     bool setRadio(RemoteData& data) {
         if (!xSemaphoreTake(mutex, portMAX_DELAY)) {
             return false;

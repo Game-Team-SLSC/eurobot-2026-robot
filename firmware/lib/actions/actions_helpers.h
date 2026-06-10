@@ -34,5 +34,5 @@ namespace robot::actions::action_helpers {
     uint16_t angleToPWMValue(uint8_t angle);
 
     bool readColor(robot::config::ColorSensor sensor, ColorResponse& response);
-    bool move(float fwd, float strafe, float rotate);
+    bool move(short fwd, short strafe, short rotate);
 }

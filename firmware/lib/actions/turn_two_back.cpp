@@ -51,12 +51,12 @@ void turn_two_back() {
             vTaskDelay(100);
             
             action_helpers::toggle_pumps_back(0b0000);
-            vTaskDelay(pdMS_TO_TICKS(300));
-
-            action_helpers::move(-50, 0, 0);
             vTaskDelay(pdMS_TO_TICKS(400));
 
-            action_helpers::move(50, 0, 0);
+            action_helpers::move(-75, 0, 0);
+            vTaskDelay(pdMS_TO_TICKS(400));
+
+            action_helpers::move(75, 0, 0);
         } else if (countToTurn == 1) {
             // turn one
 
@@ -68,11 +68,11 @@ void turn_two_back() {
             vTaskDelay(400);
             action_helpers::toggle_pumps_back(0b0000);
 
-            vTaskDelay(pdMS_TO_TICKS(300));
-            action_helpers::move(50, 0, 0);
+            vTaskDelay(pdMS_TO_TICKS(400));
+            action_helpers::move(75, 0, 0);
 
             vTaskDelay(pdMS_TO_TICKS(400));
-            action_helpers::move(-50, 0, 0);
+            action_helpers::move(-75, 0, 0);
         } else {
             // turn none
 
@@ -128,12 +128,13 @@ void turn_two_back() {
         if (countToTurn != 0) {
             // go back and forth to unstuck pieces
 
-            vTaskDelay(pdMS_TO_TICKS(300));
-            action_helpers::move(50, 0, 0);
+            vTaskDelay(pdMS_TO_TICKS(400));
+            action_helpers::move(75, 0, 0);
 
             vTaskDelay(pdMS_TO_TICKS(400));
-            action_helpers::move(-50, 0, 0);
+            action_helpers::move(-75, 0, 0);
         }
+        robot::state::setBackStocking(StockingState::HALF);
     } else {
         // make mask
 
@@ -170,14 +171,15 @@ void turn_two_back() {
             vTaskDelay(400);
             action_helpers::toggle_pumps_back(0b1100);
 
-            vTaskDelay(pdMS_TO_TICKS(300));
-            action_helpers::move(50, 0, 0);
+            vTaskDelay(pdMS_TO_TICKS(400));
+            action_helpers::move(75, 0, 0);
 
             vTaskDelay(pdMS_TO_TICKS(400));
-            action_helpers::move(-50, 0, 0);
+            action_helpers::move(-75, 0, 0);
         }
 
         robot::state::setBackStocking(StockingState::HALF);
     }
     action_helpers::endAction();
-}
+
+}}

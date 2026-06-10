@@ -18,7 +18,7 @@ void turn_back() {
     // grab the stack if not already grabbing
 
     if (state.back_stocking_state == StockingState::EMPTY) {
-        action_helpers::move(-9, 0, 0);
+        action_helpers::move(9, 0, 0);
         vTaskDelay(pdMS_TO_TICKS(300));
         action_helpers::rotate_turner_back(ArmState::TAKING);
         vTaskDelay(pdMS_TO_TICKS(500));
@@ -103,10 +103,10 @@ void turn_back() {
         // go back and forth to help the stacks get out
 
         vTaskDelay(pdMS_TO_TICKS(400));
-        action_helpers::move(-75, 0, 0);
+        action_helpers::move(75, 0, 0);
 
         vTaskDelay(pdMS_TO_TICKS(400));
-        action_helpers::move(75, 0, 0);
+        action_helpers::move(-75, 0, 0);
     }
 
     robot::state::setBackStocking(StockingState::EMPTY);

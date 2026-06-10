@@ -87,25 +87,27 @@ namespace robot::tasks {
                 state::setCriticalBattery(true);
             }
 
-            push_led_state(
-                robot::config::led_1_tca_pin,
-                cell_1_critical ? blink_phase_on : cell_1_warning
-            );
+            // push_led_state(
+            //     robot::config::led_1_tca_pin,
+            //     cell_1_critical ? blink_phase_on : cell_1_warning
+            // );
 
-            push_led_state(
-                robot::config::led_2_tca_pin,
-                cell_2_critical ? blink_phase_on : cell_2_warning
-            );
-
-            push_led_state(
-                robot::config::led_3_tca_pin,
-                cell_3_critical ? blink_phase_on : cell_3_warning
-            );
-
-            push_led_state(
-                robot::config::led_4_tca_pin,
-                cell_4_critical ? blink_phase_on : cell_4_warning
-            );
+            if (cell_1_warning || cell_2_warning || cell_3_warning || cell_4_warning) {
+                push_led_state(
+                    robot::config::led_batt_pin,
+                    true
+                );
+            } else if ((cell_1_critical || cell_2_critical || cell_3_critical || cell_4_critical) && blink_phase_on) {
+                push_led_state(
+                    robot::config::led_batt_pin,
+                    true
+                );
+            } else {
+                push_led_state(
+                    robot::config::led_batt_pin,
+                    false
+                );
+            }
 
             vTaskDelay(blink_half_period_ticks);
         }

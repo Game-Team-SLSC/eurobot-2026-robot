@@ -191,17 +191,14 @@ void rotate_grabber_back(GrabberState state) {
     robot::state::setBackGrabberState(state);
     switch (state) {
         case GrabberState::UNFOLDED:
-        info("e", "unfolded");
             performRotation(robot::config::back_left_grabber, 137);
             performRotation(robot::config::back_right_grabber, 30);
             break;
         case GrabberState::CATCHING:
-        info("e", "catchy");
             performRotation(robot::config::back_left_grabber, 65);
             performRotation(robot::config::back_right_grabber, 106);
             break;
         case GrabberState::FOLDED:
-            info("e", "folded");
             performRotation(robot::config::back_left_grabber, 41);
             performRotation(robot::config::back_right_grabber, 130);
             break;
@@ -228,11 +225,9 @@ bool readColor(robot::config::ColorSensor sensor, ColorResponse& response) {
     return result == pdPASS;
 }
 
-bool move(float fwd, float strafe, float rotate) {
+bool move(short fwd, short strafe, short rotate) {
     MotionCommand cmd;
-    cmd.forward = fwd;
-    cmd.strafe = strafe;
-    cmd.rotate = rotate;
+    cmd.target = {fwd, strafe, rotate};
     return xQueueSend(robot::queues::motion_command_queue, &cmd, 0) == pdPASS;
 }
 

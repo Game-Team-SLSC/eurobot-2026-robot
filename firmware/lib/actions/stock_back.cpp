@@ -29,12 +29,12 @@ void stock_back() {
 
     // retract arm
 
-    action_helpers::rotate_turner_back(ArmState::IDLE);
-    vTaskDelay(pdMS_TO_TICKS(200));
-    
-    // retract grabber
-    action_helpers::rotate_grabber_back(GrabberState::FOLDED);
+    action_helpers::rotate_turner_back(ArmState::TURNING);
     
     action_helpers::endAction();
+    
+    // retract grabber
+    vTaskDelay(pdMS_TO_TICKS(400));
+    action_helpers::rotate_grabber_back(GrabberState::FOLDED);
 }
 }

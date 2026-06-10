@@ -70,4 +70,5 @@ namespace robot::state {
     bool setPumpsStatus(bool enabled);
     bool setFrontGrabberState(GrabberState state);
     bool setBackGrabberState(GrabberState state);
+    bool markRadioDisconnected();
 }

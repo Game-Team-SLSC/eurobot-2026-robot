@@ -16,6 +16,7 @@ namespace robot::tasks {
     void control_leds_task(void* parameter);
     void render_ui_task(void* parameter);
     void watch_encoder(void* parameter);
+    void status_led_task(void* parameter);
 
     bool begin();
 };

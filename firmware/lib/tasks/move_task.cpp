@@ -92,7 +92,7 @@ namespace robot::tasks {
             
             GlobalState state = robot::state::get();
 
-            if (state.criticalBattery) {
+            if (state.criticalBattery | (!state.radioConnected)) {
                 MotionCommand stopCmd{};
                 robot::movers::drive(stopCmd);
                 continue;
