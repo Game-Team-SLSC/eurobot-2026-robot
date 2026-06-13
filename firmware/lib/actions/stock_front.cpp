@@ -30,11 +30,10 @@ void stock_front() {
     // retract arm
 
     action_helpers::rotate_turner_front(ArmState::TURNING);
-    
     action_helpers::endAction();
     
     // retract grabber
-    vTaskDelay(pdMS_TO_TICKS(400));
+    vTaskDelay(pdMS_TO_TICKS(action_helpers::getDelayForTurn(4)));
     action_helpers::rotate_grabber_front(GrabberState::FOLDED);
     
 }

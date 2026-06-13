@@ -32,6 +32,7 @@ namespace robot::actions::action_helpers {
     bool mustBeTurned(const ColorResponse& color);
     void endAction();
     uint16_t angleToPWMValue(uint8_t angle);
+    uint16_t getDelayForTurn(uint8_t countToTurn);
 
     bool readColor(robot::config::ColorSensor sensor, ColorResponse& response);
     bool move(short fwd, short strafe, short rotate);

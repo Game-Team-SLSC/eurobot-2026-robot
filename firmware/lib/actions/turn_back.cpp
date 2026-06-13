@@ -56,33 +56,35 @@ void turn_back() {
     }
 
     if (state.back_stocking_state == StockingState::FULL || state.back_stocking_state == StockingState::HALF) {
+        info("turn_back", "Turning %d stacks from stockage", countToTurn);
         if (countToTurn == 4) {
             // turn all
 
             action_helpers::rotate_turner_back(ArmState::TURNING);
             vTaskDelay(pdMS_TO_TICKS(50));
             action_helpers::toggle_pumps_back(0b0000);
-            vTaskDelay(50);
+            vTaskDelay(pdMS_TO_TICKS(50));
         } else if (countToTurn == 0) {
             // turn nothing
 
             action_helpers::rotate_turner_back(ArmState::DROPPING);
-            vTaskDelay(250);
+            vTaskDelay(pdMS_TO_TICKS(300));
             action_helpers::toggle_pumps_back(0b0000);
-            vTaskDelay(100);
+            vTaskDelay(pdMS_TO_TICKS(250));
             action_helpers::rotate_turner_back(ArmState::IDLE);
         } else {
             //  turn some
 
             action_helpers::rotate_turner_back(ArmState::DROPPING);
-            vTaskDelay(pdMS_TO_TICKS(50));
+            vTaskDelay(pdMS_TO_TICKS(500));
             action_helpers::toggle_pumps_back(pumpsMask);
             vTaskDelay(pdMS_TO_TICKS(250));
             action_helpers::rotate_turner_back(ArmState::TURNING);
-            vTaskDelay(pdMS_TO_TICKS(countToTurn == 4 ? 750 : countToTurn == 3 ? 600 : countToTurn == 2 ? 400 : 300));
+            vTaskDelay(pdMS_TO_TICKS(action_helpers::getDelayForTurn(countToTurn)));
             action_helpers::toggle_pumps_back(0b0000);
         }
     } else {
+        info("turn_back", "Turning %d stacks", countToTurn);
         if (countToTurn == 0) {
             // drop directly
 
@@ -94,7 +96,7 @@ void turn_back() {
             action_helpers::toggle_pumps_back(pumpsMask);
             vTaskDelay(pdMS_TO_TICKS(250));
             action_helpers::rotate_turner_back(ArmState::TURNING);
-            vTaskDelay(pdMS_TO_TICKS(countToTurn == 4 ? 750 : countToTurn == 3 ? 600 : countToTurn == 2 ? 400 : 300));
+            vTaskDelay(pdMS_TO_TICKS(action_helpers::getDelayForTurn(countToTurn)));
             action_helpers::toggle_pumps_back(0b0000);
         }
     }

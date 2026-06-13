@@ -5,6 +5,7 @@
 #include <commands.h>
 #include <queues.h>
 #include <state.h>
+#include <Logger.h>
 
 namespace robot::actions {
 void turn_front() {
@@ -56,36 +57,39 @@ void turn_front() {
 
 
     if (state.front_stocking_state == StockingState::FULL || state.front_stocking_state == StockingState::HALF) {
+        info("turn_front", "Turning %d stacks from stockage", countToTurn);
         if (countToTurn == 4) {
             // turn all
 
             action_helpers::rotate_turner_front(ArmState::TURNING);
             vTaskDelay(pdMS_TO_TICKS(50));
             action_helpers::toggle_pumps_front(0b0000);
-            vTaskDelay(50);
+            vTaskDelay(pdMS_TO_TICKS(50));
         } else if (countToTurn == 0) {
             // turn nothing
 
             action_helpers::rotate_turner_front(ArmState::DROPPING);
-            vTaskDelay(250);
+            vTaskDelay(pdMS_TO_TICKS(300));
             action_helpers::toggle_pumps_front(0b0000);
-            vTaskDelay(100);
+            vTaskDelay(pdMS_TO_TICKS(250));
             action_helpers::rotate_turner_front(ArmState::IDLE);
         } else {
             //  turn some
 
             action_helpers::rotate_turner_front(ArmState::DROPPING);
-            vTaskDelay(pdMS_TO_TICKS(50));
+            vTaskDelay(pdMS_TO_TICKS(500));
             action_helpers::toggle_pumps_front(pumpsMask);
             vTaskDelay(pdMS_TO_TICKS(250));
             action_helpers::rotate_turner_front(ArmState::TURNING);
-            vTaskDelay(pdMS_TO_TICKS(countToTurn == 4 ? 750 : countToTurn == 3 ? 600 : countToTurn == 2 ? 400 : 300));
+            vTaskDelay(pdMS_TO_TICKS(action_helpers::getDelayForTurn(countToTurn)));
             action_helpers::toggle_pumps_front(0b0000);
         }
     } else {
+        info("turn_front", "Turning %d stacks", countToTurn);
         if (countToTurn == 0) {
             // drop directly
 
+            info("turn_front", "");
             action_helpers::toggle_pumps_front(0b0000);
             action_helpers::rotate_turner_front(ArmState::IDLE);
         } else {
@@ -94,7 +98,7 @@ void turn_front() {
             action_helpers::toggle_pumps_front(pumpsMask);
             vTaskDelay(pdMS_TO_TICKS(250));
             action_helpers::rotate_turner_front(ArmState::TURNING);
-            vTaskDelay(pdMS_TO_TICKS(countToTurn == 4 ? 750 : countToTurn == 3 ? 600 : countToTurn == 2 ? 400 : 300));
+            vTaskDelay(pdMS_TO_TICKS(action_helpers::getDelayForTurn(countToTurn)));
             action_helpers::toggle_pumps_front(0b0000);
         }
     }

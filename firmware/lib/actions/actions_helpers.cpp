@@ -144,7 +144,7 @@ void rotate_turner_front(ArmState state) {
             break; 
     }
     performRotation(robot::config::front_left_turner, angle);
-    performRotation(robot::config::front_right_turner, 180 - angle + 3);
+    performRotation(robot::config::front_right_turner, 180 - angle + 2);
 }
 
 void rotate_turner_back(ArmState state) {
@@ -238,14 +238,20 @@ bool mustBeTurned(const ColorResponse& color) {
 
     const GlobalState state = robot::state::get();
 
-    if (!state.isYellowTeam && (color.h >= 50.0f) && (color.h <= 80.0f)) {
+    if (!state.isYellowTeam && (color.h >= 30.0f) && (color.h <= 100.0f)) {
         return true;
     }
 
-    if (state.isYellowTeam && (color.h >= 210.0f) && (color.h <= 230.0f)) {
+    if (state.isYellowTeam && (color.h >= 160.0f) && (color.h <= 280.0f)) {
         return true;
     }
 
     return false;
 }
+
+uint16_t getDelayForTurn(uint8_t countToTurn) {
+    countToTurn = constrain(countToTurn, 0, 4);
+    return countToTurn == 4 ? 800 : countToTurn == 3 ? 600 : countToTurn == 2 ? 500 : 400;
+}
+    
 }
